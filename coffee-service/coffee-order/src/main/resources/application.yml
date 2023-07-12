@@ -1,0 +1,36 @@
+server:
+  port: 8081
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: COFFEE-ORDER
+  rabbitmq:
+    port: 5672
+    username: guest
+    password: guest
+# config disable
+  cloud:
+   config:
+     import-check:
+       enabled: false
+
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:5432/department
+#    username: jincrates
+#    password: jincrates
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+#        format_sql: true
+#        show_sql: true

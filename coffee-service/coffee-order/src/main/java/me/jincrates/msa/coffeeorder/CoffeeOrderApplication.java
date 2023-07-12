@@ -1,13 +1,13 @@
-package me.jincrates.msa.coffeeservice;
+package me.jincrates.msa.coffeeorder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CoffeeServiceApplication {
+public class CoffeeOrderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CoffeeServiceApplication.class, args);
+		SpringApplication.run(CoffeeOrderApplication.class, args);
 	}
 
 }

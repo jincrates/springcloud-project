@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.26/8f8cf0372abf564913e9796623aac4c8ea44025a/lombok-1.18.26.jar" />
+        </processorPath>
+        <module name="root.coffee-order.main" />
+      </profile>
+    </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="coffee-order" target="17" />
+      <module name="coffee-order.main" target="17" />
+      <module name="coffee-order.test" target="17" />
+      <module name="coffee-service" target="17" />
+      <module name="coffee-service.coffee-order" target="17" />
+      <module name="coffee-service.coffee-order.main" target="17" />
+      <module name="coffee-service.coffee-order.test" target="17" />
+      <module name="coffee-service.main" target="17" />
+      <module name="coffee-service.test" target="17" />
       <module name="discovery-service" target="17" />
       <module name="discovery-service.main" target="17" />
       <module name="discovery-service.test" target="17" />

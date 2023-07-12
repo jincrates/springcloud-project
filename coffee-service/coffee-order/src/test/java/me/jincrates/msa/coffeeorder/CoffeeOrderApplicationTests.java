@@ -1,10 +1,10 @@
-package me.jincrates.msa.coffeeservice;
+package me.jincrates.msa.coffeeorder;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CoffeeServiceApplicationTests {
+class CoffeeOrderApplicationTests {
 
 	@Test
 	void contextLoads() {
