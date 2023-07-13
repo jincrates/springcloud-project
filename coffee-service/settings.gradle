@@ -1,3 +1,4 @@
 rootProject.name = 'root'
 
 include 'coffee-order'
+include 'coffee-member'
