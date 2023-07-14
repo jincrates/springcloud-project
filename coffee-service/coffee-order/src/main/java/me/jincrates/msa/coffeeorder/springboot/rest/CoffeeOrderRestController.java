@@ -34,6 +34,6 @@ public class CoffeeOrderRestController {
         // kafka
         kafkaProducer.send("jincrates-kafka-test", coffeeOrderCVO);
 
-        return new ResponseEntity<CoffeeOrderCVO>(coffeeOrderCVO, HttpStatus.OK);
+        return new ResponseEntity<>(coffeeOrderCVO, HttpStatus.OK);
     }
 }
