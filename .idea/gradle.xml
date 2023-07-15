@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/coffee-service" />
             <option value="$PROJECT_DIR$/coffee-service/coffee-member" />
             <option value="$PROJECT_DIR$/coffee-service/coffee-order" />
+            <option value="$PROJECT_DIR$/coffee-service/coffee-status" />
           </set>
         </option>
       </GradleProjectSettings>

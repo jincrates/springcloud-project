@@ -1,4 +1,5 @@
-rootProject.name = 'root'
+rootProject.name = 'coffee-service'
 
 include 'coffee-order'
 include 'coffee-member'
+include 'coffee-status'

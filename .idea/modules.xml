@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/coffee-order/root.coffee-order.main.iml" filepath="$PROJECT_DIR$/.idea/modules/coffee-order/root.coffee-order.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/coffee-order/coffee-service.coffee-order.main.iml" filepath="$PROJECT_DIR$/.idea/modules/coffee-order/coffee-service.coffee-order.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/springcloud-project.iml" filepath="$PROJECT_DIR$/.idea/springcloud-project.iml" />
     </modules>
   </component>

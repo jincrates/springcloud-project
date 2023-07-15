@@ -7,8 +7,9 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.26/8f8cf0372abf564913e9796623aac4c8ea44025a/lombok-1.18.26.jar" />
         </processorPath>
-        <module name="root.coffee-member.main" />
-        <module name="root.coffee-order.main" />
+        <module name="coffee-service.coffee-status.main" />
+        <module name="coffee-service.coffee-order.main" />
+        <module name="coffee-service.coffee-member.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -18,15 +19,36 @@
       <module name="coffee-order" target="17" />
       <module name="coffee-order.main" target="17" />
       <module name="coffee-order.test" target="17" />
-      <module name="coffee-service" target="17" />
-      <module name="coffee-service.coffee-order" target="17" />
-      <module name="coffee-service.coffee-order.main" target="17" />
-      <module name="coffee-service.coffee-order.test" target="17" />
-      <module name="coffee-service.main" target="17" />
-      <module name="coffee-service.test" target="17" />
+      <module name="coffee-service-root" target="17" />
+      <module name="coffee-service-root.coffee-member" target="17" />
+      <module name="coffee-service-root.coffee-member.main" target="17" />
+      <module name="coffee-service-root.coffee-member.test" target="17" />
+      <module name="coffee-service-root.coffee-order" target="17" />
+      <module name="coffee-service-root.coffee-order.main" target="17" />
+      <module name="coffee-service-root.coffee-order.test" target="17" />
+      <module name="coffee-service-root.coffee-status" target="17" />
+      <module name="coffee-service-root.coffee-status.main" target="17" />
+      <module name="coffee-service-root.coffee-status.test" target="17" />
+      <module name="coffee-service-root.main" target="17" />
+      <module name="coffee-service-root.test" target="17" />
+      <module name="coffee-status" target="17" />
+      <module name="coffee-status.main" target="17" />
+      <module name="coffee-status.test" target="17" />
       <module name="discovery-service" target="17" />
       <module name="discovery-service.main" target="17" />
       <module name="discovery-service.test" target="17" />
+      <module name="root" target="17" />
+      <module name="root.coffee-member" target="17" />
+      <module name="root.coffee-member.main" target="17" />
+      <module name="root.coffee-member.test" target="17" />
+      <module name="root.coffee-order" target="17" />
+      <module name="root.coffee-order.main" target="17" />
+      <module name="root.coffee-order.test" target="17" />
+      <module name="root.coffee-status" target="17" />
+      <module name="root.coffee-status.main" target="17" />
+      <module name="root.coffee-status.test" target="17" />
+      <module name="root.main" target="17" />
+      <module name="root.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
