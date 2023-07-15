@@ -21,19 +21,19 @@ public class CoffeeOrderRestController {
     private final KafkaProducer kafkaProducer;
     private final MsaServiceCoffeeMember msaServiceCoffeeMember;
 
-    @PostMapping("/coffee-order")
+    @PostMapping("/order")
     public ResponseEntity<CoffeeOrderCVO> orderCoffee(@RequestBody CoffeeOrderCVO coffeeOrderCVO) {
         // is member
-        if (msaServiceCoffeeMember.existsByMemberName(coffeeOrderCVO.getCoffeeName())) {
+        if (msaServiceCoffeeMember.existsByMemberName(coffeeOrderCVO.getCustomerName())) {
             log.info("{} is a member!", coffeeOrderCVO.getCoffeeName());
         }
 
         // coffee order
-        orderService.orderCoffee(coffeeOrderCVO);
+        CoffeeOrderCVO savedOrder = orderService.orderCoffee(coffeeOrderCVO);
 
         // kafka
-        kafkaProducer.send("jincrates-kafka-test", coffeeOrderCVO);
+        kafkaProducer.send("jincrates-kafka-test", savedOrder);
 
-        return new ResponseEntity<>(coffeeOrderCVO, HttpStatus.OK);
+        return new ResponseEntity<>(savedOrder, HttpStatus.OK);
     }
 }

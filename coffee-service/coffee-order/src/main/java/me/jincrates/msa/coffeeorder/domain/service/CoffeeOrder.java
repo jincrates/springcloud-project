@@ -4,5 +4,5 @@ import me.jincrates.msa.coffeeorder.domain.model.CoffeeOrderCVO;
 
 public interface CoffeeOrder {
 
-    String orderCoffee(CoffeeOrderCVO coffeeOrderCVO);
+    CoffeeOrderCVO orderCoffee(CoffeeOrderCVO coffeeOrderCVO);
 }

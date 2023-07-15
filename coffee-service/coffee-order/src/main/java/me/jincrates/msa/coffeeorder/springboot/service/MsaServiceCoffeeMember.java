@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient("COFFEE-MEMBER")
 public interface MsaServiceCoffeeMember {
 
-    @GetMapping("/coffee-member/v1.0/{memberName}")
+    @GetMapping("/member/{memberName}")
     boolean existsByMemberName(@PathVariable("memberName") String memberName);
 
 }

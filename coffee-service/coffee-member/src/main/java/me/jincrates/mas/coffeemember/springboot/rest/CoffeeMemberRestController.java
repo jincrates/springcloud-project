@@ -1,5 +1,7 @@
 package me.jincrates.mas.coffeemember.springboot.rest;
 
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.mas.coffeemember.springboot.repository.jpa.CoffeeMemberJpaRepository;
 import me.jincrates.mas.coffeemember.springboot.repository.jpa.MemberJpaEntity;
@@ -17,21 +19,27 @@ public class CoffeeMemberRestController {
 
     private final CoffeeMemberJpaRepository coffeeMemberJpaRepository;
 
-    @GetMapping("/coffee-member/v1.0/{memberName}")
+    @GetMapping("/member/{memberName}")
     public boolean existsByMemberName(@PathVariable("memberName") String memberName) {
-        return coffeeMemberJpaRepository.existsByMemberName(memberName);
+//        return coffeeMemberJpaRepository.existsByMemberName(memberName);
+
+        Optional<MemberJpaEntity> memberOptional = coffeeMemberJpaRepository.findByMemberName(
+            memberName);
+
+        return memberOptional.isPresent();
     }
 
-    @PostMapping("/coffee-member/v1.0")
+    @PostMapping("/member")
     public MemberRVO saveMember(@RequestBody MemberRVO memberRVO) {
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+            .id(UUID.randomUUID())
             .memberName(memberRVO.getMemberName())
             .build();
 
         MemberJpaEntity member = coffeeMemberJpaRepository.save(memberJpaEntity);
 
         return MemberRVO.builder()
-            .id(member.getId())
+            .id(member.getId().toString())
             .memberName(member.getMemberName())
             .build();
     }

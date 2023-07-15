@@ -1,2 +1,28 @@
 ### API-GATEWAY
 GET {{api-gateway}}/actuator/health
+
+
+### 커피주문
+POST {{coffee-order}}/order
+Content-Type: application/json
+
+{
+  "orderNumber": "1",
+  "coffeeName": "espresso",
+  "coffeeCount": "1",
+  "customerName": "jincrates"
+}
+
+### 회원 등록
+POST {{coffee-member}}/member
+Content-Type: application/json
+
+{
+  "memberName": "jincrates"
+}
+
+### 회원 조회
+GET {{coffee-member}}/member/jincrates
+
+### 주문내역 조회
+GET {{coffee-status}}/order-status

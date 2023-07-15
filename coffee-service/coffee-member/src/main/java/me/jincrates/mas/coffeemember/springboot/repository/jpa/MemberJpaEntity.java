@@ -1,10 +1,9 @@
 package me.jincrates.mas.coffeemember.springboot.repository.jpa;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +18,6 @@ import lombok.NoArgsConstructor;
 public class MemberJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private UUID id;
     private String memberName; // 회원명
 }

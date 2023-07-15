@@ -6,7 +6,7 @@ import me.jincrates.msa.coffeestatus.springboot.repository.jpa.CoffeeStatusJpaRe
 import me.jincrates.msa.coffeestatus.springboot.repository.jpa.OrderStatusJpaEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,7 +15,7 @@ public class CoffeeOrderStatusRestController {
 
     private final CoffeeStatusJpaRepository coffeeStatusJpaRepository;
 
-    @PostMapping("/coffee-order-status")
+    @GetMapping("/order-status")
     public ResponseEntity<OrderStatusListRVO> coffeeOrderStatus() {
         List<OrderStatusJpaEntity> orderStatusJpaEntities = coffeeStatusJpaRepository.findAll();
 
@@ -24,7 +24,7 @@ public class CoffeeOrderStatusRestController {
             .orderStatusList(
                 orderStatusJpaEntities.stream().map(entity ->
                     OrderStatusRVO.builder()
-                        .id(entity.getId())
+                        .id(entity.getId().toString())
                         .orderHistory(entity.getOrderHistory())
                         .build()
                 ).toList()

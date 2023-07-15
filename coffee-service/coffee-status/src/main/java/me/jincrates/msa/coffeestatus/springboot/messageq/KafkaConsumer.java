@@ -1,5 +1,6 @@
 package me.jincrates.msa.coffeestatus.springboot.messageq;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.msa.coffeestatus.springboot.repository.jpa.CoffeeStatusJpaRepository;
@@ -20,6 +21,7 @@ public class KafkaConsumer {
         log.info("Kafka Message : =====> {}", kafkaMessage);
 
         OrderStatusJpaEntity orderStatusJpaEntity = OrderStatusJpaEntity.builder()
+            .id(UUID.randomUUID())
             .orderHistory(kafkaMessage)
             .build();
 
