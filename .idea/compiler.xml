@@ -2,17 +2,22 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.26/8f8cf0372abf564913e9796623aac4c8ea44025a/lombok-1.18.26.jar" />
         </processorPath>
-        <module name="coffee-service.coffee-status.main" />
         <module name="coffee-service.coffee-order.main" />
+        <module name="coffee-service.coffee-kiosk.main" />
+        <module name="coffee-service.coffee-status.main" />
         <module name="coffee-service.coffee-member.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="coffee-kiosk" target="17" />
+      <module name="coffee-kiosk.main" target="17" />
+      <module name="coffee-kiosk.test" target="17" />
       <module name="coffee-member" target="17" />
       <module name="coffee-member.main" target="17" />
       <module name="coffee-member.test" target="17" />
