@@ -1,4 +1,4 @@
-package me.jincrates.msa.coffeekiosk;
+package me.jincrates.msa.coffeekiosk.spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
