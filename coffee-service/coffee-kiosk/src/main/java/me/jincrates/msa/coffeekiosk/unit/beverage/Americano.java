@@ -1,6 +1,6 @@
-package me.jincrates.msa.coffeekiosk.unit.model;
+package me.jincrates.msa.coffeekiosk.unit.beverage;
 
-public class Americano implements Beverage{
+public class Americano implements Beverage {
 
     @Override
     public String getName() {

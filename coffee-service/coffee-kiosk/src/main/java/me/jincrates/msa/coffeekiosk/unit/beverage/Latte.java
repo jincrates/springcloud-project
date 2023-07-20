@@ -1,6 +1,4 @@
-package me.jincrates.msa.coffeekiosk.unit.model;
-
-import me.jincrates.msa.coffeekiosk.unit.model.Beverage;
+package me.jincrates.msa.coffeekiosk.unit.beverage;
 
 public class Latte implements Beverage {
 

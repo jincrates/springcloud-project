@@ -1,9 +1,8 @@
 package me.jincrates.msa.coffeekiosk.unit;
 
 import lombok.extern.slf4j.Slf4j;
-import me.jincrates.msa.coffeekiosk.unit.model.Americano;
-import me.jincrates.msa.coffeekiosk.unit.model.Beverage;
-import me.jincrates.msa.coffeekiosk.unit.model.Latte;
+import me.jincrates.msa.coffeekiosk.unit.beverage.Americano;
+import me.jincrates.msa.coffeekiosk.unit.beverage.Latte;
 
 @Slf4j
 public class CoffeeKioskRunner {
