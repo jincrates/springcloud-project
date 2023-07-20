@@ -9,10 +9,10 @@ public class CoffeeKioskRunner {
 
     public static void main(String[] args) {
         CoffeeKiosk coffeeKiosk = new CoffeeKiosk();
-        coffeeKiosk.add(new Americano());
+        coffeeKiosk.add(new Americano(), 1);
         log.info(">>> 아메리카노 추가");
 
-        coffeeKiosk.add(new Latte());
+        coffeeKiosk.add(new Latte(), 1);
         log.info(">>> 라떼 추가");
 
         int totalPrice = coffeeKiosk.calculateTotalPrice();
