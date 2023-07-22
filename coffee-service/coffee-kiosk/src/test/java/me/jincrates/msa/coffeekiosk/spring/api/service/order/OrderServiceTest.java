@@ -19,15 +19,15 @@ import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductRepository;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType;
 import me.jincrates.msa.coffeekiosk.spring.domain.stock.Stock;
 import me.jincrates.msa.coffeekiosk.spring.domain.stock.StockRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
-@Transactional
+//@Transactional  // 편하지만 사이드 이펙트가 있음을 인지해야한다. (OrderService에 /@Transactional가 없었으면 테스트가 실패함
 @SpringBootTest
 class OrderServiceTest {
 
@@ -46,14 +46,13 @@ class OrderServiceTest {
     @Autowired
     private OrderService orderService;
 
-//    @AfterEach
-//    void tearDown() {
-//        //productRepository.deleteAll();
-//        orderProductRepository.deleteAllInBatch();
-//        productRepository.deleteAllInBatch();
-//        orderRepository.deleteAllInBatch();
-//        //stockRepository.deleteAllInBatch();
-//    }
+    @AfterEach
+    void tearDown() {
+        orderProductRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+        orderRepository.deleteAllInBatch();
+        stockRepository.deleteAllInBatch();
+    }
 
     @Test
     @DisplayName("주문번호 리스트를 받아 주문을 생성한다.")
