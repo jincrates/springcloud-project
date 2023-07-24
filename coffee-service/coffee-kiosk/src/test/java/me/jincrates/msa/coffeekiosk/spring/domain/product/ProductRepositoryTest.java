@@ -89,6 +89,30 @@ class ProductRepositoryTest {
         assertThat(latestProductNumber).isEqualTo(targetProductNumber);
     }
 
+    @Test
+    @DisplayName("가장 마지막으로 저장한 상품의 상품번호를 읽어온다.2")
+    void findTop1OrderByIdDesc() {
+        // given
+        String targetProductNumber = "003";
+        Product product1 = createProduct("001", HANDMADE, SELLING, "아메리카노", 4000);
+        Product product2 = createProduct("002", HANDMADE, HOLD, "카페라떼", 4500);
+        Product product3 = createProduct(targetProductNumber, HANDMADE, STOP_SELLING, "팥빙수", 7000);
+        productRepository.saveAll(List.of(product1, product2, product3));
+
+        // when
+        Product latestProduct = productRepository.findTop1ByOrderByIdDesc()
+            .orElse(null);
+
+        Product latestProduct2 = productRepository.findFirstByOrderByIdDesc()
+            .orElse(null);
+
+        // then
+        assertThat(latestProduct).isNotNull();
+        assertThat(latestProduct2).isNotNull();
+        assertThat(latestProduct.getProductNumber()).isEqualTo(targetProductNumber);
+        assertThat(latestProduct2.getProductNumber()).isEqualTo(targetProductNumber);
+    }
+
 
     private Product createProduct(String productNumber, ProductType type,
         ProductSellingStatus productSellingStatus, String productName, int price) {
