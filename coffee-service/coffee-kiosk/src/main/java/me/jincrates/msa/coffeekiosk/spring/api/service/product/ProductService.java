@@ -16,16 +16,15 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    // 동시성 이슈
+    // 증가값이 아닌 UUID를 할당하는 것도 하나의 방법
     public ProductResponse createProduct(ProductCreateRequest request) {
         String nextProductNumber = createNextProductNumber();
 
-        return ProductResponse.builder()
-            .productNumber(nextProductNumber)
-            .type(request.getType())
-            .sellingStatus(request.getSellingStatus())
-            .name(request.getName())
-            .price(request.getPrice())
-            .build();
+        Product product = request.toEntity(nextProductNumber);
+        Product savedProduct = productRepository.save(product);
+
+        return ProductResponse.of(savedProduct);
     }
 
     public List<ProductResponse> getSellingProducts() {
@@ -39,6 +38,9 @@ public class ProductService {
 
     private String createNextProductNumber() {
         String latestProductNumber = productRepository.findLatestProductNumber();
+        if (latestProductNumber == null) {
+            return "001";
+        }
 
         int latestProductNumberInt = Integer.parseInt(latestProductNumber);
         int nextProductNumberInt = latestProductNumberInt + 1;
