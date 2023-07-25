@@ -16,14 +16,16 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public void createProduct(ProductCreateRequest request) {
-        // productNumber
-        // 001 002 003 004
-        // DB에서 마지막 저장된 Product의 상품 번호를 읽어와서 + 1
-        // 009 -> 010
+    public ProductResponse createProduct(ProductCreateRequest request) {
+        String nextProductNumber = createNextProductNumber();
 
-        String latestProductNumber = productRepository.findLatestProductNumber();
-
+        return ProductResponse.builder()
+            .productNumber(nextProductNumber)
+            .type(request.getType())
+            .sellingStatus(request.getSellingStatus())
+            .name(request.getName())
+            .price(request.getPrice())
+            .build();
     }
 
     public List<ProductResponse> getSellingProducts() {
@@ -33,5 +35,15 @@ public class ProductService {
         return products.stream()
             .map(ProductResponse::of)
             .collect(Collectors.toList());
+    }
+
+    private String createNextProductNumber() {
+        String latestProductNumber = productRepository.findLatestProductNumber();
+
+        int latestProductNumberInt = Integer.parseInt(latestProductNumber);
+        int nextProductNumberInt = latestProductNumberInt + 1;
+
+        // 9 -> 009
+        return String.format("%03d", nextProductNumberInt);
     }
 }
