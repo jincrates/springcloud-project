@@ -1,7 +1,9 @@
 package me.jincrates.msa.coffeekiosk.spring.api.controller.product;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import me.jincrates.msa.coffeekiosk.spring.api.ApiResponse;
 import me.jincrates.msa.coffeekiosk.spring.api.controller.product.request.ProductCreateRequest;
 import me.jincrates.msa.coffeekiosk.spring.api.service.product.ProductService;
 import me.jincrates.msa.coffeekiosk.spring.api.service.product.response.ProductResponse;
@@ -17,8 +19,9 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/api/v1/products/new")
-    public ProductResponse createProduct(@RequestBody ProductCreateRequest request) {
-        return productService.createProduct(request);
+    public ApiResponse<ProductResponse> createProduct(
+        @Valid @RequestBody ProductCreateRequest request) {
+        return ApiResponse.ok(productService.createProduct(request));
     }
 
     @GetMapping("/api/v1/products/selling")
