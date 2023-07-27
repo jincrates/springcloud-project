@@ -21,6 +21,11 @@ public class ProductCreateRequest {
     @NotNull(message = "상품 판매상태는 필수입니다.")
     private ProductSellingStatus sellingStatus;
 
+    /**
+     * @NotBlank: null 포함하여, "", "  "(빈문자열)까지도 통과할 수 없음
+     * @NotNull: null이 아니여야 한다. String 기준으로 "", "  "은 통과함
+     * @NotEmpty: String 기준으로 "  "은 통과함
+     */
     @NotBlank(message = "상품 이름은 필수입니다.")
     private String name;
 
