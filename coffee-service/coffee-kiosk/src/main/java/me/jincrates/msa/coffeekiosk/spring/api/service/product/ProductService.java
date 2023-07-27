@@ -3,7 +3,7 @@ package me.jincrates.msa.coffeekiosk.spring.api.service.product;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import me.jincrates.msa.coffeekiosk.spring.api.controller.product.request.ProductCreateRequest;
+import me.jincrates.msa.coffeekiosk.spring.api.service.product.request.ProductCreateServiceRequest;
 import me.jincrates.msa.coffeekiosk.spring.api.service.product.response.ProductResponse;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.Product;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductRepository;
@@ -31,7 +31,7 @@ public class ProductService {
     // 동시성 이슈
     // 증가값이 아닌 UUID를 할당하는 것도 하나의 방법
     @Transactional
-    public ProductResponse createProduct(ProductCreateRequest request) {
+    public ProductResponse createProduct(ProductCreateServiceRequest request) {
         String nextProductNumber = createNextProductNumber();
 
         Product product = request.toEntity(nextProductNumber);

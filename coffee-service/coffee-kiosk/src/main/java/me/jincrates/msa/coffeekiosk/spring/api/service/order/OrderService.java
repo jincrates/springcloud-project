@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import me.jincrates.msa.coffeekiosk.spring.api.controller.order.request.OrderCreateRequest;
+import me.jincrates.msa.coffeekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
 import me.jincrates.msa.coffeekiosk.spring.api.service.order.response.OrderResponse;
 import me.jincrates.msa.coffeekiosk.spring.domain.order.Order;
 import me.jincrates.msa.coffeekiosk.spring.domain.order.OrderRepository;
@@ -32,7 +32,8 @@ public class OrderService {
      * <p>
      * optimistic lock / pessimistic lock /...
      */
-    public OrderResponse createOrder(OrderCreateRequest request, LocalDateTime registeredAt) {
+    public OrderResponse createOrder(OrderCreateServiceRequest request,
+        LocalDateTime registeredAt) {
         List<String> productNumbers = request.getProductNumbers();
         List<Product> products = findProductsBy(productNumbers);
 

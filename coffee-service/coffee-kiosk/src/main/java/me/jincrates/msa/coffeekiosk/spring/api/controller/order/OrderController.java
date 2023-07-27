@@ -1,7 +1,9 @@
 package me.jincrates.msa.coffeekiosk.spring.api.controller.order;
 
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import me.jincrates.msa.coffeekiosk.spring.api.ApiResponse;
 import me.jincrates.msa.coffeekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import me.jincrates.msa.coffeekiosk.spring.api.service.order.OrderService;
 import me.jincrates.msa.coffeekiosk.spring.api.service.order.response.OrderResponse;
@@ -16,8 +18,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/api/v1/orders/new")
-    public OrderResponse createOrder(@RequestBody OrderCreateRequest request) {
+    public ApiResponse<OrderResponse> createOrder(@Valid @RequestBody OrderCreateRequest request) {
         LocalDateTime registeredAt = LocalDateTime.now();
-        return orderService.createOrder(request, registeredAt);
+        return ApiResponse.ok(orderService.createOrder(request.toServiceRequest(), registeredAt));
     }
 }

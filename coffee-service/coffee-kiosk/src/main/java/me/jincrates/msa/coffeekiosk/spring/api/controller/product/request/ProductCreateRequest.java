@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.Product;
+import me.jincrates.msa.coffeekiosk.spring.api.service.product.request.ProductCreateServiceRequest;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType;
 
@@ -41,9 +41,8 @@ public class ProductCreateRequest {
         this.price = price;
     }
 
-    public Product toEntity(String nextProductNumber) {
-        return Product.builder()
-            .productNumber(nextProductNumber)
+    public ProductCreateServiceRequest toServiceRequest() {
+        return ProductCreateServiceRequest.builder()
             .type(type)
             .sellingStatus(sellingStatus)
             .name(name)
