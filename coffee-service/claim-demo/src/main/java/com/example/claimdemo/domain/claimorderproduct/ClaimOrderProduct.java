@@ -2,7 +2,7 @@ package com.example.claimdemo.domain.claimorderproduct;
 
 import com.example.claimdemo.domain.BaseEntity;
 import com.example.claimdemo.domain.claim.Claim;
-import jakarta.persistence.Column;
+import com.example.claimdemo.domain.claim.ClaimStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -11,13 +11,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "CLAIM_ORDER_PRODUCT")
 public class ClaimOrderProduct extends BaseEntity {
 
     @Id
@@ -27,18 +30,25 @@ public class ClaimOrderProduct extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Claim claim;
 
-    @Column(name = "order_product_id")
     private Long orderProductId;
 
-    @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "refund_price")
     private int refundPrice;
 
     @Enumerated(EnumType.STRING)
-    private ClaimProductStatus status;
+    private ClaimStatus status;
 
-    @Column(name = "reject_memo")
     private String rejectMemo;
+
+    @Builder
+    private ClaimOrderProduct(Claim claim, Long orderProductId, int quantity, int refundPrice,
+        ClaimStatus status, String rejectMemo) {
+        this.claim = claim;
+        this.orderProductId = orderProductId;
+        this.quantity = quantity;
+        this.refundPrice = refundPrice;
+        this.status = status;
+        this.rejectMemo = rejectMemo;
+    }
 }
