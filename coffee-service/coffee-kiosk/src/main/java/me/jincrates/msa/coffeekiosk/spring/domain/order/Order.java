@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.msa.coffeekiosk.spring.domain.BaseEntity;
@@ -39,8 +40,9 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
-    public Order(List<Product> products, LocalDateTime registeredAt) {
-        this.orderStatus = OrderStatus.INIT;
+    @Builder
+    private Order(OrderStatus orderStatus, List<Product> products, LocalDateTime registeredAt) {
+        this.orderStatus = orderStatus;
         this.totalPrice = calculateTotalProduct(products);
         this.registeredAt = registeredAt;
         this.orderProducts = products.stream()
@@ -49,7 +51,11 @@ public class Order extends BaseEntity {
     }
 
     public static Order create(List<Product> products, LocalDateTime registeredAt) {
-        return new Order(products, registeredAt);
+        return Order.builder()
+            .orderStatus(OrderStatus.INIT)
+            .products(products)
+            .registeredAt(registeredAt)
+            .build();
     }
 
     private int calculateTotalProduct(List<Product> products) {
