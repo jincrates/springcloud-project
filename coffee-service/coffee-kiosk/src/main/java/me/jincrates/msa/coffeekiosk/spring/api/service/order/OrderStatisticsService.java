@@ -21,7 +21,7 @@ public class OrderStatisticsService {
         List<Order> orders = orderRepository.findOrdersBy(
             orderDate.atStartOfDay(),
             orderDate.plusDays(1).atStartOfDay(),
-            OrderStatus.COMPLETE
+            OrderStatus.PAYMENT_COMPLETED
         );
 
         // 총 매출 합계를 계산하고
