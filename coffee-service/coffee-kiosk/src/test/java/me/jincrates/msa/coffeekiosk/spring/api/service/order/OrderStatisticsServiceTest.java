@@ -2,13 +2,17 @@ package me.jincrates.msa.coffeekiosk.spring.api.service.order;
 
 import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.SELLING;
 import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.HANDMADE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistory;
+import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistoryRepository;
 import me.jincrates.msa.coffeekiosk.spring.domain.order.Order;
 import me.jincrates.msa.coffeekiosk.spring.domain.order.OrderRepository;
 import me.jincrates.msa.coffeekiosk.spring.domain.order.OrderStatus;
+import me.jincrates.msa.coffeekiosk.spring.domain.orderprodct.OrderProductRepository;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.Product;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductRepository;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType;
@@ -28,12 +32,20 @@ class OrderStatisticsServiceTest {
     private OrderRepository orderRepository;
 
     @Autowired
+    private OrderProductRepository orderProductRepository;
+
+    @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private MailSendHistoryRepository mailSendHistoryRepository;
 
     @AfterEach
     void tearDown() {
+        orderProductRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
+        mailSendHistoryRepository.deleteAllInBatch();
     }
 
     @Test
@@ -48,16 +60,24 @@ class OrderStatisticsServiceTest {
         List<Product> products = List.of(product1, product2, product3);
         productRepository.saveAll(products);
 
-        Order order1 = createPaymentCompletedOrder(now, products);
+        Order order1 = createPaymentCompletedOrder(LocalDateTime.of(2023, 7, 27, 23, 59, 59),
+            products);
         Order order2 = createPaymentCompletedOrder(now, products);
-        Order order3 = createPaymentCompletedOrder(now, products);
+        Order order3 = createPaymentCompletedOrder(LocalDateTime.of(2023, 7, 28, 23, 59, 59),
+            products);
+        Order order4 = createPaymentCompletedOrder(LocalDateTime.of(2023, 7, 29, 0, 0), products);
 
         // when
-        // 27:39
-        orderStatisticsService.sendOrderStatisticsMail(LocalDate.of(2023, 7, 28), "");
+        boolean result = orderStatisticsService.sendOrderStatisticsMail(LocalDate.of(2023, 7, 28),
+            "test@email.com");
 
         // then
-        // assertThat().isEqualTo();
+        assertThat(result).isTrue();
+
+        List<MailSendHistory> histories = mailSendHistoryRepository.findAll();
+        assertThat(histories).hasSize(2)
+            .extracting("content")
+            .contains("총 매출 합계는 18000원입니다.");
     }
 
     private Order createPaymentCompletedOrder(LocalDateTime orderedAt, List<Product> products) {
