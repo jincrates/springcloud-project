@@ -16,6 +16,7 @@ public class OrderStatisticsService {
     private final OrderRepository orderRepository;
     private final MailService mailService;
 
+    // 트랜잭션을 붙이지 않는 것이 좋다.
     public boolean sendOrderStatisticsMail(LocalDate orderDate, String email) {
         // 해당 일자에 결제완료된 주문들을 가져와서
         List<Order> orders = orderRepository.findOrdersBy(
