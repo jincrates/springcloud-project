@@ -3,7 +3,7 @@ package me.jincrates.msa.coffeekiosk.spring.api.service.order;
 import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.SELLING;
 import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.HANDMADE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -75,8 +75,7 @@ class OrderStatisticsServiceTest {
         Order order4 = createPaymentCompletedOrder(LocalDateTime.of(2023, 7, 29, 0, 0), products);
 
         // stubbing: Mock object 행위를 결정
-        when(mailSendClient.sendEmail(any(String.class), any(String.class), any(String.class),
-            any(String.class)))
+        when(mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
             .thenReturn(true);
 
         // when
