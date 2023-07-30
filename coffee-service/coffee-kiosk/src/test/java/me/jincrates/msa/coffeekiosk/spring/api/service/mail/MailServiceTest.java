@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import me.jincrates.msa.coffeekiosk.spring.client.MailSendClient;
 import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistory;
@@ -13,6 +12,7 @@ import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistoryRe
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,8 +41,13 @@ class MailServiceTest {
         //MailService mailService = new MailService(mailSendClient, mailSendHistoryRepository);
 
         // stubbing: Mock object 행위를 결정
-        when(mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
-            .thenReturn(true);
+        //Mockito.when(mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
+        //    .thenReturn(true);
+
+        // stubbing 자체가 BDDMockito를 사용하는 것이 자연스럽다.
+        BDDMockito.given(
+                mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
+            .willReturn(true);
 
         // when
         boolean result = mailService.sendMail("", "", "", "");
