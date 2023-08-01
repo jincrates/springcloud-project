@@ -48,9 +48,11 @@ class OrderServiceTest {
 
     @AfterEach
     void tearDown() {
+        // 벌크성으로 delete를 진행
         orderProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
+
         stockRepository.deleteAllInBatch();
     }
 
