@@ -13,6 +13,8 @@ import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductRepository;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus;
 import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,20 @@ class ProductServiceTest {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @BeforeAll
+    void beforeAll() {
+        // before class
+    }
+
+    @BeforeEach
+    void setUp() {
+        // before method
+        // 테스트 간의 독립성 보장이 어려워짐, 문맥전환 발생
+
+        // 각 테스트 입장에서 봤을 때: 아예 몰라도 테스트 내용을 이해하는 데 문제가 없는가?
+        // 수정해도 모든 테스트에 영향을 주지 않는가?
+    }
 
     @AfterEach
     void tearDown() {
@@ -92,7 +108,8 @@ class ProductServiceTest {
             );
     }
 
-
+    // 테스트에 필요한 데이터만 파라미터로 받자
+    // 테스트 클래스마다 필요한 빌더를 생성해서 테스트하자
     private Product createProduct(String productNumber, ProductType type,
         ProductSellingStatus productSellingStatus, String productName, int price) {
         return Product.builder()
