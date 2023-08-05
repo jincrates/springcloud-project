@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import me.jincrates.msa.coffeekiosk.spring.IntegrationTestSupport;
 import me.jincrates.msa.coffeekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
 import me.jincrates.msa.coffeekiosk.spring.api.service.order.response.OrderResponse;
 import me.jincrates.msa.coffeekiosk.spring.domain.order.OrderRepository;
@@ -23,13 +24,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
-//@Transactional  // 편하지만 사이드 이펙트가 있음을 인지해야한다. (OrderService에 /@Transactional가 없었으면 테스트가 실패함
-@SpringBootTest
-class OrderServiceTest {
+class OrderServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private ProductRepository productRepository;
