@@ -13,4 +13,7 @@ dependencies {
 
     // h2
     // runtimeOnly 'com.h2database:h2'
+
+    // learning
+    implementation 'com.google.guava:guava:31.1-jre';
 }
