@@ -1,3 +1,11 @@
+plugins {
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+}
+
+configurations {
+    asciidoctorExt
+}
+
 dependencies {
     // Spring boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -17,6 +25,33 @@ dependencies {
     // learning
     implementation 'com.google.guava:guava:31.1-jre';
 
+    // Rest Docs
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
     // webflux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+}
+
+ext {
+    // 전역 변수
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }
