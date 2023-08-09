@@ -1,9 +1,9 @@
 package me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 public class SettleBankUtils {
 
@@ -19,20 +19,17 @@ public class SettleBankUtils {
     }
 
     public static String aesEncryptEcb(String key, String plainText) {
-        Cipher cipher;
-        byte[] keys;
-        byte[] encrypts;
         String encrypted = null;
 
         try {
-            keys = key.getBytes(StandardCharsets.UTF_8);
+            byte[] keys = key.getBytes(StandardCharsets.UTF_8);
 
-            SecretKeySpec skeySpec = new SecretKeySpec(keys, "AES");
-            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+            SecretKeySpec secretKeySpec = new SecretKeySpec(keys, "AES");
 
-            encrypts = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
 
+            byte[] encrypts = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
             encrypted = toHex(encrypts);
         } catch (Exception e) {
             e.printStackTrace();

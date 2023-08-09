@@ -1,13 +1,14 @@
 package me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response;
 
-import static me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBankUtils.aesEncryptEcb;
-import static me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBankUtils.sha256;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBankUtils.aesEncryptEcb;
+import static me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBankUtils.sha256;
 
 @Getter
 public class SettleBankPrepareResponse extends PaymentPrepareResponse {
@@ -27,19 +28,18 @@ public class SettleBankPrepareResponse extends PaymentPrepareResponse {
 
     @Builder
     private SettleBankPrepareResponse(String uniqueKey, int price, String productName,
-        String callbackUrl, String cancelUrl) {
+                                      String callbackUrl, String cancelUrl, LocalDateTime preparedAt) {
 
-        // Data
-        final LocalDateTime now = LocalDateTime.now();
-        final String currentDate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        final String currentTime = now.format(DateTimeFormatter.ofPattern("HHmmss"));
+        // Date
+        final String currentDate = preparedAt.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        final String currentTime = preparedAt.format(DateTimeFormatter.ofPattern("HHmmss"));
 
         // API Key
         final String apiKey = "M22B6529";
         final String secretKey = "SETTLEBANKISGOODSETTLEBANKISGOOD";
         final String trPriceEnc = aesEncryptEcb(secretKey, String.valueOf(price));
         final String hashValue = sha256(
-            apiKey + uniqueKey + currentDate + currentTime + price + secretKey);
+                apiKey + uniqueKey + currentDate + currentTime + price + secretKey);
 
         this.hdInfo = "IA_AUTHPAGE_1.0_1.0";
         this.apiVer = "1.0";

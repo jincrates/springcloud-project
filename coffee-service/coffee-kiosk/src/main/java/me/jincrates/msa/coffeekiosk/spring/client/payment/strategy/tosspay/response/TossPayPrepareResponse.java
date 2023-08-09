@@ -25,10 +25,14 @@ public class TossPayPrepareResponse extends PaymentPrepareResponse {
     @Override
     public String toString() {
         return "TossPayPrepareResponse{" +
-            "code=" + code +
-            ", msg='" + msg + '\'' +
-            ", payToken='" + payToken + '\'' +
-            ", checkoutPage='" + checkoutPage + '\'' +
-            '}';
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", payToken='" + payToken + '\'' +
+                ", checkoutPage='" + checkoutPage + '\'' +
+                '}';
+    }
+
+    public boolean isSuccess() {
+        return code == 0 && msg == null;
     }
 }

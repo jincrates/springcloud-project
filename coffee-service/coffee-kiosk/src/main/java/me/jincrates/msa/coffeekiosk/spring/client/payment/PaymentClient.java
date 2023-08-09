@@ -2,6 +2,7 @@ package me.jincrates.msa.coffeekiosk.spring.client.payment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
@@ -24,9 +25,9 @@ public class PaymentClient {
         return paymentGateway.prepare(request);
     }
 
-    public PaymentApproveResponse approve(PaymentMethod paymentMethod) {
-        PaymentGateway paymentGateway = getPaymentClient(paymentMethod);
-        return paymentGateway.approve(null);
+    public PaymentApproveResponse approve(PaymentApproveRequest request) {
+        PaymentGateway paymentGateway = getPaymentClient(request.getPaymentMethod());
+        return paymentGateway.approve(request);
     }
 
     private PaymentGateway getPaymentClient(PaymentMethod paymentMethod) {
