@@ -4,15 +4,10 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApprove
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
-import me.jincrates.msa.coffeekiosk.spring.infra.WebClientHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class PaymentGateway {
+public interface PaymentGateway {
 
-    @Autowired
-    protected WebClientHelper clientHelper;
+    PaymentPrepareResponse prepare(PaymentPrepareRequest request);
 
-    public abstract PaymentPrepareResponse prepare(PaymentPrepareRequest request);
-
-    public abstract PaymentApproveResponse approve(PaymentApproveRequest request);
+    PaymentApproveResponse approve(PaymentApproveRequest request);
 }

@@ -41,7 +41,7 @@ class PaymentClientTest extends IntegrationTestSupport {
     void prepareTossPay() {
         // given
         PaymentPrepareRequest request = PaymentPrepareRequest.builder()
-            .uniqueKey("주문번호")
+            .uniqueKey("uniqueKey")
             .productName("상품명")
             .price(LocalDateTime.now().getSecond() * 10)
             .callbackUrl("callbackUrl")

@@ -1,6 +1,7 @@
 package me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay;
 
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
@@ -9,12 +10,16 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepar
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.PaymentGateway;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayPrepareRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.infra.WebClientHelper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class TossPay extends PaymentGateway {
+@RequiredArgsConstructor
+public class TossPay implements PaymentGateway {
+
+    private final WebClientHelper clientHelper;
 
     final String API_HOST = "https://pay.toss.im";
 
@@ -24,6 +29,7 @@ public class TossPay extends PaymentGateway {
 
         TossPayPrepareRequest prepareRequest = TossPayPrepareRequest.builder()
             .uniqueKey(request.getUniqueKey())
+            .productName(request.getProductName())
             .price(request.getPrice())
             .callbackUrl(request.getCallbackUrl())
             .cancelUrl(request.getCancelUrl())
@@ -45,7 +51,7 @@ public class TossPay extends PaymentGateway {
                 .build()
         );
 
-        log.info("토스페이 결제준비 response: {}", response.toString());
+        log.info(response.toString());
 
         return response;
     }

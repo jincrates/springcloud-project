@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SettleBank extends PaymentGateway {
+public class SettleBank implements PaymentGateway {
 
     @Override
     public PaymentPrepareResponse prepare(PaymentPrepareRequest request) {

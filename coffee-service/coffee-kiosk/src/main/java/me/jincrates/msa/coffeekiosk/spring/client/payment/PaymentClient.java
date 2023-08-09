@@ -9,12 +9,15 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.PaymentGatewa
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBank;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.TossPay;
 import me.jincrates.msa.coffeekiosk.spring.domain.payment.PaymentMethod;
+import me.jincrates.msa.coffeekiosk.spring.infra.WebClientHelper;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class PaymentClient {
+
+    private final WebClientHelper clientHelper;
 
     public PaymentPrepareResponse prepare(PaymentPrepareRequest request) {
         PaymentGateway paymentGateway = getPaymentClient(request.getPaymentMethod());
@@ -29,7 +32,7 @@ public class PaymentClient {
     private PaymentGateway getPaymentClient(PaymentMethod paymentMethod) {
         return switch (paymentMethod) {
             case SETTLE_BANK -> new SettleBank();
-            case TOSS_PAY -> new TossPay();
+            case TOSS_PAY -> new TossPay(clientHelper);
         };
     }
 }
