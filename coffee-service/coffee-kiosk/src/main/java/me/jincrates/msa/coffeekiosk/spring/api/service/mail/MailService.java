@@ -1,7 +1,7 @@
 package me.jincrates.msa.coffeekiosk.spring.api.service.mail;
 
 import lombok.RequiredArgsConstructor;
-import me.jincrates.msa.coffeekiosk.spring.client.MailSendClient;
+import me.jincrates.msa.coffeekiosk.spring.client.mail.MailSendClient;
 import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistory;
 import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistoryRepository;
 import org.springframework.stereotype.Service;

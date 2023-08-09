@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import me.jincrates.msa.coffeekiosk.spring.client.MailSendClient;
+import me.jincrates.msa.coffeekiosk.spring.client.mail.MailSendClient;
 import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistory;
 import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistoryRepository;
 import org.junit.jupiter.api.DisplayName;
