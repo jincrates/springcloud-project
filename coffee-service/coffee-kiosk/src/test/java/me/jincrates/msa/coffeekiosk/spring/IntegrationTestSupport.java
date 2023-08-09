@@ -1,6 +1,6 @@
 package me.jincrates.msa.coffeekiosk.spring;
 
-import me.jincrates.msa.coffeekiosk.spring.client.MailSendClient;
+import me.jincrates.msa.coffeekiosk.spring.client.mail.MailSendClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;

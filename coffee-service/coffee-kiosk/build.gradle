@@ -16,4 +16,7 @@ dependencies {
 
     // learning
     implementation 'com.google.guava:guava:31.1-jre';
+
+    // webflux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
