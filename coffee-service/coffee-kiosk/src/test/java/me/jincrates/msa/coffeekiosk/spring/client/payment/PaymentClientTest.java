@@ -7,14 +7,18 @@ import me.jincrates.msa.coffeekiosk.spring.IntegrationTestSupport;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentCancelRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentStatusRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankPrepareResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayApproveResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.domain.payment.PayMethod;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -102,7 +106,7 @@ class PaymentClientTest extends IntegrationTestSupport {
         // given
         LocalDateTime preparedAt = LocalDateTime.of(2023, 8, 9, 23, 30, 10);
         PaymentPrepareRequest request = PaymentPrepareRequest.builder()
-            .uniqueId("주문번호")
+            .uniqueId("uniqueId")
             .productName("상품명")
             .price(LocalDateTime.now().getSecond() * 10)
             .callbackUrl("callbackUrl")
@@ -142,5 +146,44 @@ class PaymentClientTest extends IntegrationTestSupport {
         // then
         assertThat(response).isNotNull();
         assertThat(response).isInstanceOf(TossPayApproveResponse.class);
+    }
+
+    @Test
+    @DisplayName("토스페이 결제상태 조회")
+    void statusTossPay() {
+        // given
+        LocalDateTime searchedAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
+        PaymentStatusRequest request = PaymentStatusRequest.builder()
+            .payMethod(PayMethod.TOSS_PAY)
+            .authNo("인증번호")
+            .uniqueId("주문번호")
+            .searchedAt(searchedAt)
+            .build();
+
+        // when
+        PaymentStatusResponse response = paymentClient.status(request);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response).isInstanceOf(TossPayStatusResponse.class);
+    }
+
+    @Test
+    @DisplayName("토스페이 결제취소")
+    void cancelTossPay() {
+        // given
+        LocalDateTime canceledAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
+        PaymentCancelRequest request = PaymentCancelRequest.builder()
+            .payMethod(PayMethod.TOSS_PAY)
+            .reason("결제취소 사유")
+            .canceledAt(canceledAt)
+            .build();
+
+        // when
+        PaymentCancelResponse response = paymentClient.cancel(request);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response).isInstanceOf(TossPayCancelResponse.class);
     }
 }

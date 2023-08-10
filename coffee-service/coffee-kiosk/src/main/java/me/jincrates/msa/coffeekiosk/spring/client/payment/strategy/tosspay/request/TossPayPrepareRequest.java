@@ -2,6 +2,8 @@ package me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.requ
 
 import lombok.Builder;
 import lombok.Getter;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.TossPayProperties;
 
 @Getter
 public class TossPayPrepareRequest {
@@ -29,14 +31,15 @@ public class TossPayPrepareRequest {
 //    private final String installment;             // 할부 제한 타입(USE: 할부 사용(default), NOT_USE: 할부 미사용)
 
     @Builder
-    private TossPayPrepareRequest(String uniqueKey, int price, String productName,
-        String callbackUrl, String cancelUrl, boolean autoExecute, String retAppScheme
+    private TossPayPrepareRequest(String uniqueId, int price, String productName,
+        String callbackUrl, String cancelUrl, boolean autoExecute, String retAppScheme,
+        TossPayProperties properties
 //        String resultCallback, String callbackVersion, int amountTaxable, Integer amountVat,
 //        Integer amountServiceFee, String expiredTime, String enablePayMethods, boolean cashReceipt,
 //        String cashReceiptTradeOption, String cardOptions, String installment
     ) {
-        this.apiKey = "sk_test_mgkXl3jBk5mgkX1AnB25";
-        this.orderNo = uniqueKey;
+        this.apiKey = properties.getApiKey();
+        this.orderNo = uniqueId;
         this.amount = price;
         this.amountTaxFree = 0;
         this.productDesc = productName;
@@ -82,5 +85,19 @@ public class TossPayPrepareRequest {
 //            ", cardOptions='" + cardOptions + '\'' +
 //            ", installment='" + installment + '\'' +
             '}';
+    }
+
+    public static TossPayPrepareRequest of(PaymentPrepareRequest request,
+        TossPayProperties properties) {
+        return TossPayPrepareRequest.builder()
+            .uniqueId(request.getUniqueId())
+            .productName(request.getProductName())
+            .price(request.getPrice())
+            .callbackUrl(request.getCallbackUrl())
+            .cancelUrl(request.getCancelUrl())
+            .retAppScheme(null)
+            .autoExecute(Boolean.FALSE)  // 자동결제 사용시 true
+            .properties(properties)
+            .build();
     }
 }

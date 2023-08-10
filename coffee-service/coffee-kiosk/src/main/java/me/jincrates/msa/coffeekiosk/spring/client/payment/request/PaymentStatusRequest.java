@@ -9,18 +9,16 @@ import me.jincrates.msa.coffeekiosk.spring.domain.payment.PayMethod;
 public class PaymentStatusRequest {
 
     private final PayMethod payMethod;
+    private final String authNo;
     private final String uniqueId;
-    private final String transactionId;
-    private final int cancelPrice;
-    private final LocalDateTime canceledAt;
+    private final LocalDateTime searchedAt;
 
     @Builder
-    private PaymentStatusRequest(PayMethod payMethod, String uniqueId, String transactionId,
-        int cancelPrice, LocalDateTime canceledAt) {
+    public PaymentStatusRequest(PayMethod payMethod, String authNo, String uniqueId,
+        LocalDateTime searchedAt) {
         this.payMethod = payMethod;
+        this.authNo = authNo;
         this.uniqueId = uniqueId;
-        this.transactionId = transactionId;
-        this.cancelPrice = cancelPrice;
-        this.canceledAt = canceledAt;
+        this.searchedAt = searchedAt;
     }
 }

@@ -25,11 +25,11 @@ public class SettleBankProperties {
         return apiHost + approvePath;
     }
 
-    public String getCancelUri() {
-        return apiHost + cancelPath;
-    }
-
     public String getStatusUri() {
         return apiHost + statusPath;
+    }
+
+    public String getCancelUri() {
+        return apiHost + cancelPath;
     }
 }

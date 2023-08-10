@@ -1,6 +1,5 @@
 package me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
@@ -13,12 +12,16 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepar
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.PaymentGateway;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayApproveRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayCancelRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayPrepareRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayStatusRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayApproveResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.infra.WebClientHelper;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
@@ -26,52 +29,41 @@ import org.springframework.stereotype.Component;
 public class TossPay implements PaymentGateway {
 
     private final WebClientHelper clientHelper;
+    private final TossPayProperties properties;
 
     final String API_HOST = "https://pay.toss.im";
+    final String PREPARE_URL = "/api/v2/payments";
+    final String APPROVE_URL = "/api/v2/payments";
 
     @Override
     public PaymentPrepareResponse prepare(PaymentPrepareRequest request) {
-        log.info("토스페이 결제준비 >>>");
 
-        TossPayPrepareRequest prepareRequest = TossPayPrepareRequest.builder()
-            .uniqueKey(request.getUniqueId())
-            .productName(request.getProductName())
-            .price(request.getPrice())
-            .callbackUrl(request.getCallbackUrl())
-            .cancelUrl(request.getCancelUrl())
-            .retAppScheme(null)
-            .autoExecute(Boolean.FALSE)  // 자동결제 사용시 true
-            .build();
+        TossPayPrepareRequest prepareRequest = TossPayPrepareRequest.of(request, properties);
 
         log.info("[Request] TossPay Prepare >>> {}", prepareRequest.toString());
 
-        TossPayPrepareResponse response = Optional.ofNullable(
-            clientHelper.post(
-                    API_HOST + "/api/v2/payments",
-                    prepareRequest
-                )
-                .bodyToMono(new ParameterizedTypeReference<TossPayPrepareResponse>() {
-                })
-                .block()
-        ).orElse(
-            TossPayPrepareResponse.builder()
-                .code(-1)
-                .msg("통신실패")
-                .build()
-        );
-
-        log.info("[Response] TossPay Prepare >>> {}", response.toString());
-
-        if (!response.isSuccess()) {
-            log.error("토스 결제준비 실패: {}", response.toString());
-        }
-
-        return response;
+        return clientHelper.post(properties.getPrepareUri(),
+                prepareRequest
+            )
+            .bodyToMono(TossPayPrepareResponse.class)
+            .doOnSuccess(response -> {
+                log.info("[Response] TossPay Prepare >>> {}", response);
+                if (!response.isSuccess()) {
+                    log.error("토스페이 결제준비 실패: {}", response);
+                }
+            })
+            .onErrorResume(ex -> {
+                log.error("토스페이 통신 오류 발생 >>> {}", request);
+                return Mono.just(TossPayPrepareResponse.builder()
+                    .code(-1)
+                    .msg(ex.getMessage())
+                    .build());
+            })
+            .block();
     }
 
     @Override
     public PaymentApproveResponse approve(PaymentApproveRequest request) {
-        log.info("토스페이 결제승인 요청 >>>");
 
         TossPayApproveRequest approveRequest = TossPayApproveRequest.builder()
             .payToken(request.getAuthNo())
@@ -79,38 +71,81 @@ public class TossPay implements PaymentGateway {
 
         log.info("[Request] TossPay Approve >>> {}", approveRequest.toString());
 
-        TossPayApproveResponse response = Optional.ofNullable(
-            clientHelper.post(
-                    API_HOST + "/api/v2/execute",
-                    approveRequest
-                )
-                .bodyToMono(new ParameterizedTypeReference<TossPayApproveResponse>() {
-                })
-                .block()
-        ).orElse(
-            TossPayApproveResponse.builder()
-                .code(-1)
-                .msg("통신실패")
-                .build()
-        );
-
-        log.info("[Response] TossPay Approve >>> {}", response.toString());
-
-        if (!response.isSuccess()) {
-            log.error("토스 결제승인 요청 실패: {}", response.toString());
-        }
-
-        return response;
+        return clientHelper.post(properties.getApproveUri(),
+                approveRequest
+            )
+            .bodyToMono(TossPayApproveResponse.class)
+            .doOnSuccess(response -> {
+                log.info("[Response] TossPay Approve >>> {}", response);
+                if (!response.isSuccess()) {
+                    log.error("토스페이 결제승인 실패: {}", response);
+                }
+            })
+            .onErrorResume(ex -> {
+                log.error("토스페이 통신 오류 발생 >>> {}", request);
+                return Mono.just(TossPayApproveResponse.builder()
+                    .code(-1)
+                    .msg(ex.getMessage())
+                    .build());
+            })
+            .block();
     }
 
     @Override
     public PaymentStatusResponse status(PaymentStatusRequest request) {
-        return null;
+
+        TossPayStatusRequest statusRequest = TossPayStatusRequest.of(request, properties);
+
+        log.info("[Request] TossPay Status >>> {}", statusRequest.toString());
+
+        return clientHelper.post(properties.getStatusUri(),
+                statusRequest
+            )
+            .bodyToMono(TossPayStatusResponse.class)
+            .doOnSuccess(response -> {
+                log.info("[Response] TossPay Approve >>> {}", response);
+                if (!response.isSuccess()) {
+                    log.error("토스페이 결제상태 조회 실패: {}", response);
+                }
+            })
+            .onErrorResume(ex -> {
+                log.error("토스페이 통신 오류 발생 >>> {}", request);
+                return Mono.just(TossPayStatusResponse.builder()
+                    .code(-1)
+                    .msg(ex.getMessage())
+                    .build());
+            })
+            .block();
     }
 
     @Override
     public PaymentCancelResponse cancel(PaymentCancelRequest request) {
-        log.info("토스페이 결제취소 요청 >>>");
-        return null;
+
+        TossPayCancelRequest cancelRequest = TossPayCancelRequest.builder()
+            .payToken("인증")
+            .reason(request.getReason())
+            .properties(properties)
+            .build();
+
+        log.info("[Request] TossPay Cancel >>> {}", cancelRequest.toString());
+
+        return clientHelper.post(properties.getCancelUri(),
+                cancelRequest
+            )
+            .bodyToMono(TossPayCancelResponse.class)
+            .doOnSuccess(response -> {
+                log.info("[Response] TossPay Cancel >>> {}", response);
+                if (!response.isSuccess()) {
+                    log.error("토스페이 결제취소 실패: {}", response);
+                }
+            })
+            .onErrorResume(ex -> {
+                log.error("토스페이 통신 오류 발생 >>> {}", request);
+                return Mono.just(TossPayCancelResponse.builder()
+                    .code(-1)
+                    .msg(ex.getMessage())
+                    .build());
+            })
+            .block();
     }
 }

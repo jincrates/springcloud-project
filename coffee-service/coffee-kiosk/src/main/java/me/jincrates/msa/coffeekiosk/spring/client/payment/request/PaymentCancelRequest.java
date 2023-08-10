@@ -12,15 +12,17 @@ public class PaymentCancelRequest {
     private final String uniqueId;
     private final String transactionId;
     private final int cancelPrice;
+    private final String reason;
     private final LocalDateTime canceledAt;
 
     @Builder
     private PaymentCancelRequest(PayMethod payMethod, String uniqueId, String transactionId,
-        int cancelPrice, LocalDateTime canceledAt) {
+        String reason, int cancelPrice, LocalDateTime canceledAt) {
         this.payMethod = payMethod;
         this.uniqueId = uniqueId;
         this.transactionId = transactionId;
         this.cancelPrice = cancelPrice;
+        this.reason = reason;
         this.canceledAt = canceledAt;
     }
 }
