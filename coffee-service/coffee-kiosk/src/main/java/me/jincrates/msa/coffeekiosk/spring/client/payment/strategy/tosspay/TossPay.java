@@ -8,6 +8,7 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepare
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.PaymentGateway;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayPrepareRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayPrepareResponse;
 import me.jincrates.msa.coffeekiosk.spring.infra.WebClientHelper;
@@ -36,7 +37,7 @@ public class TossPay implements PaymentGateway {
             .retAppScheme(null)
             .build();
 
-        log.info("TossPay Prepare Request >>> {}", prepareRequest.toString());
+        log.info("[Request] TossPay Prepare >>> {}", prepareRequest.toString());
 
         TossPayPrepareResponse response = Optional.ofNullable(
             clientHelper.post(
@@ -53,7 +54,7 @@ public class TossPay implements PaymentGateway {
                 .build()
         );
 
-        log.info("TossPay Prepare Response >>> {}", response.toString());
+        log.info("[Response] TossPay Prepare >>> {}", response.toString());
 
         if (!response.isSuccess()) {
             log.error("토스 결제준비 실패: {}", response.toString());
@@ -65,6 +66,13 @@ public class TossPay implements PaymentGateway {
     @Override
     public PaymentApproveResponse approve(PaymentApproveRequest request) {
         log.info("토스페이 결제승인 요청 >>>");
+
+        TossPayApproveRequest approveRequest = TossPayApproveRequest.builder()
+            .payToken(request.getAuthNo())
+            .build();
+
+        log.info("[Request] TossPay Approve >>> {}", approveRequest.toString());
+
         return new PaymentApproveResponse();
     }
 }
