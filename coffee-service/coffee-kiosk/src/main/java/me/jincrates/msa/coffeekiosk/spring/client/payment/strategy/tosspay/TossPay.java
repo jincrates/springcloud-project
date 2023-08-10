@@ -4,9 +4,13 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentCancelRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentStatusRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApproveResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.PaymentGateway;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.request.TossPayPrepareRequest;
@@ -30,7 +34,7 @@ public class TossPay implements PaymentGateway {
         log.info("토스페이 결제준비 >>>");
 
         TossPayPrepareRequest prepareRequest = TossPayPrepareRequest.builder()
-            .uniqueKey(request.getUniqueKey())
+            .uniqueKey(request.getUniqueId())
             .productName(request.getProductName())
             .price(request.getPrice())
             .callbackUrl(request.getCallbackUrl())
@@ -97,5 +101,16 @@ public class TossPay implements PaymentGateway {
         }
 
         return response;
+    }
+
+    @Override
+    public PaymentStatusResponse status(PaymentStatusRequest request) {
+        return null;
+    }
+
+    @Override
+    public PaymentCancelResponse cancel(PaymentCancelRequest request) {
+        log.info("토스페이 결제취소 요청 >>>");
+        return null;
     }
 }

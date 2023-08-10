@@ -9,7 +9,7 @@ import me.jincrates.msa.coffeekiosk.spring.domain.payment.PayMethod;
 public class PaymentPrepareRequest {
 
     private final PayMethod payMethod;
-    private final String uniqueKey;
+    private final String uniqueId;
     private final int price;
     private final String productName;
     private final String callbackUrl;
@@ -17,10 +17,10 @@ public class PaymentPrepareRequest {
     private final LocalDateTime preparedAt;
 
     @Builder
-    private PaymentPrepareRequest(String uniqueKey, int price, String productName,
+    private PaymentPrepareRequest(String uniqueId, int price, String productName,
         String callbackUrl,
         String cancelUrl, PayMethod payMethod, LocalDateTime preparedAt) {
-        this.uniqueKey = uniqueKey;
+        this.uniqueId = uniqueId;
         this.price = price;
         this.productName = productName;
         this.callbackUrl = callbackUrl;

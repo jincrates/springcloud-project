@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentCancelRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentStatusRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.PaymentGateway;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.request.SettleBankApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.request.SettleBankCancelRequest;
@@ -61,6 +63,11 @@ public class SettleBank implements PaymentGateway {
                     .build());
             })
             .block();
+    }
+
+    @Override
+    public PaymentStatusResponse status(PaymentStatusRequest request) {
+        return null;
     }
 
     @Override

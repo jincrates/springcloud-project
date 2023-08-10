@@ -5,10 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDateTime;
 import me.jincrates.msa.coffeekiosk.spring.IntegrationTestSupport;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentCancelRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApproveResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankApproveResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankPrepareResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayPrepareResponse;
@@ -28,7 +31,7 @@ class PaymentClientTest extends IntegrationTestSupport {
         // given
         LocalDateTime preparedAt = LocalDateTime.of(2023, 8, 9, 23, 30, 10);
         PaymentPrepareRequest request = PaymentPrepareRequest.builder()
-            .uniqueKey("주문번호")
+            .uniqueId("주문번호")
             .productName("상품명")
             .price(preparedAt.getSecond() * 10)
             .callbackUrl("http://jincrates.me/success")
@@ -51,13 +54,55 @@ class PaymentClientTest extends IntegrationTestSupport {
                 "http://jincrates.me/success", "http://jincrates.me/cancel");
     }
 
+
+    @Test
+    @DisplayName("내통장결제 결제요청")
+    void approveSettleBank() {
+        // given
+        LocalDateTime approvedAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
+        PaymentApproveRequest request = PaymentApproveRequest.builder()
+            .payMethod(PayMethod.SETTLE_BANK)
+            .authNo("인증번호")
+            .approvedAt(approvedAt)
+            .build();
+
+        // when
+        PaymentApproveResponse response = paymentClient.approve(request);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response).isInstanceOf(SettleBankApproveResponse.class);
+    }
+
+    @Test
+    @DisplayName("내통장결제 결제취소")
+    void cancelSettleBank() {
+        // given
+        LocalDateTime canceledAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
+        PaymentCancelRequest request = PaymentCancelRequest.builder()
+            .payMethod(PayMethod.SETTLE_BANK)
+            .uniqueId("주문번호")
+            .transactionId("트랜잭션 ID")
+            .cancelPrice(canceledAt.getSecond() * 100)
+            .canceledAt(canceledAt)
+            .build();
+
+        // when
+        PaymentCancelResponse response = paymentClient.cancel(request);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response).isInstanceOf(SettleBankCancelResponse.class);
+    }
+
+
     @Test
     @DisplayName("토스페이 준비")
     void prepareTossPay() {
         // given
         LocalDateTime preparedAt = LocalDateTime.of(2023, 8, 9, 23, 30, 10);
         PaymentPrepareRequest request = PaymentPrepareRequest.builder()
-            .uniqueKey("uniqueKey")
+            .uniqueId("주문번호")
             .productName("상품명")
             .price(LocalDateTime.now().getSecond() * 10)
             .callbackUrl("callbackUrl")
@@ -78,25 +123,6 @@ class PaymentClientTest extends IntegrationTestSupport {
         assertThat(result.getMsg()).isNull();
         assertThat(result.getPayToken()).isNotNull();
         assertThat(result.getCheckoutPage()).isNotNull();
-    }
-
-    @Test
-    @DisplayName("내통장결제 결제요청")
-    void approveSettleBank() {
-        // given
-        LocalDateTime approvedAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
-        PaymentApproveRequest request = PaymentApproveRequest.builder()
-            .payMethod(PayMethod.SETTLE_BANK)
-            .authNo("인증번호")
-            .approvedAt(approvedAt)
-            .build();
-
-        // when
-        PaymentApproveResponse response = paymentClient.approve(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(SettleBankApproveResponse.class);
     }
 
     @Test
