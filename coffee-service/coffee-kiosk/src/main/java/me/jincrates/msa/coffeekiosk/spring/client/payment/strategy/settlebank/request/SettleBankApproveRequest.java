@@ -10,17 +10,23 @@ import lombok.Getter;
 @Getter
 public class SettleBankApproveRequest {
 
-    private final String hdInfo;
-    private final String apiVer;
-    private final String mercntId;
-    private final String reqDay;
-    private final String reqTime;
-    private final String signature;
-    private final String authNo;
+    private final String hdInfo;    // *전문정보 코드(고정) - "IA_APPROV"
+    private final String apiVer;    // *전문버전(고정) - "3.0"
+    private final String mercntId;  // *헥토파이낸셜에서 부여하는 고유 상점아이디
+    private final String authNo;    // *인증번호: 헥토파이낸셜에서 생성한 인증 단계 응답값
+    private final String reqDay;    // *가맹점에서 생성한 결제승인시 요청일자 yyyyMMdd
+    private final String reqTime;   // *가맹점에서 생성한 결제승인시 요청시간 HH24MISS
+    private final String signature;   // *sha256 방식으로 생성한 해쉬값
+
+    private final String custParam1;  // 가맹점 추가필드1: 승인요청시 정의한 요청필드 외 가맹점에서 임의로 정의 저장되는 필드값(거래조회시 해당 값이 응답전문에 표기)
+    private final String custParam2;  // 가맹점 추가필드2: 승인요청시 정의한 요청필드 외 가맹점에서 임의로 정의 저장되는 필드값(거래조회시 해당 값이 응답전문에 표기)
+    private final String custParam3;  // 가맹점 추가필드3: 승인요청시 정의한 요청필드 외 가맹점에서 임의로 정의 저장되는 필드값(거래조회시 해당 값이 응답전문에 표기)
+    private final String custParam4;  // 가맹점 추가필드4: 승인요청시 정의한 요청필드 외 가맹점에서 임의로 정의 저장되는 필드값(거래조회시 해당 값이 응답전문에 표기)
 
 
     @Builder
-    private SettleBankApproveRequest(String authNo, LocalDateTime approvedAt) {
+    private SettleBankApproveRequest(String authNo, LocalDateTime approvedAt, String customParam1,
+        String customParam2, String customParam3, String customParam4) {
 
         // Date
         final String currentDate = approvedAt.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -31,13 +37,19 @@ public class SettleBankApproveRequest {
         final String secretKey = "SETTLEBANKISGOODSETTLEBANKISGOOD";
         final String hashValue = sha256(apiKey + authNo + currentDate + currentTime + secretKey);
 
+        // 필수
         this.hdInfo = "IA_APPROV";
         this.apiVer = "3.0";
         this.mercntId = apiKey;
+        this.authNo = authNo;
         this.reqDay = currentDate;
         this.reqTime = currentTime;
         this.signature = hashValue;
-        this.authNo = authNo;
+        // 선택
+        this.custParam1 = customParam1;
+        this.custParam2 = customParam2;
+        this.custParam3 = customParam3;
+        this.custParam4 = customParam4;
     }
 
     @Override
@@ -46,10 +58,14 @@ public class SettleBankApproveRequest {
             "hdInfo='" + hdInfo + '\'' +
             ", apiVer='" + apiVer + '\'' +
             ", mercntId='" + mercntId + '\'' +
+            ", authNo='" + authNo + '\'' +
             ", reqDay='" + reqDay + '\'' +
             ", reqTime='" + reqTime + '\'' +
             ", signature='" + signature + '\'' +
-            ", authNo='" + authNo + '\'' +
+            ", custParam1='" + custParam1 + '\'' +
+            ", custParam2='" + custParam2 + '\'' +
+            ", custParam3='" + custParam3 + '\'' +
+            ", custParam4='" + custParam4 + '\'' +
             '}';
     }
 }
