@@ -1,15 +1,15 @@
 package me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.request;
 
-import lombok.Builder;
-import lombok.Getter;
+import static me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBankUtils.sha256;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import static me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBankUtils.sha256;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 public class SettleBankApproveRequest {
+
     private final String hdInfo;
     private final String apiVer;
     private final String mercntId;
@@ -38,5 +38,18 @@ public class SettleBankApproveRequest {
         this.reqTime = currentTime;
         this.signature = hashValue;
         this.authNo = authNo;
+    }
+
+    @Override
+    public String toString() {
+        return "SettleBankApproveRequest{" +
+            "hdInfo='" + hdInfo + '\'' +
+            ", apiVer='" + apiVer + '\'' +
+            ", mercntId='" + mercntId + '\'' +
+            ", reqDay='" + reqDay + '\'' +
+            ", reqTime='" + reqTime + '\'' +
+            ", signature='" + signature + '\'' +
+            ", authNo='" + authNo + '\'' +
+            '}';
     }
 }

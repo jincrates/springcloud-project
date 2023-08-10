@@ -29,4 +29,19 @@ public class TossPayPrepareRequest {
         this.retUrl = callbackUrl;
         this.retCancelUrl = cancelUrl;
     }
+
+    @Override
+    public String toString() {
+        return "TossPayPrepareRequest{" +
+            "apiKey='" + apiKey + '\'' +
+            ", orderNo='" + orderNo + '\'' +
+            ", amount=" + amount +
+            ", amountTaxFree=" + amountTaxFree +
+            ", productDesc='" + productDesc + '\'' +
+            ", autoExecute=" + autoExecute +
+            ", retAppScheme='" + retAppScheme + '\'' +
+            ", retUrl='" + retUrl + '\'' +
+            ", retCancelUrl='" + retCancelUrl + '\'' +
+            '}';
+    }
 }

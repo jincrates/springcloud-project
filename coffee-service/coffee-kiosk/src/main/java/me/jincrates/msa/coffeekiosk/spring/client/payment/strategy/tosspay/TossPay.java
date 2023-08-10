@@ -1,5 +1,6 @@
 package me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
@@ -12,8 +13,6 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.respo
 import me.jincrates.msa.coffeekiosk.spring.infra.WebClientHelper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -29,28 +28,32 @@ public class TossPay implements PaymentGateway {
         log.info("토스페이 결제준비 >>>");
 
         TossPayPrepareRequest prepareRequest = TossPayPrepareRequest.builder()
-                .uniqueKey(request.getUniqueKey())
-                .productName(request.getProductName())
-                .price(request.getPrice())
-                .callbackUrl(request.getCallbackUrl())
-                .cancelUrl(request.getCancelUrl())
-                .retAppScheme(null)
-                .build();
+            .uniqueKey(request.getUniqueKey())
+            .productName(request.getProductName())
+            .price(request.getPrice())
+            .callbackUrl(request.getCallbackUrl())
+            .cancelUrl(request.getCancelUrl())
+            .retAppScheme(null)
+            .build();
+
+        log.info("TossPay Prepare Request >>> {}", prepareRequest.toString());
 
         TossPayPrepareResponse response = Optional.ofNullable(
-                clientHelper.post(
-                                API_HOST + "/api/v2/payments",
-                                prepareRequest
-                        )
-                        .bodyToMono(new ParameterizedTypeReference<TossPayPrepareResponse>() {
-                        })
-                        .block()
+            clientHelper.post(
+                    API_HOST + "/api/v2/payments",
+                    prepareRequest
+                )
+                .bodyToMono(new ParameterizedTypeReference<TossPayPrepareResponse>() {
+                })
+                .block()
         ).orElse(
-                TossPayPrepareResponse.builder()
-                        .code(-1)
-                        .msg("통신실패")
-                        .build()
+            TossPayPrepareResponse.builder()
+                .code(-1)
+                .msg("통신실패")
+                .build()
         );
+
+        log.info("TossPay Prepare Response >>> {}", response.toString());
 
         if (!response.isSuccess()) {
             log.error("토스 결제준비 실패: {}", response.toString());
