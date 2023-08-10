@@ -10,7 +10,7 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApprov
 public class SettleBankApproveResponse extends PaymentApproveResponse {
 
     private String apiVer;              // *전문버전
-    private String resultCd;               // *결과코드("0": 성공, "-1" 실패)
+    private int resultCd;               // *결과코드("0": 성공, "-1" 실패)
     private String errCd;               // *실패코드
     private String resultMsg;           // *결과메세지: 육안 식별 가능한 메세지이며, 서버측에 의해 임의 변동 가능성 존재
     private String mercntId;            // *헥토파이낸셜에서 부여하는 고유 상점아이디
@@ -30,7 +30,7 @@ public class SettleBankApproveResponse extends PaymentApproveResponse {
 
 
     @Builder
-    private SettleBankApproveResponse(String apiVer, String resultCd, String errCd,
+    private SettleBankApproveResponse(String apiVer, int resultCd, String errCd,
         String resultMsg, String mercntId, String ordNo, String trNo, String trPrice, String trDay,
         String trTime, String discntPrice, String payPrice, String criPrice, String criTaxVatPrice,
         String criDutyFreePrice, String regularpayKey, String bankAcctNo, String bankCd) {

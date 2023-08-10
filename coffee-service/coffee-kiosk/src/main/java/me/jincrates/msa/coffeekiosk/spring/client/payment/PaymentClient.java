@@ -9,7 +9,7 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepar
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.PaymentGateway;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBank;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.TossPay;
-import me.jincrates.msa.coffeekiosk.spring.domain.payment.PaymentMethod;
+import me.jincrates.msa.coffeekiosk.spring.domain.payment.PayMethod;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -21,17 +21,17 @@ public class PaymentClient {
     private final TossPay tossPay;
 
     public PaymentPrepareResponse prepare(PaymentPrepareRequest request) {
-        PaymentGateway paymentGateway = getPaymentClient(request.getPaymentMethod());
+        PaymentGateway paymentGateway = getPaymentClient(request.getPayMethod());
         return paymentGateway.prepare(request);
     }
 
     public PaymentApproveResponse approve(PaymentApproveRequest request) {
-        PaymentGateway paymentGateway = getPaymentClient(request.getPaymentMethod());
+        PaymentGateway paymentGateway = getPaymentClient(request.getPayMethod());
         return paymentGateway.approve(request);
     }
 
-    private PaymentGateway getPaymentClient(PaymentMethod paymentMethod) {
-        return switch (paymentMethod) {
+    private PaymentGateway getPaymentClient(PayMethod payMethod) {
+        return switch (payMethod) {
             case SETTLE_BANK -> settleBank;
             case TOSS_PAY -> tossPay;
         };

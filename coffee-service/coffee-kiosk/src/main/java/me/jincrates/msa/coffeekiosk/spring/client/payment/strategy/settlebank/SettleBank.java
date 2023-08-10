@@ -27,7 +27,7 @@ public class SettleBank implements PaymentGateway {
     public PaymentPrepareResponse prepare(PaymentPrepareRequest request) {
         log.info("내통장결제 결제준비 >>>");
 
-        return SettleBankPrepareResponse.builder()
+        SettleBankPrepareResponse response = SettleBankPrepareResponse.builder()
             .uniqueKey(request.getUniqueKey())
             .price(request.getPrice())
             .productName(request.getProductName())
@@ -35,6 +35,10 @@ public class SettleBank implements PaymentGateway {
             .cancelUrl(request.getCancelUrl())
             .preparedAt(request.getPreparedAt())
             .build();
+
+        log.info("SettleBank Prepare Response >>> {}", response.toString());
+
+        return response;
     }
 
     @Override
@@ -46,7 +50,7 @@ public class SettleBank implements PaymentGateway {
             .approvedAt(request.getApprovedAt())
             .build();
 
-        log.info("SettleBank Approve Request >>> {}", approveRequest.toString());
+        log.info("[Request] SettleBank Approve >>> {}", approveRequest.toString());
 
         SettleBankApproveResponse response = Optional.ofNullable(
             clientHelper.post(API_HOST + "/v3/APIPayApprov.do",
@@ -60,7 +64,7 @@ public class SettleBank implements PaymentGateway {
                 .build()
         );
 
-        log.info("SettleBank Approve Response >>> {}", response.toString());
+        log.info("[Response] SettleBank Approve >>> {}", response.toString());
 
         return response;
     }
