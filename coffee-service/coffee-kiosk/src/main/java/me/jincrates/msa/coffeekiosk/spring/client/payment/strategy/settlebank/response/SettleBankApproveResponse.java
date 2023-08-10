@@ -77,4 +77,9 @@ public class SettleBankApproveResponse extends PaymentApproveResponse {
             ", bankCd='" + bankCd + '\'' +
             '}';
     }
+
+
+    public boolean isSuccess() {
+        return resultCd == 0;
+    }
 }

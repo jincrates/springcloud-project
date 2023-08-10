@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentPrepareRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBankProperties;
 
 @Getter
 public class SettleBankPrepareResponse extends PaymentPrepareResponse {
@@ -20,6 +22,7 @@ public class SettleBankPrepareResponse extends PaymentPrepareResponse {
     private final String trDay;             // *가맹점에서 생성한 거래일자yyyyMMdd
     private final String trTime;            // *가맹점에서 생성한 거래일시HH24MISS
     private final String trPrice;           // *결제금액(AES 암호화)
+    private final int trPricePlain;         // *결제금액
     private final String productNm;         // *상품명
     private final String callbackUrl;       // *결과통보 URL: 인증 완료후 결제창에서 호출될 URL
     private final String cancelUrl;         // *인증창취소 URL: 결제 과정중사용자 취소시 호출될 URL
@@ -42,32 +45,33 @@ public class SettleBankPrepareResponse extends PaymentPrepareResponse {
     private final String payLimitCd;        // 결제 한도 코드: 내통장결제에 설정되어 있는 정책에 따라 고객의 결제한도를 확인
 
     @Builder
-    private SettleBankPrepareResponse(String uniqueKey, int price, String productName,
-        String callbackUrl, String cancelUrl, LocalDateTime preparedAt, String taxPrice,
-        String vatPrice, String dutyFreePrice, String containerDeposit, String dutyFreeYn,
-        String criPsblYn, String addDeductionYn, String shopName, String mobileNo, String email,
-        String custCi, String regularpayYn, String customParam1, String customParam2,
-        String payLimitCd) {
+    private SettleBankPrepareResponse(String uniqueId, int price, String productName,
+        String callbackUrl, String cancelUrl, LocalDateTime preparedAt,
+        String taxPrice, String vatPrice, String dutyFreePrice, String containerDeposit,
+        String dutyFreeYn, String criPsblYn, String addDeductionYn, String shopName,
+        String mobileNo, String email, String custCi, String regularpayYn, String customParam1,
+        String customParam2, String payLimitCd, SettleBankProperties properties) {
         // Date
         final String currentDate = preparedAt.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         final String currentTime = preparedAt.format(DateTimeFormatter.ofPattern("HHmmss"));
 
         // API Key
-        final String apiKey = "M22B6529";
-        final String secretKey = "SETTLEBANKISGOODSETTLEBANKISGOOD";
-        final String trPriceEnc = aesEncryptEcb(secretKey, String.valueOf(price));
+        final String apiKey = properties.getApiKey();
+        final String secretKey = properties.getSecretKey();
+        final String trPriceEnc = aesEncryptEcb(properties.getSecretKey(), String.valueOf(price));
         final String hashValue = sha256(
-            apiKey + uniqueKey + currentDate + currentTime + price + secretKey);
+            apiKey + uniqueId + currentDate + currentTime + price + secretKey);
 
         // 필수
         this.hdInfo = "IA_AUTHPAGE_1.0_1.0";
         this.apiVer = "1.0";
         this.processType = "D";
         this.mercntId = apiKey;
-        this.ordNo = uniqueKey;
+        this.ordNo = uniqueId;
         this.trDay = currentDate;
         this.trTime = currentTime;
         this.trPrice = trPriceEnc;
+        this.trPricePlain = price;
         this.productNm = productName;
         this.callbackUrl = callbackUrl;
         this.cancelUrl = cancelUrl;
@@ -101,6 +105,7 @@ public class SettleBankPrepareResponse extends PaymentPrepareResponse {
             ", trDay='" + trDay + '\'' +
             ", trTime='" + trTime + '\'' +
             ", trPrice='" + trPrice + '\'' +
+            ", trPricePlain=" + trPricePlain +
             ", productNm='" + productNm + '\'' +
             ", callbackUrl='" + callbackUrl + '\'' +
             ", cancelUrl='" + cancelUrl + '\'' +
@@ -121,5 +126,18 @@ public class SettleBankPrepareResponse extends PaymentPrepareResponse {
             ", mercntParam2='" + mercntParam2 + '\'' +
             ", payLimitCd='" + payLimitCd + '\'' +
             '}';
+    }
+
+    public static SettleBankPrepareResponse of(PaymentPrepareRequest request,
+        SettleBankProperties properties) {
+        return SettleBankPrepareResponse.builder()
+            .uniqueId(request.getUniqueId())
+            .price(request.getPrice())
+            .productName(request.getProductName())
+            .callbackUrl(request.getCallbackUrl())
+            .cancelUrl(request.getCancelUrl())
+            .preparedAt(request.getPreparedAt())
+            .properties(properties)
+            .build();
     }
 }

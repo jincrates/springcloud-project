@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 import lombok.Getter;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.SettleBankProperties;
 
 @Getter
 public class SettleBankApproveRequest {
@@ -26,15 +28,16 @@ public class SettleBankApproveRequest {
 
     @Builder
     private SettleBankApproveRequest(String authNo, LocalDateTime approvedAt, String customParam1,
-        String customParam2, String customParam3, String customParam4) {
+        String customParam2, String customParam3, String customParam4,
+        SettleBankProperties properties) {
 
         // Date
         final String currentDate = approvedAt.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         final String currentTime = approvedAt.format(DateTimeFormatter.ofPattern("HHmmss"));
 
         // API Key
-        final String apiKey = "M22B6529";
-        final String secretKey = "SETTLEBANKISGOODSETTLEBANKISGOOD";
+        final String apiKey = properties.getApiKey();
+        final String secretKey = properties.getSecretKey();
         final String hashValue = sha256(apiKey + authNo + currentDate + currentTime + secretKey);
 
         // 필수
@@ -67,5 +70,14 @@ public class SettleBankApproveRequest {
             ", custParam3='" + custParam3 + '\'' +
             ", custParam4='" + custParam4 + '\'' +
             '}';
+    }
+
+    public static SettleBankApproveRequest of(PaymentApproveRequest request,
+        SettleBankProperties properties) {
+        return SettleBankApproveRequest.builder()
+            .authNo(request.getAuthNo())
+            .approvedAt(request.getApprovedAt())
+            .properties(properties)
+            .build();
     }
 }

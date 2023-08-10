@@ -23,7 +23,7 @@ class SettleBankTest extends IntegrationTestSupport {
         // given
         LocalDateTime preparedAt = LocalDateTime.of(2023, 8, 9, 23, 30, 10);
         PaymentPrepareRequest request = PaymentPrepareRequest.builder()
-            .uniqueKey("주문번호")
+            .uniqueId("주문번호")
             .productName("상품명")
             .price(preparedAt.getSecond() * 10)
             .callbackUrl("http://jincrates.me/success")
