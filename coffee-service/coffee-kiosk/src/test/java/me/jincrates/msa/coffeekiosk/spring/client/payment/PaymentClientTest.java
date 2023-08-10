@@ -10,6 +10,7 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentApprov
 import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentPrepareResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayPrepareResponse;
 import me.jincrates.msa.coffeekiosk.spring.domain.payment.PayMethod;
 import org.junit.jupiter.api.DisplayName;
@@ -114,6 +115,6 @@ class PaymentClientTest extends IntegrationTestSupport {
 
         // then
         assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(SettleBankApproveResponse.class);
+        assertThat(response).isInstanceOf(TossPayApproveResponse.class);
     }
 }

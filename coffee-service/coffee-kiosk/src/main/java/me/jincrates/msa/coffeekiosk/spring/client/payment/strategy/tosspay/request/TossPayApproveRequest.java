@@ -16,4 +16,13 @@ public class TossPayApproveRequest {
         this.payToken = payToken;
         this.orderNo = uniqueKey;
     }
+
+    @Override
+    public String toString() {
+        return "TossPayApproveRequest{" +
+            "apiKey='" + apiKey + '\'' +
+            ", payToken='" + payToken + '\'' +
+            ", orderNo='" + orderNo + '\'' +
+            '}';
+    }
 }
