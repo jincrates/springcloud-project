@@ -35,6 +35,7 @@ public class TossPay implements PaymentGateway {
             .callbackUrl(request.getCallbackUrl())
             .cancelUrl(request.getCancelUrl())
             .retAppScheme(null)
+            .autoExecute(Boolean.FALSE)  // 자동결제 사용시 true
             .build();
 
         log.info("[Request] TossPay Prepare >>> {}", prepareRequest.toString());
