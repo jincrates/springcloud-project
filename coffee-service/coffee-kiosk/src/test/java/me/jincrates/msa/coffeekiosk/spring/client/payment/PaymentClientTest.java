@@ -15,6 +15,7 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentStatus
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayPrepareResponse;
@@ -76,6 +77,26 @@ class PaymentClientTest extends IntegrationTestSupport {
         // then
         assertThat(response).isNotNull();
         assertThat(response).isInstanceOf(SettleBankApproveResponse.class);
+    }
+
+    @Test
+    @DisplayName("내통장결제 결제상태 조회")
+    void statusSettleBank() {
+        // given
+        LocalDateTime searchedAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
+        PaymentStatusRequest request = PaymentStatusRequest.builder()
+            .payMethod(PayMethod.SETTLE_BANK)
+            .authNo("인증번호")
+            .uniqueId("주문번호")
+            .searchedAt(searchedAt)
+            .build();
+
+        // when
+        PaymentStatusResponse response = paymentClient.status(request);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response).isInstanceOf(SettleBankStatusResponse.class);
     }
 
     @Test

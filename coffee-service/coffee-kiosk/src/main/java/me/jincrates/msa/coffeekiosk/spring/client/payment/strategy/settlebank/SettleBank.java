@@ -13,9 +13,11 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.response.PaymentStatus
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.PaymentGateway;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.request.SettleBankApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.request.SettleBankCancelRequest;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.request.SettleBankStatusRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankApproveResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankCancelResponse;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankPrepareResponse;
+import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.settlebank.response.SettleBankStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.infra.WebClientHelper;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -67,7 +69,29 @@ public class SettleBank implements PaymentGateway {
 
     @Override
     public PaymentStatusResponse status(PaymentStatusRequest request) {
-        return null;
+
+        SettleBankStatusRequest statusRequest = SettleBankStatusRequest.of(request, properties);
+
+        log.info("[Request] SettleBank Status >>> {}", statusRequest.toString());
+
+        return clientHelper.post(properties.getStatusUri(),
+                statusRequest)
+            .bodyToMono(SettleBankStatusResponse.class)
+            .doOnSuccess(response -> {
+                log.info("[Response] SettleBank Status >>> {}", response);
+
+                if (!response.isSuccess()) {
+                    log.error("내통장결제 결제상태 조회 실패: {}", response);
+                }
+            })
+            .onErrorResume(ex -> {
+                log.error("내통장결제 통신 오류 발생 >>> {}", request);
+                return Mono.just(SettleBankStatusResponse.builder()
+                    .resultCd(-1)
+                    .resultMsg(ex.getMessage())
+                    .build());
+            })
+            .block();
     }
 
     @Override
