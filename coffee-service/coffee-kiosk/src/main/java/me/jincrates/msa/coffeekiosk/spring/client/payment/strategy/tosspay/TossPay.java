@@ -65,9 +65,7 @@ public class TossPay implements PaymentGateway {
     @Override
     public PaymentApproveResponse approve(PaymentApproveRequest request) {
 
-        TossPayApproveRequest approveRequest = TossPayApproveRequest.builder()
-            .payToken(request.getAuthNo())
-            .build();
+        TossPayApproveRequest approveRequest = TossPayApproveRequest.of(request, properties);
 
         log.info("[Request] TossPay Approve >>> {}", approveRequest.toString());
 
@@ -103,7 +101,7 @@ public class TossPay implements PaymentGateway {
             )
             .bodyToMono(TossPayStatusResponse.class)
             .doOnSuccess(response -> {
-                log.info("[Response] TossPay Approve >>> {}", response);
+                log.info("[Response] TossPay Status >>> {}", response);
                 if (!response.isSuccess()) {
                     log.error("토스페이 결제상태 조회 실패: {}", response);
                 }

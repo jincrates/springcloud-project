@@ -3,6 +3,8 @@ package me.jincrates.msa.coffeekiosk.spring.client.payment;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import me.jincrates.msa.coffeekiosk.spring.IntegrationTestSupport;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentApproveRequest;
 import me.jincrates.msa.coffeekiosk.spring.client.payment.request.PaymentCancelRequest;
@@ -22,7 +24,8 @@ import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.respo
 import me.jincrates.msa.coffeekiosk.spring.client.payment.strategy.tosspay.response.TossPayStatusResponse;
 import me.jincrates.msa.coffeekiosk.spring.domain.payment.PayMethod;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class PaymentClientTest extends IntegrationTestSupport {
@@ -30,181 +33,195 @@ class PaymentClientTest extends IntegrationTestSupport {
     @Autowired
     PaymentClient paymentClient;
 
-    @Test
-    @DisplayName("내통장결제 준비")
-    void prepareSettleBank() {
+    @TestFactory
+    @DisplayName("결제준비 시나리오")
+    Collection<DynamicTest> prepare() {
         // given
-        LocalDateTime preparedAt = LocalDateTime.of(2023, 8, 9, 23, 30, 10);
-        PaymentPrepareRequest request = PaymentPrepareRequest.builder()
-            .uniqueId("주문번호")
+        LocalDateTime preparedAt = LocalDateTime.of(2023, 8, 12, 8, 40, 30);
+
+        return List.of(
+            DynamicTest.dynamicTest("내통장결제 결제수단을 통해 암호화된 결과를 응답받는다.", () -> {
+                // given
+                PaymentPrepareRequest request = createPrepareRequest(PayMethod.SETTLE_BANK,
+                    preparedAt);
+
+                // when
+                PaymentPrepareResponse response = paymentClient.prepare(request);
+
+                // then
+                assertThat(response).isNotNull();
+                assertThat(response).isInstanceOf(SettleBankPrepareResponse.class);
+
+                SettleBankPrepareResponse result = (SettleBankPrepareResponse) response;
+                assertThat(result).extracting("ordNo", "productNm", "trDay", "trTime", "trPrice",
+                        "callbackUrl", "cancelUrl")
+                    .contains("orderId", "상품명", "20230812", "084030",
+                        "b6365f245ea6d8d9c30abb07aad5db7f",
+                        "http://jincrates.me/success", "http://jincrates.me/cancel");
+            }),
+            DynamicTest.dynamicTest("토스 결제수단을 통해 결제인증에 필요한 토큰 데이터를 응답받는다.", () -> {
+                // given
+                PaymentPrepareRequest request = createPrepareRequest(PayMethod.TOSS_PAY,
+                    preparedAt);
+
+                // when
+                PaymentPrepareResponse response = paymentClient.prepare(request);
+
+                // then
+                assertThat(response).isNotNull();
+                assertThat(response).isInstanceOf(TossPayPrepareResponse.class);
+
+                TossPayPrepareResponse result = (TossPayPrepareResponse) response;
+                assertThat(result.getCode()).isZero();
+                assertThat(result.getMsg()).isNull();
+                assertThat(result.getPayToken()).isNotNull();
+                assertThat(result.getCheckoutPage()).isNotNull();
+            })
+        );
+    }
+
+    @TestFactory
+    @DisplayName("결제요청 시나리오")
+    Collection<DynamicTest> approve() {
+        // given
+        LocalDateTime approvedAt = LocalDateTime.of(2023, 8, 12, 8, 40, 30);
+
+        return List.of(
+            DynamicTest.dynamicTest("내통장결제 결제인증 토큰을 통해 결제승인 요청에 대한 결과를 응답받는다.", () -> {
+                // given
+                PaymentApproveRequest request = createApproveRequest(PayMethod.SETTLE_BANK,
+                    approvedAt);
+
+                // when
+                PaymentApproveResponse response = paymentClient.approve(request);
+
+                // then
+                assertThat(response).isNotNull();
+                assertThat(response).isInstanceOf(SettleBankApproveResponse.class);
+            }),
+            DynamicTest.dynamicTest("토스 결제인증 토큰을 통해 결제승인 요청에 대한 결과를 응답받는다.", () -> {
+                // given
+                PaymentApproveRequest request = createApproveRequest(PayMethod.TOSS_PAY,
+                    approvedAt);
+
+                // when
+                PaymentApproveResponse response = paymentClient.approve(request);
+
+                // then
+                assertThat(response).isNotNull();
+                assertThat(response).isInstanceOf(TossPayApproveResponse.class);
+            })
+        );
+    }
+
+    @TestFactory
+    @DisplayName("결제상태 조회 시나리오")
+    Collection<DynamicTest> status() {
+        // given
+        LocalDateTime searchedAt = LocalDateTime.of(2023, 8, 12, 8, 40, 30);
+
+        return List.of(
+            DynamicTest.dynamicTest("내통장결제 결제인증 토큰을 통해 결제상태 조회에 대한 결과를 응답받는다.", () -> {
+                // given
+                PaymentStatusRequest request = createStatusRequest(PayMethod.SETTLE_BANK,
+                    searchedAt);
+
+                // when
+                PaymentStatusResponse response = paymentClient.status(request);
+
+                // then
+                assertThat(response).isNotNull();
+                assertThat(response).isInstanceOf(SettleBankStatusResponse.class);
+            }),
+            DynamicTest.dynamicTest("토스 결제인증 토큰을 통해 결제상태 조회에 대한 결과를 응답받는다.", () -> {
+                // given
+                PaymentStatusRequest request = createStatusRequest(PayMethod.TOSS_PAY,
+                    searchedAt);
+
+                // when
+                PaymentStatusResponse response = paymentClient.status(request);
+
+                // then
+                assertThat(response).isNotNull();
+                assertThat(response).isInstanceOf(TossPayStatusResponse.class);
+            })
+        );
+    }
+
+    @TestFactory
+    @DisplayName("결제취소 시나리오")
+    Collection<DynamicTest> cancel() {
+        // given
+        LocalDateTime canceledAt = LocalDateTime.of(2023, 8, 12, 8, 40, 30);
+
+        return List.of(
+            DynamicTest.dynamicTest("내통장결제 트랜잭션 ID를 통해 결제취소에 대한 결과를 응답받는다.", () -> {
+                // given
+                PaymentCancelRequest request = createCancelRequest(PayMethod.SETTLE_BANK,
+                    canceledAt);
+
+                // when
+                PaymentCancelResponse response = paymentClient.cancel(request);
+
+                // then
+                assertThat(response).isNotNull();
+                assertThat(response).isInstanceOf(SettleBankCancelResponse.class);
+            }),
+            DynamicTest.dynamicTest("토스 결제인증 토큰을 통해 결제취소에 대한 결과를 응답받는다.", () -> {
+                // given
+                PaymentCancelRequest request = createCancelRequest(PayMethod.TOSS_PAY,
+                    canceledAt);
+
+                // when
+                PaymentCancelResponse response = paymentClient.cancel(request);
+
+                // then
+                assertThat(response).isNotNull();
+                assertThat(response).isInstanceOf(TossPayCancelResponse.class);
+            })
+        );
+    }
+
+    private PaymentPrepareRequest createPrepareRequest(PayMethod payMethod,
+        LocalDateTime preparedAt) {
+        return PaymentPrepareRequest.builder()
+            .payMethod(payMethod)
+            .uniqueId("orderId")
             .productName("상품명")
             .price(preparedAt.getSecond() * 10)
             .callbackUrl("http://jincrates.me/success")
             .cancelUrl("http://jincrates.me/cancel")
-            .payMethod(PayMethod.SETTLE_BANK)
             .preparedAt(preparedAt)
             .build();
-
-        // when
-        PaymentPrepareResponse response = paymentClient.prepare(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(SettleBankPrepareResponse.class);
-
-        SettleBankPrepareResponse result = (SettleBankPrepareResponse) response;
-        assertThat(result).extracting("ordNo", "trDay", "trTime", "productNm", "trPrice",
-                "callbackUrl", "cancelUrl")
-            .contains("주문번호", "20230809", "233010", "상품명", "2bafa125406081ec765e5bc7ddeb7ddc",
-                "http://jincrates.me/success", "http://jincrates.me/cancel");
     }
 
-
-    @Test
-    @DisplayName("내통장결제 결제요청")
-    void approveSettleBank() {
-        // given
-        LocalDateTime approvedAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
-        PaymentApproveRequest request = PaymentApproveRequest.builder()
-            .payMethod(PayMethod.SETTLE_BANK)
+    private PaymentApproveRequest createApproveRequest(PayMethod payMethod,
+        LocalDateTime approvedAt) {
+        return PaymentApproveRequest.builder()
+            .payMethod(payMethod)
             .authNo("인증번호")
             .approvedAt(approvedAt)
             .build();
-
-        // when
-        PaymentApproveResponse response = paymentClient.approve(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(SettleBankApproveResponse.class);
     }
 
-    @Test
-    @DisplayName("내통장결제 결제상태 조회")
-    void statusSettleBank() {
-        // given
-        LocalDateTime searchedAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
-        PaymentStatusRequest request = PaymentStatusRequest.builder()
-            .payMethod(PayMethod.SETTLE_BANK)
+    private PaymentStatusRequest createStatusRequest(PayMethod payMethod,
+        LocalDateTime searchedAt) {
+        return PaymentStatusRequest.builder()
+            .payMethod(payMethod)
             .authNo("인증번호")
-            .uniqueId("주문번호")
+            .uniqueId("orderId")
             .searchedAt(searchedAt)
             .build();
-
-        // when
-        PaymentStatusResponse response = paymentClient.status(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(SettleBankStatusResponse.class);
     }
 
-    @Test
-    @DisplayName("내통장결제 결제취소")
-    void cancelSettleBank() {
-        // given
-        LocalDateTime canceledAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
-        PaymentCancelRequest request = PaymentCancelRequest.builder()
-            .payMethod(PayMethod.SETTLE_BANK)
-            .uniqueId("주문번호")
+    private PaymentCancelRequest createCancelRequest(PayMethod payMethod,
+        LocalDateTime canceledAt) {
+        return PaymentCancelRequest.builder()
+            .payMethod(payMethod)
+            .uniqueId("orderId")
             .transactionId("트랜잭션 ID")
             .cancelPrice(canceledAt.getSecond() * 100)
             .canceledAt(canceledAt)
             .build();
-
-        // when
-        PaymentCancelResponse response = paymentClient.cancel(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(SettleBankCancelResponse.class);
-    }
-
-
-    @Test
-    @DisplayName("토스페이 준비")
-    void prepareTossPay() {
-        // given
-        LocalDateTime preparedAt = LocalDateTime.of(2023, 8, 9, 23, 30, 10);
-        PaymentPrepareRequest request = PaymentPrepareRequest.builder()
-            .uniqueId("uniqueId")
-            .productName("상품명")
-            .price(LocalDateTime.now().getSecond() * 10)
-            .callbackUrl("callbackUrl")
-            .cancelUrl("cancelUrl")
-            .payMethod(PayMethod.TOSS_PAY)
-            .preparedAt(preparedAt)
-            .build();
-
-        // when
-        PaymentPrepareResponse response = paymentClient.prepare(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(TossPayPrepareResponse.class);
-
-        TossPayPrepareResponse result = (TossPayPrepareResponse) response;
-        assertThat(result.getCode()).isEqualTo(0);
-        assertThat(result.getMsg()).isNull();
-        assertThat(result.getPayToken()).isNotNull();
-        assertThat(result.getCheckoutPage()).isNotNull();
-    }
-
-    @Test
-    @DisplayName("토스페이 결제요청")
-    void approveTossPay() {
-        // given
-        LocalDateTime approvedAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
-        PaymentApproveRequest request = PaymentApproveRequest.builder()
-            .payMethod(PayMethod.TOSS_PAY)
-            .authNo("인증번호")
-            .approvedAt(approvedAt)
-            .build();
-
-        // when
-        PaymentApproveResponse response = paymentClient.approve(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(TossPayApproveResponse.class);
-    }
-
-    @Test
-    @DisplayName("토스페이 결제상태 조회")
-    void statusTossPay() {
-        // given
-        LocalDateTime searchedAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
-        PaymentStatusRequest request = PaymentStatusRequest.builder()
-            .payMethod(PayMethod.TOSS_PAY)
-            .authNo("인증번호")
-            .uniqueId("주문번호")
-            .searchedAt(searchedAt)
-            .build();
-
-        // when
-        PaymentStatusResponse response = paymentClient.status(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(TossPayStatusResponse.class);
-    }
-
-    @Test
-    @DisplayName("토스페이 결제취소")
-    void cancelTossPay() {
-        // given
-        LocalDateTime canceledAt = LocalDateTime.of(2023, 8, 10, 0, 40, 30);
-        PaymentCancelRequest request = PaymentCancelRequest.builder()
-            .payMethod(PayMethod.TOSS_PAY)
-            .reason("결제취소 사유")
-            .canceledAt(canceledAt)
-            .build();
-
-        // when
-        PaymentCancelResponse response = paymentClient.cancel(request);
-
-        // then
-        assertThat(response).isNotNull();
-        assertThat(response).isInstanceOf(TossPayCancelResponse.class);
     }
 }
