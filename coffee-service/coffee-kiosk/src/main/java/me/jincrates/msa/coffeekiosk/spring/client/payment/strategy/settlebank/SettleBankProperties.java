@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SettleBankProperties {
 
-    private final String apiKey = "M22B6529";
+    private final String apiKey = "TEMP_API_KEY";
     private final String secretKey = "SETTLEBANKISGOODSETTLEBANKISGOOD";
     private final String apiHost = "https://tbEzauthapi.settlebank.co.kr";
     private final String approvePath = "/v3/APIPayApprov.do";
