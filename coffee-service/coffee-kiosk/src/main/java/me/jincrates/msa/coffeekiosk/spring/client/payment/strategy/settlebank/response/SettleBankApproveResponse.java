@@ -57,11 +57,9 @@ public class SettleBankApproveResponse extends PaymentApproveResponse {
     @Override
     public String toString() {
         return "SettleBankApproveResponse{" +
-            "apiVer='" + apiVer + '\'' +
-            ", resultCd=" + resultCd +
+            "resultCd=" + resultCd +
             ", errCd='" + errCd + '\'' +
             ", resultMsg='" + resultMsg + '\'' +
-            ", mercntId='" + mercntId + '\'' +
             ", ordNo='" + ordNo + '\'' +
             ", trNo='" + trNo + '\'' +
             ", trPrice='" + trPrice + '\'' +

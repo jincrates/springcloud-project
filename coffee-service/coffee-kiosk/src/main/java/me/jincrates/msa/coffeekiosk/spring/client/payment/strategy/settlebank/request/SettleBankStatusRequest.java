@@ -49,10 +49,7 @@ public class SettleBankStatusRequest {
     @Override
     public String toString() {
         return "SettleBankStatusRequest{" +
-            "hdInfo='" + hdInfo + '\'' +
-            ", apiVer='" + apiVer + '\'' +
-            ", mercntId='" + mercntId + '\'' +
-            ", ordNo='" + ordNo + '\'' +
+            "ordNo='" + ordNo + '\'' +
             ", trDay='" + trDay + '\'' +
             ", reqDay='" + reqDay + '\'' +
             ", reqTime='" + reqTime + '\'' +

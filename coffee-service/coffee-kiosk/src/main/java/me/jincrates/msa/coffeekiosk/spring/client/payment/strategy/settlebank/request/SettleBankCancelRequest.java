@@ -56,10 +56,7 @@ public class SettleBankCancelRequest {
     @Override
     public String toString() {
         return "SettleBankCancelRequest{" +
-            "hdInfo='" + hdInfo + '\'' +
-            ", apiVer='" + apiVer + '\'' +
-            ", mercntId='" + mercntId + '\'' +
-            ", oldTrNo='" + oldTrNo + '\'' +
+            "oldTrNo='" + oldTrNo + '\'' +
             ", ordNo='" + ordNo + '\'' +
             ", cancelPrice='" + cancelPrice + '\'' +
             ", cancelPricePlain=" + cancelPricePlain +

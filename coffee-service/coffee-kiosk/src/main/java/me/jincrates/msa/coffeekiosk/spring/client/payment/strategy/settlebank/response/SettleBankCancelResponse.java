@@ -46,8 +46,7 @@ public class SettleBankCancelResponse extends PaymentCancelResponse {
     @Override
     public String toString() {
         return "SettleBankCancelResponse{" +
-            "apiVer='" + apiVer + '\'' +
-            ", resultCd=" + resultCd +
+            "resultCd=" + resultCd +
             ", errCd='" + errCd + '\'' +
             ", resultMsg='" + resultMsg + '\'' +
             ", oldTrNo='" + oldTrNo + '\'' +

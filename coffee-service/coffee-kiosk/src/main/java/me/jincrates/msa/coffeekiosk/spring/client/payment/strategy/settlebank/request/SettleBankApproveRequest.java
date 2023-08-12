@@ -58,10 +58,7 @@ public class SettleBankApproveRequest {
     @Override
     public String toString() {
         return "SettleBankApproveRequest{" +
-            "hdInfo='" + hdInfo + '\'' +
-            ", apiVer='" + apiVer + '\'' +
-            ", mercntId='" + mercntId + '\'' +
-            ", authNo='" + authNo + '\'' +
+            "authNo='" + authNo + '\'' +
             ", reqDay='" + reqDay + '\'' +
             ", reqTime='" + reqTime + '\'' +
             ", signature='" + signature + '\'' +

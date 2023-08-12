@@ -22,8 +22,7 @@ public class TossPayStatusRequest {
     @Override
     public String toString() {
         return "TossPayStatusRequest{" +
-            "apiKey='" + apiKey + '\'' +
-            ", payToken='" + payToken + '\'' +
+            "payToken='" + payToken + '\'' +
             ", orderNo='" + orderNo + '\'' +
             '}';
     }

@@ -97,11 +97,7 @@ public class SettleBankPrepareResponse extends PaymentPrepareResponse {
     @Override
     public String toString() {
         return "SettleBankPrepareResponse{" +
-            "hdInfo='" + hdInfo + '\'' +
-            ", apiVer='" + apiVer + '\'' +
-            ", processType='" + processType + '\'' +
-            ", mercntId='" + mercntId + '\'' +
-            ", ordNo='" + ordNo + '\'' +
+            "ordNo='" + ordNo + '\'' +
             ", trDay='" + trDay + '\'' +
             ", trTime='" + trTime + '\'' +
             ", trPrice='" + trPrice + '\'' +

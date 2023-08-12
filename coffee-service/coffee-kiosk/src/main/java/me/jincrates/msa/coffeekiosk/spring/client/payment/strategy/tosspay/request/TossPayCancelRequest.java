@@ -21,7 +21,6 @@ public class TossPayCancelRequest {
     @Override
     public String toString() {
         return "TossPayCancelRequest{" +
-            "apiKey='" + apiKey + '\'' +
             ", payToken='" + payToken + '\'' +
             ", reason='" + reason + '\'' +
             '}';

@@ -64,8 +64,7 @@ public class TossPayPrepareRequest {
     @Override
     public String toString() {
         return "TossPayPrepareRequest{" +
-            "apiKey='" + apiKey + '\'' +
-            ", orderNo='" + orderNo + '\'' +
+            "orderNo='" + orderNo + '\'' +
             ", amount=" + amount +
             ", amountTaxFree=" + amountTaxFree +
             ", productDesc='" + productDesc + '\'' +

@@ -22,7 +22,6 @@ public class TossPayApproveRequest {
     @Override
     public String toString() {
         return "TossPayApproveRequest{" +
-            "apiKey='" + apiKey + '\'' +
             ", payToken='" + payToken + '\'' +
             ", orderNo='" + orderNo + '\'' +
             '}';
