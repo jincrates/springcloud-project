@@ -83,4 +83,8 @@ public class Claim extends BaseEntity {
             .orderProducts(orderProducts)
             .build();
     }
+
+    public void approval() {
+        this.status = ClaimStatus.APPROVAL;
+    }
 }
