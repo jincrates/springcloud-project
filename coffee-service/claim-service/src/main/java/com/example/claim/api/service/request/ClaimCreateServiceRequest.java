@@ -1,7 +1,7 @@
-package com.example.claimdemo.api.service.request;
+package com.example.claim.api.service.request;
 
-import com.example.claimdemo.domain.claim.ClaimReason;
-import com.example.claimdemo.domain.claim.ClaimType;
+import com.example.claim.domain.claim.ClaimReason;
+import com.example.claim.domain.claim.ClaimType;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;

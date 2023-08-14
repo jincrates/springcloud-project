@@ -1,4 +1,4 @@
-package com.example.claimdemo.domain;
+package com.example.claim.domain;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

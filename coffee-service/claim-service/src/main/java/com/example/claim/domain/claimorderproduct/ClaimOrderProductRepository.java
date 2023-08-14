@@ -1,4 +1,4 @@
-package com.example.claimdemo.domain.claimorderproduct;
+package com.example.claim.domain.claimorderproduct;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

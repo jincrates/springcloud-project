@@ -1,6 +1,6 @@
-package com.example.claimdemo.domain.orderproduct;
+package com.example.claim.domain.orderproduct;
 
-import com.example.claimdemo.domain.BaseEntity;
+import com.example.claim.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

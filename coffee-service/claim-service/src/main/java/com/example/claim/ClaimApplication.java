@@ -1,4 +1,4 @@
-package com.example.claimdemo;
+package com.example.claim;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
 @SpringBootApplication
-public class ClaimDemoApplication {
+public class ClaimApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ClaimDemoApplication.class, args);
+        SpringApplication.run(ClaimApplication.class, args);
     }
 }

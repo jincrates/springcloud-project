@@ -1,7 +1,7 @@
-package com.example.claimdemo.api.service;
+package com.example.claim.api.service;
 
-import com.example.claimdemo.api.service.request.ClaimCreateServiceRequest;
-import com.example.claimdemo.api.service.request.OrderProductServiceRequest;
+import com.example.claim.api.service.request.ClaimCreateServiceRequest;
+import com.example.claim.api.service.request.OrderProductServiceRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

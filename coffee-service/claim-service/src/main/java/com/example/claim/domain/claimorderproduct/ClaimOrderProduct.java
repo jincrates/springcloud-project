@@ -1,8 +1,8 @@
-package com.example.claimdemo.domain.claimorderproduct;
+package com.example.claim.domain.claimorderproduct;
 
-import com.example.claimdemo.domain.BaseEntity;
-import com.example.claimdemo.domain.claim.Claim;
-import com.example.claimdemo.domain.claim.ClaimStatus;
+import com.example.claim.domain.BaseEntity;
+import com.example.claim.domain.claim.Claim;
+import com.example.claim.domain.claim.ClaimStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

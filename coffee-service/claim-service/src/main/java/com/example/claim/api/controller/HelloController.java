@@ -1,4 +1,4 @@
-package com.example.claimdemo.api.controller;
+package com.example.claim.api.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

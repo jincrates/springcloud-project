@@ -1,4 +1,4 @@
-package com.example.claimdemo.domain.claim;
+package com.example.claim.domain.claim;
 
 import java.util.List;
 import lombok.Getter;

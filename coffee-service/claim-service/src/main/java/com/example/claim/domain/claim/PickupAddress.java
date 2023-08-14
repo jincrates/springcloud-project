@@ -1,6 +1,6 @@
-package com.example.claimdemo.domain.claim;
+package com.example.claim.domain.claim;
 
-import com.example.claimdemo.domain.BaseEntity;
+import com.example.claim.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,8 +10,8 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "REDELIVERY_ADDRESS")
-public class RedeliveryAddress extends BaseEntity {
+@Table(name = "PICKUP_ADDRESS")
+public class PickupAddress extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

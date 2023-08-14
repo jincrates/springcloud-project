@@ -1,4 +1,4 @@
-package com.example.claimdemo.domain.claimorderproduct;
+package com.example.claim.domain.claimorderproduct;
 
 import lombok.Getter;
 

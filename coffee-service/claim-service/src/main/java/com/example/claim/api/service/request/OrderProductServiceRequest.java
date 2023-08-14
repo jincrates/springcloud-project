@@ -1,4 +1,4 @@
-package com.example.claimdemo.api.service.request;
+package com.example.claim.api.service.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;

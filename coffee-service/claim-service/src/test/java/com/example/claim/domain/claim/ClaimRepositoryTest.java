@@ -1,11 +1,11 @@
-package com.example.claimdemo.domain.claim;
+package com.example.claim.domain.claim;
 
-import static com.example.claimdemo.domain.claim.ClaimReason.CHANGE_MIND;
-import static com.example.claimdemo.domain.claim.ClaimReason.ORDERING_MISTAKE;
-import static com.example.claimdemo.domain.claim.ClaimReason.PRODUCT_DEFECTS;
-import static com.example.claimdemo.domain.claim.ClaimStatus.RECEIPT;
-import static com.example.claimdemo.domain.claim.ClaimType.EXCHANGE;
-import static com.example.claimdemo.domain.claim.ClaimType.RETURN;
+import static com.example.claim.domain.claim.ClaimReason.CHANGE_MIND;
+import static com.example.claim.domain.claim.ClaimReason.ORDERING_MISTAKE;
+import static com.example.claim.domain.claim.ClaimReason.PRODUCT_DEFECTS;
+import static com.example.claim.domain.claim.ClaimStatus.RECEIPT;
+import static com.example.claim.domain.claim.ClaimType.EXCHANGE;
+import static com.example.claim.domain.claim.ClaimType.RETURN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
