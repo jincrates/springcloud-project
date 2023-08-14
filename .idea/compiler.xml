@@ -12,6 +12,7 @@
         <module name="coffee-service.claim-service.main" />
         <module name="coffee-service.coffee-kiosk.main" />
         <module name="coffee-service.coffee-status.main" />
+        <module name="coffee-service.claim-demo.main" />
         <module name="coffee-service.coffee-member.main" />
       </profile>
     </annotationProcessing>
