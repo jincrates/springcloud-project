@@ -1,11 +1,13 @@
 package me.jincrates.claimservice.api.controller.request;
 
-import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.claimservice.domain.claim.ClaimReason;
 import me.jincrates.claimservice.domain.claim.ClaimType;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,4 +19,13 @@ public class ClaimCreateRequest {
     private ClaimReason reason;
     private String memo;
     private List<ClaimProductRequest> claimProductRequests;
+
+    @Builder
+    private ClaimCreateRequest(Long orderId, ClaimType type, ClaimReason reason, String memo, List<ClaimProductRequest> claimProductRequests) {
+        this.orderId = orderId;
+        this.type = type;
+        this.reason = reason;
+        this.memo = memo;
+        this.claimProductRequests = claimProductRequests;
+    }
 }
