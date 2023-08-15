@@ -1,14 +1,6 @@
 package me.jincrates.claimservice.domain.claimproduct;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,8 +38,9 @@ public class ClaimProduct extends BaseEntity {
     private Long changeProductId;
 
     @Builder
-    private ClaimProduct(Claim claim, Long orderProductId, int quantity, int refundPrice,
-        ClaimStatus status, String rejectMemo, Long originProductId, Long changeProductId) {
+    private ClaimProduct(Long id, Claim claim, Long orderProductId, int quantity, int refundPrice,
+                         ClaimStatus status, String rejectMemo, Long originProductId, Long changeProductId) {
+        this.id = id;
         this.claim = claim;
         this.orderProductId = orderProductId;
         this.quantity = quantity;

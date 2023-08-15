@@ -52,7 +52,16 @@ public class ClaimResponse {
                 .rejectMemo(claim.getRejectMemo())
                 .deliveryFee(claim.getDeliveryFee())
                 .invoiceNo(claim.getInvoiceNo())
-                //.claimProducts(claim.getClaimProducts())
+                .claimProducts(
+                        claim.getClaimProducts().stream()
+                                .map(cp -> ClaimProduct.builder()
+                                        .id(cp.getId())
+                                        .orderProductId(cp.getOrderProductId())
+                                        .quantity(cp.getQuantity())
+                                        .status(cp.getStatus())
+                                        .build())
+                                .toList()
+                )
                 .build();
     }
 }
