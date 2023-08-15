@@ -1,15 +1,13 @@
 package me.jincrates.claimservice.api.controller.request;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import me.jincrates.claimservice.domain.claim.ClaimReason;
 import me.jincrates.claimservice.domain.claim.ClaimType;
 
 import java.util.List;
 
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClaimCreateRequest {
 

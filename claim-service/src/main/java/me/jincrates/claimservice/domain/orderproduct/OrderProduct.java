@@ -1,10 +1,6 @@
 package me.jincrates.claimservice.domain.orderproduct;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,9 +22,10 @@ public class OrderProduct extends BaseEntity {
     private int price;
 
     @Builder
-    private OrderProduct(Long orderId, Long productId, int price) {
+    private OrderProduct(Long orderId, Long productId, int quantity, int price) {
         this.orderId = orderId;
         this.productId = productId;
+        this.quantity = quantity;
         this.price = price;
     }
 }
