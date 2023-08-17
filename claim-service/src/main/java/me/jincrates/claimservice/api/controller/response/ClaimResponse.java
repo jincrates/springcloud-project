@@ -6,7 +6,6 @@ import me.jincrates.claimservice.domain.claim.Claim;
 import me.jincrates.claimservice.domain.claim.ClaimReason;
 import me.jincrates.claimservice.domain.claim.ClaimStatus;
 import me.jincrates.claimservice.domain.claim.ClaimType;
-import me.jincrates.claimservice.domain.claimproduct.ClaimProduct;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +22,10 @@ public class ClaimResponse {
     private String rejectMemo;    // 반려사유
     private int deliveryFee;      // 배송비
     private String invoiceNo;     // 운송장번호
-    List<ClaimProduct> claimProducts = new ArrayList<>();
+    List<ClaimProductResponse> claimProducts = new ArrayList<>();
 
     @Builder
-    private ClaimResponse(Long id, Long orderId, Long paymentId, ClaimType type, ClaimStatus status, ClaimReason reason, String memo, String rejectMemo, int deliveryFee, String invoiceNo, List<ClaimProduct> claimProducts) {
+    private ClaimResponse(Long id, Long orderId, Long paymentId, ClaimType type, ClaimStatus status, ClaimReason reason, String memo, String rejectMemo, int deliveryFee, String invoiceNo, List<ClaimProductResponse> claimProducts) {
         this.id = id;
         this.orderId = orderId;
         this.paymentId = paymentId;
@@ -54,12 +53,7 @@ public class ClaimResponse {
                 .invoiceNo(claim.getInvoiceNo())
                 .claimProducts(
                         claim.getClaimProducts().stream()
-                                .map(cp -> ClaimProduct.builder()
-                                        .id(cp.getId())
-                                        .orderProductId(cp.getOrderProductId())
-                                        .quantity(cp.getQuantity())
-                                        .status(cp.getStatus())
-                                        .build())
+                                .map(ClaimProductResponse::of)
                                 .toList()
                 )
                 .build();
