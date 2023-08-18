@@ -44,6 +44,6 @@ public class ClaimController {
                 ))
                 .build();
 
-        return ApiResponse.ok(claimService.createClaim(request));
+        return ApiResponse.ok(claimService.receipt(request));
     }
 }

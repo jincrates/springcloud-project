@@ -67,7 +67,7 @@ class ClaimServiceIntegrationTest extends IntegrationTestSupport {
                 .build();
 
         // when
-        ClaimResponse result = claimService.createClaim(request);
+        ClaimResponse result = claimService.receipt(request);
 
         // then
         assertThat(result).isNotNull();

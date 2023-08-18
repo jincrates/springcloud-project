@@ -1,17 +1,6 @@
 package me.jincrates.claimservice.domain.claim;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +8,10 @@ import lombok.NoArgsConstructor;
 import me.jincrates.claimservice.domain.BaseEntity;
 import me.jincrates.claimservice.domain.claimproduct.ClaimProduct;
 import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,9 +39,9 @@ public class Claim extends BaseEntity {
 
     @Builder
     private Claim(Long orderId, Long paymentId, ClaimType type, ClaimStatus status,
-        ClaimReason reason, String memo, String rejectMemo, int deliveryFee,
-        String invoiceNo,
-        List<OrderProduct> orderProducts) {
+                  ClaimReason reason, String memo, String rejectMemo, int deliveryFee,
+                  String invoiceNo,
+                  List<OrderProduct> orderProducts) {
         this.orderId = orderId;
         this.paymentId = paymentId;
         this.type = type;
@@ -59,32 +52,54 @@ public class Claim extends BaseEntity {
         this.deliveryFee = deliveryFee;
         this.invoiceNo = invoiceNo;
         this.claimProducts = orderProducts.stream()
-            .map(op -> ClaimProduct.builder()
-                .claim(this)
-                .orderProductId(op.getId())
-                .quantity(op.getQuantity())  // 수량 받아와야함
-                .refundPrice(op.getPrice())
-                .status(ClaimStatus.RECEIPT)
-                .rejectMemo(reason.getDescription())
-                .build()
-            )
-            .collect(Collectors.toList());
+                .map(op -> ClaimProduct.builder()
+                        .claim(this)
+                        .orderProductId(op.getId())
+                        .quantity(op.getQuantity())  // 수량 받아와야함
+                        .refundPrice(op.getPrice())
+                        .status(ClaimStatus.RECEIPT)
+                        .rejectMemo(reason.getDescription())
+                        .build()
+                )
+                .collect(Collectors.toList());
     }
 
     public static Claim create(Long orderId, ClaimType type, ClaimReason reason,
-        String memo, List<OrderProduct> orderProducts) {
+                               String memo, List<OrderProduct> orderProducts) {
         return Claim.builder()
-            .orderId(orderId)
-            .type(type)
-            .status(ClaimStatus.RECEIPT)  // 접수
-            .reason(reason)
-            .memo(memo)
-            .rejectMemo(reason.getDescription())
-            .orderProducts(orderProducts)
-            .build();
+                .orderId(orderId)
+                .type(type)
+                .status(ClaimStatus.RECEIPT)  // 접수
+                .reason(reason)
+                .memo(memo)
+                .rejectMemo(reason.getDescription())
+                .orderProducts(orderProducts)
+                .build();
+    }
+
+    public void withdrawal() {
+        if (!this.status.equals(ClaimStatus.RECEIPT)) {
+            throw new IllegalArgumentException("철회는 접수 상태일 때만 가능합니다.");
+        }
+
+        this.status = ClaimStatus.WITHDRAWAL;
     }
 
     public void approval() {
+        if (!this.status.equals(ClaimStatus.RECEIPT)) {
+            throw new IllegalArgumentException("승인은 접수 상태일 때만 가능합니다.");
+        }
         this.status = ClaimStatus.APPROVAL;
+    }
+
+    public void reject() {
+        if (!this.status.equals(ClaimStatus.RECEIPT)) {
+            throw new IllegalArgumentException("반려는 접수 상태일 때만 가능합니다.");
+        }
+        if (this.rejectMemo.isEmpty()) {
+            throw new IllegalArgumentException("반려 사유를 입력하지 않았습니다.");
+        }
+
+        this.status = ClaimStatus.REJECTION;
     }
 }

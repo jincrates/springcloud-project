@@ -24,8 +24,7 @@ public class ClaimService {
     private final OrderProductRepository orderProductRepository;
 
     // 클레임 접수
-    //주문번호, 주문상품 리스트 {id, 수량}, 클레임유형, 사유, 상세사유
-    public ClaimResponse createClaim(ClaimCreateRequest request) {
+    public ClaimResponse receipt(ClaimCreateRequest request) {
         log.info("클레임을 접수합니다. >>> {}", request);
         // 주문상품 id list 조회
         List<Long> orderProductIds = request.getClaimProductRequests()
@@ -48,6 +47,12 @@ public class ClaimService {
         Claim savedClaim = claimRepository.save(claim);
 
         return ClaimResponse.of(savedClaim);
+    }
+
+    // 클레임 상태변경
+    // 클레임 ID, 변경할 상태
+    public void updateClaimStatus() {
+
     }
 
     private Map<Long, OrderProduct> createOrderProductMapBy(List<OrderProduct> orderProducts) {
