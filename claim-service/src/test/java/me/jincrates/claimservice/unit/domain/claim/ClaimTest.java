@@ -1,5 +1,9 @@
-package me.jincrates.claimservice.domain.claim;
+package me.jincrates.claimservice.unit.domain.claim;
 
+import me.jincrates.claimservice.domain.claim.Claim;
+import me.jincrates.claimservice.domain.claim.ClaimReason;
+import me.jincrates.claimservice.domain.claim.ClaimStatus;
+import me.jincrates.claimservice.domain.claim.ClaimType;
 import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,7 +83,7 @@ class ClaimTest {
         Claim claim = Claim.create(orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND, "상세사유", orderProducts);
 
         // when
-        claim.reject();
+        claim.reject("반려 사유를 입력합니다.");
 
         // then
         assertThat(claim.getStatus()).isEqualTo(ClaimStatus.REJECTION);

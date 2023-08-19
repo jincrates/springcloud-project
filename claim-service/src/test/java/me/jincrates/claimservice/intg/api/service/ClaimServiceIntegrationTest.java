@@ -50,7 +50,7 @@ class ClaimServiceIntegrationTest extends IntegrationTestSupport {
                 .type(ClaimType.EXCHANGE)
                 .reason(ClaimReason.CHANGE_MIND)
                 .memo("마음이 바뀌어서 반품 접수합니다.")
-                .claimProductRequests(List.of(
+                .claimProducts(List.of(
                         ClaimProductRequest.builder()
                                 .orderProductId(1L)
                                 .quantity(5)

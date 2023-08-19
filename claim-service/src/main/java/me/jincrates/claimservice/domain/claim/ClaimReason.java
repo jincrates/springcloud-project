@@ -1,7 +1,8 @@
 package me.jincrates.claimservice.domain.claim;
 
-import java.util.List;
 import lombok.Getter;
+
+import java.util.List;
 
 /**
  * 클레임 사유(1: 단순변심, 2: 파손 및 불량, 3: 주문 실수, 4: 오배송 및 지연)
@@ -27,7 +28,7 @@ public enum ClaimReason {
      * @param reason 클레임 사유
      * @return
      */
-    public static boolean isBuyerResponsibility(ClaimReason reason) {
+    public boolean isBuyerResponsibility(ClaimReason reason) {
         return List.of(CHANGE_MIND, ORDERING_MISTAKE).contains(reason);
     }
 
@@ -37,7 +38,16 @@ public enum ClaimReason {
      * @param reason 클레임 사유
      * @return
      */
-    public static boolean isSellerResponsibility(ClaimReason reason) {
+    public boolean isSellerResponsibility(ClaimReason reason) {
         return List.of(PRODUCT_DEFECTS, DELIVERY_ISSUES).contains(reason);
+    }
+
+    /**
+     * 파손 및 불량
+     *
+     * @return
+     */
+    public boolean isProductDefects() {
+        return this == PRODUCT_DEFECTS;
     }
 }

@@ -12,4 +12,12 @@ public enum ClaimType {
     ClaimType(String description) {
         this.description = description;
     }
+
+    public boolean isExchange() {
+        return this == EXCHANGE;
+    }
+
+    public boolean isReturn() {
+        return this == RETURN;
+    }
 }
