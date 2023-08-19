@@ -4,7 +4,7 @@ import lombok.*;
 
 @Getter
 @ToString
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClaimProductRequest {
 
     private Long orderProductId;

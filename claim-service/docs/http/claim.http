@@ -1,0 +1,49 @@
+### 클레임 접수
+POST {{claim-service}}/api/v1/claims/receipt
+Content-Type: application/json
+
+{
+  "orderId": 1,
+  "type": "RETURN",
+  "reason": "CHANGE_MIND",
+  "memo": "마음이 바뀌어서 반품 접수합니다.",
+  "claimProducts": [
+    {
+      "orderProductId": 1,
+      "quantity": 5
+    },
+    {
+      "orderProductId": 2,
+      "quantity": 10
+    },
+    {
+      "orderProductId": 3,
+      "quantity": 15
+    }
+  ]
+}
+
+### 클레임 철회
+POST {{claim-service}}/api/v1/claims/withdrawal
+Content-Type: application/json
+
+{
+  "claimId": 1
+}
+
+### 클레임 승인
+POST {{claim-service}}/api/v1/claims/approval
+Content-Type: application/json
+
+{
+  "claimId": 2
+}
+
+### 클레임 반려
+POST {{claim-service}}/api/v1/claims/reject
+Content-Type: application/json
+
+{
+  "claimId": 3,
+  "rejectMemo": "첨부파일 누락으로 반려처리합니다."
+}

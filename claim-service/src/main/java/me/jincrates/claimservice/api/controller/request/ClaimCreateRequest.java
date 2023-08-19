@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @ToString
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClaimCreateRequest {
 
     //주문번호, 주문상품 리스트 {id, 수량}, 클레임유형, 사유, 상세사유
@@ -16,14 +16,14 @@ public class ClaimCreateRequest {
     private ClaimType type;
     private ClaimReason reason;
     private String memo;
-    private List<ClaimProductRequest> claimProductRequests;
+    private List<ClaimProductRequest> claimProducts;
 
     @Builder
-    private ClaimCreateRequest(Long orderId, ClaimType type, ClaimReason reason, String memo, List<ClaimProductRequest> claimProductRequests) {
+    private ClaimCreateRequest(Long orderId, ClaimType type, ClaimReason reason, String memo, List<ClaimProductRequest> claimProducts) {
         this.orderId = orderId;
         this.type = type;
         this.reason = reason;
         this.memo = memo;
-        this.claimProductRequests = claimProductRequests;
+        this.claimProducts = claimProducts;
     }
 }

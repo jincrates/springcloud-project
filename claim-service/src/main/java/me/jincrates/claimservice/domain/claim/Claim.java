@@ -58,7 +58,6 @@ public class Claim extends BaseEntity {
                         .quantity(op.getQuantity())  // 수량 받아와야함
                         .refundPrice(op.getPrice())
                         .status(ClaimStatus.RECEIPT)
-                        .rejectMemo(reason.getDescription())
                         .build()
                 )
                 .collect(Collectors.toList());
@@ -72,7 +71,6 @@ public class Claim extends BaseEntity {
                 .status(ClaimStatus.RECEIPT)  // 접수
                 .reason(reason)
                 .memo(memo)
-                .rejectMemo(reason.getDescription())
                 .orderProducts(orderProducts)
                 .build();
     }
@@ -83,6 +81,7 @@ public class Claim extends BaseEntity {
         }
 
         this.status = ClaimStatus.WITHDRAWAL;
+        this.claimProducts.forEach(ClaimProduct::withdrawal);
     }
 
     public void approval() {
@@ -90,16 +89,18 @@ public class Claim extends BaseEntity {
             throw new IllegalArgumentException("승인은 접수 상태일 때만 가능합니다.");
         }
         this.status = ClaimStatus.APPROVAL;
+        this.claimProducts.forEach(ClaimProduct::approval);
     }
 
-    public void reject() {
+    public void reject(String rejectMemo) {
         if (!this.status.equals(ClaimStatus.RECEIPT)) {
             throw new IllegalArgumentException("반려는 접수 상태일 때만 가능합니다.");
         }
-        if (this.rejectMemo.isEmpty()) {
+        if (rejectMemo.isEmpty()) {
             throw new IllegalArgumentException("반려 사유를 입력하지 않았습니다.");
         }
-
         this.status = ClaimStatus.REJECTION;
+        this.rejectMemo = rejectMemo;
+        this.claimProducts.forEach(cp -> cp.reject(rejectMemo));
     }
 }
