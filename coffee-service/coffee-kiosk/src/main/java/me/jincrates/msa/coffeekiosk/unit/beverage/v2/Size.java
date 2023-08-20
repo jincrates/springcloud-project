@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Size {
-    SMALL("S"),
-    MEDIUM("M"),
-    LARGE("L");
+    SMALL("Small"),
+    MEDIUM("Medium"),
+    LARGE("Large");
 
     private final String text;
 }

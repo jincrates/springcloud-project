@@ -3,64 +3,51 @@ package me.jincrates.msa.coffeekiosk.unit.beverage.v2;
 public class Coffee {
     private String name;
     private int basePrice;
-    private boolean hasWhippedCream;
-    private boolean hasCinnamon;
-    private boolean isDecaf;
-    private Size size;
-    private Temperature temperature;
+    private int shot;
+    private EnableOption enableOption;
+    private SelectedOption selectedOption = new SelectedOption();
 
-    public Coffee(String name, int basePrice) {
+    public Coffee(String name, int basePrice, EnableOption enableOption) {
         this.name = name;
         this.basePrice = basePrice;
+        this.shot = 2;
+        this.enableOption = enableOption;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public EnableOption getEnableOption() {
+        return enableOption;
+    }
+
+    public void size(Size size) {
+        this.selectedOption.setSize(size);
+    }
+
+    public void temperature(Temperature temperature) {
+        this.selectedOption.setTemperature(temperature);
     }
 
     public void addWhippedCream() {
-        hasWhippedCream = true;
+        this.selectedOption.addWhippedCream();
     }
 
     public void addCinnamon() {
-        hasCinnamon = true;
+        this.selectedOption.addCinnamon();
     }
 
     public void makeDecaf() {
-        isDecaf = true;
+        this.selectedOption.makeDecaf();
     }
 
-    public void setSize(Size size) {
-        this.size = size;
-    }
-
-    public void setTemperature(Temperature temperature) {
-        this.temperature = temperature;
-    }
-
-    public double calculatePrice() {
-        double totalPrice = basePrice;
-
-        if (hasWhippedCream) {
-            totalPrice += 500;
-        }
-        if (hasCinnamon) {
-            totalPrice += 0;
-        }
-        if (isDecaf) {
-            totalPrice += 500;
-        }
-        if (size == Size.MEDIUM) {
-            totalPrice += 500;
-        }
-        if (size == Size.LARGE) {
-            totalPrice += 1000;
-        }
-        if (temperature == Temperature.COLD) {
-            totalPrice += 500;
-        }
-
-        return totalPrice;
+    public int calculatePrice() {
+        return basePrice + selectedOption.calculatePrice();
     }
 
     @Override
     public String toString() {
-        return name + " (" + size + ", " + temperature + ")";
+        return name + " (" + selectedOption + ")";
     }
 }
