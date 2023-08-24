@@ -1,7 +1,5 @@
 package me.jincrates.authservice.domain;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,14 +10,11 @@ import java.util.Collection;
 @Getter
 public class AuthUser implements UserDetails {
     private String username;
-    private String password;
-    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder
-    private AuthUser(String username, String password, Role role) {
+    private AuthUser(String username, Role role) {
         this.username = username;
-        this.password = password;
         this.role = role;
     }
 
@@ -35,7 +30,7 @@ public class AuthUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return null;
     }
 
     @Override

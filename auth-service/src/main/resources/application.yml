@@ -3,6 +3,6 @@ server:
 
 jwt:
   secret: 6re465Ok7J2AIOychO2VmOyXrOyEnCDsnbTsg4HsnZgg67aZ7J6h7JWEIOyduOuPhO2VmOqyoOuLpOuKlCDsnbQg7J206rKD7J2064uk
-  expiration: 864000
+  expiration: 3600
   refresh-token:
     expiration: 864000
