@@ -2,7 +2,8 @@ package me.jincrates.authservice.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.jincrates.authservice.api.controller.request.AuthRequest;
-import me.jincrates.authservice.api.service.TokenProvider;
+import me.jincrates.authservice.api.controller.response.AuthResponse;
+import me.jincrates.authservice.config.jwt.TokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,27 +20,29 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
 
-    @PostMapping("/auth")
-    private String createAuthToken(@RequestBody AuthRequest request) throws Exception {
+    @PostMapping("/api/v1/auth")
+    private ApiResponse<AuthResponse> createAuthToken(@RequestBody AuthRequest request) throws Exception {
 
         try {
             Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(),
-                    request.getPassword())
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    )
             );
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            String token = tokenProvider.generateToken(userDetails);
+            String accessToken = tokenProvider.generateToken(userDetails);
+            String refreshToken = tokenProvider.generateRefreshToken(userDetails);
 
-            return token;
+            return ApiResponse.ok(AuthResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .build());
         } catch (AuthenticationException e) {
             throw new Exception("Invalid username or password", e);
         }
-        //{
-        //  "accessToken": "asdiofjzxl;ckvjoiasjewr.asdfoiasjdflkajsdf.asdfivjiaosdjf",
-        //  "refreshToken": "asdiofjzxl;ckvjoiasjewr.asdfoiasjdflkajsdf.asdfivjiaosdjf"
-        //}
     }
 
     @PostMapping("/auth/token")

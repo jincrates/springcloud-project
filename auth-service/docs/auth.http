@@ -1,0 +1,9 @@
+### 토큰 생성
+POST http://localhost:8000/api/v1/auth
+//Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5NGppbmd5dUBnbWFpbC5jb20iLCJpYXQiOjE2OTI4ODYwODUsImV4cCI6MTY5Mjg4Njk0OX0.P7dzPZCVeUWfO6J8_RaNSs-1Yqf4K00q3gjBTz9w30c
+Content-Type: application/json
+
+{
+  "username": "94jingyu@gmail.com",
+  "password": "1q2w3e4r!Q"
+}
