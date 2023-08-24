@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -37,7 +38,9 @@ public class Claim extends BaseEntity {
     private ClaimStatus status;   // 상태
     @Enumerated(EnumType.STRING)
     private ClaimReason reason;   // 접수사유
+    @Lob
     private String memo;          // 상세사유
+    @Lob
     private String rejectMemo;    // 반려사유
     private int deliveryFee;      // 배송비
     private String invoiceNo;     // 운송장번호
