@@ -1,5 +1,8 @@
 package me.jincrates.claimservice.intg.api.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import me.jincrates.claimservice.api.controller.request.ClaimCreateRequest;
 import me.jincrates.claimservice.api.controller.request.ClaimProductRequest;
 import me.jincrates.claimservice.api.controller.response.ClaimResponse;
@@ -14,10 +17,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class ClaimServiceIntegrationTest extends IntegrationTestSupport {
 
@@ -46,28 +45,28 @@ class ClaimServiceIntegrationTest extends IntegrationTestSupport {
         orderProductRepository.saveAll(List.of(orderProduct1, orderProduct2, orderProduct3));
 
         ClaimCreateRequest request = ClaimCreateRequest.builder()
-                .orderId(orderId)
-                .type(ClaimType.EXCHANGE)
-                .reason(ClaimReason.CHANGE_MIND)
-                .memo("마음이 바뀌어서 반품 접수합니다.")
-                .claimProducts(List.of(
-                        ClaimProductRequest.builder()
-                                .orderProductId(1L)
-                                .quantity(5)
-                                .build(),
-                        ClaimProductRequest.builder()
-                                .orderProductId(2L)
-                                .quantity(10)
-                                .build(),
-                        ClaimProductRequest.builder()
-                                .orderProductId(3L)
-                                .quantity(15)
-                                .build()
-                ))
-                .build();
+            .orderId(orderId)
+            .type(ClaimType.EXCHANGE)
+            .reason(ClaimReason.CHANGE_MIND)
+            .memo("마음이 바뀌어서 반품 접수합니다.")
+            .claimProducts(List.of(
+                ClaimProductRequest.builder()
+                    .orderProductId(1L)
+                    .quantity(5)
+                    .build(),
+                ClaimProductRequest.builder()
+                    .orderProductId(2L)
+                    .quantity(10)
+                    .build(),
+                ClaimProductRequest.builder()
+                    .orderProductId(3L)
+                    .quantity(15)
+                    .build()
+            ))
+            .build();
 
         // when
-        ClaimResponse result = claimService.receipt(request);
+        ClaimResponse result = claimService.request(request);
 
         // then
         assertThat(result).isNotNull();
@@ -75,27 +74,27 @@ class ClaimServiceIntegrationTest extends IntegrationTestSupport {
 
     private OrderProduct createOrderProduct(Long orderId, Long productId, int quantity) {
         return OrderProduct.builder()
-                .orderId(orderId)
-                .productId(productId)
-                .price(quantity * 1000)
-                .quantity(quantity)
-                .build();
+            .orderId(orderId)
+            .productId(productId)
+            .price(quantity * 1000)
+            .quantity(quantity)
+            .build();
     }
 
     private List<ClaimProductRequest> getClaimProductRequest() {
         return List.of(
-                ClaimProductRequest.builder()
-                        .orderProductId(1L)
-                        .quantity(5)
-                        .build(),
-                ClaimProductRequest.builder()
-                        .orderProductId(2L)
-                        .quantity(10)
-                        .build(),
-                ClaimProductRequest.builder()
-                        .orderProductId(3L)
-                        .quantity(15)
-                        .build()
+            ClaimProductRequest.builder()
+                .orderProductId(1L)
+                .quantity(5)
+                .build(),
+            ClaimProductRequest.builder()
+                .orderProductId(2L)
+                .quantity(10)
+                .build(),
+            ClaimProductRequest.builder()
+                .orderProductId(3L)
+                .quantity(15)
+                .build()
         );
     }
 }

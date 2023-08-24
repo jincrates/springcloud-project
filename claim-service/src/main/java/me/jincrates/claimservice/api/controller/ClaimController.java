@@ -21,28 +21,28 @@ public class ClaimController {
 
     @PostMapping("/api/v1/claims/receipt")
     public ApiResponse<ClaimResponse> createClaim(
-            @Valid @RequestBody ClaimCreateRequest request
+        @Valid @RequestBody ClaimCreateRequest request
     ) {
-        return ApiResponse.ok(claimService.receipt(request));
+        return ApiResponse.ok(claimService.request(request));
     }
 
     @PostMapping("/api/v1/claims/withdrawal")
     public ApiResponse<Long> withdrawal(
-            @Valid @RequestBody ClaimWithdrawalRequest request
+        @Valid @RequestBody ClaimWithdrawalRequest request
     ) {
-        return ApiResponse.ok(claimService.withdrawal(request));
+        return ApiResponse.ok(claimService.cancel(request));
     }
 
     @PostMapping("/api/v1/claims/approval")
     public ApiResponse<Long> approval(
-            @Valid @RequestBody ClaimApprovalRequest request
+        @Valid @RequestBody ClaimApprovalRequest request
     ) {
-        return ApiResponse.ok(claimService.approval(request));
+        return ApiResponse.ok(claimService.approve(request));
     }
 
     @PostMapping("/api/v1/claims/reject")
     public ApiResponse<Long> reject(
-            @Valid @RequestBody ClaimRejectRequest request
+        @Valid @RequestBody ClaimRejectRequest request
     ) {
         return ApiResponse.ok(claimService.reject(request));
     }
