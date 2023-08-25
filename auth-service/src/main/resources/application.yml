@@ -2,5 +2,7 @@ server:
   port: 8000
 
 jwt:
-  secret: a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbQ
-  expiration: 86400
+  secret: 6re465Ok7J2AIOychO2VmOyXrOyEnCDsnbTsg4HsnZgg67aZ7J6h7JWEIOyduOuPhO2VmOqyoOuLpOuKlCDsnbQg7J206rKD7J2064uk
+  expiration: 3600
+  refresh-token:
+    expiration: 864000
