@@ -114,15 +114,20 @@ public class Claim extends BaseEntity {
     }
 
     private static int calculateDeliveryFee(ClaimType type, ClaimReason reason) {
-        int orderedDeliveryFee = 0;
+        int orderedDeliveryFee = 2500;
+
+        if (reason.isSellerResponsibility()) {
+            return 0;
+        }
 
         if (reason.isBuyerResponsibility() && type.isReturn()) {
-            orderedDeliveryFee = 2500;
+            return orderedDeliveryFee;
         }
 
         if (reason.isBuyerResponsibility() && type.isExchange()) {
-            orderedDeliveryFee *= 2;
+            return orderedDeliveryFee * 2;
         }
+
         return orderedDeliveryFee;
     }
 

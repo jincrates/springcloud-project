@@ -27,7 +27,7 @@ public class ClaimController {
 
     @GetMapping("/api/v1/claims/test")
     public ApiResponse<ClaimResponse> test() {
-        ClaimCreateRequest request = getData();
+        ClaimCreateRequest request = getData(ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND);
         request.validate();
 
         Long userId = 1L;
@@ -81,13 +81,12 @@ public class ClaimController {
         return ApiResponse.ok(claimService.reject(request));
     }
 
-    private static ClaimCreateRequest getData() {
+    private ClaimCreateRequest getData(ClaimType type, ClaimReason reason) {
         return ClaimCreateRequest.builder()
             .orderId(1L)
-            .type(ClaimType.EXCHANGE)
-            .reason(ClaimReason.CHANGE_MIND)
-            .memo(String.format("%s(으)로 인한 %s입니다.", ClaimReason.CHANGE_MIND.getDescription(),
-                ClaimType.RETURN.getDescription()))
+            .type(type)
+            .reason(reason)
+            .memo(String.format("%s(으)로 인한 %s입니다.", reason.getDescription(), type.getDescription()))
             .claimProducts(List.of(
                     ClaimProductRequest.builder()
                         .orderProductId(1L)
