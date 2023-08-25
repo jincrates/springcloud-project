@@ -1,6 +1,7 @@
 package me.jincrates.claimservice.domain.claim;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,44 +24,65 @@ import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
 @Table(name = "CLAIM")
+@Entity
 public class Claim extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Long userId;          // 사용자 ID
+
+    @Column(nullable = false)
     private Long orderId;         // 주문 ID
+
     private Long paymentId;       // 결제 ID
+
+    private String claimNo;       // 접수번호
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ClaimType type;       // 접수유형
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ClaimStatus status;   // 상태
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ClaimReason reason;   // 접수사유
     @Lob
+    @Column(nullable = false)
     private String memo;          // 상세사유
+
     @Lob
+    @Column(nullable = false)
     private String rejectMemo;    // 반려사유
+
+    @Column(nullable = false)
     private int deliveryFee;      // 배송비
-    private String invoiceNo;     // 운송장번호
+
+    private String failMessage;   // 결제실패 사유
+
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL)
     List<ClaimProduct> claimProducts = new ArrayList<>();
 
-    @Builder
-    private Claim(Long orderId, Long paymentId, ClaimType type, ClaimStatus status,
-        ClaimReason reason, String memo, String rejectMemo, int deliveryFee,
-        String invoiceNo,
-        List<OrderProduct> orderProducts) {
+    @Builder(access = AccessLevel.PRIVATE)
+    private Claim(Long orderId, Long paymentId, String claimNo, ClaimType type,
+        ClaimStatus status, ClaimReason reason, String memo, String rejectMemo, int deliveryFee,
+        String failMessage, List<OrderProduct> orderProducts) {
         this.orderId = orderId;
         this.paymentId = paymentId;
+        this.claimNo = claimNo;
         this.type = type;
         this.status = status;
         this.reason = reason;
         this.memo = memo;
         this.rejectMemo = rejectMemo;
         this.deliveryFee = deliveryFee;
-        this.invoiceNo = invoiceNo;
+        this.failMessage = failMessage;
         this.claimProducts = orderProducts.stream()
             .map(op -> ClaimProduct.builder()
                 .claim(this)

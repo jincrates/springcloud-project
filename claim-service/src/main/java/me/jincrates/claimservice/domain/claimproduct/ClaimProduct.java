@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -32,30 +33,25 @@ public class ClaimProduct extends BaseEntity {
 
     private Long orderProductId;
 
-    private int quantity;
-
-    private int refundPrice;
+    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
     private ClaimStatus status;
 
+    private Integer refundPrice;
+
+    @Lob
     private String rejectMemo;
-
-    private Long originProductId;
-
-    private Long changeProductId;
 
     @Builder
     private ClaimProduct(Long id, Claim claim, Long orderProductId, int quantity, int refundPrice,
-        ClaimStatus status, Long originProductId, Long changeProductId) {
+        ClaimStatus status) {
         this.id = id;
         this.claim = claim;
         this.orderProductId = orderProductId;
         this.quantity = quantity;
         this.refundPrice = refundPrice;
         this.status = status;
-        this.originProductId = originProductId;
-        this.changeProductId = changeProductId;
     }
 
     public void cancel() {

@@ -19,12 +19,28 @@ public class ClaimController {
 
     private final ClaimService claimService;
 
-    @PostMapping("/api/v1/claims/receipt")
-    public ApiResponse<ClaimResponse> createClaim(
+    @PostMapping("/api/v1/claims/return/request")
+    public ApiResponse<ClaimResponse> returnRequest(
         @Valid @RequestBody ClaimCreateRequest request
     ) {
-        return ApiResponse.ok(claimService.request(request));
+        request.validate();
+
+        Long userId = 1L;
+
+        return ApiResponse.ok(claimService.request(request, userId));
     }
+
+    @PostMapping("/api/v1/claims/exchange/request")
+    public ApiResponse<ClaimResponse> exchangeRequest(
+        @Valid @RequestBody ClaimCreateRequest request
+    ) {
+        request.validate();
+
+        Long userId = 1L;
+
+        return ApiResponse.ok(claimService.request(request, userId));
+    }
+
 
     @PostMapping("/api/v1/claims/withdrawal")
     public ApiResponse<Long> withdrawal(

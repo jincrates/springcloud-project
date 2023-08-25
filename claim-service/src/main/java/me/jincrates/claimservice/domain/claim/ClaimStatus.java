@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ClaimStatus {
+    PENDING("결제 대기중"),
     REQUESTED("접수"),
     CANCELED("철회"),
     APPROVED("승인"),
