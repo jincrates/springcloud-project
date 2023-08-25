@@ -1,14 +1,20 @@
 package me.jincrates.claimservice.api.controller;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.claimservice.api.ApiResponse;
 import me.jincrates.claimservice.api.controller.request.ClaimApprovalRequest;
 import me.jincrates.claimservice.api.controller.request.ClaimCreateRequest;
+import me.jincrates.claimservice.api.controller.request.ClaimProductRequest;
 import me.jincrates.claimservice.api.controller.request.ClaimRejectRequest;
 import me.jincrates.claimservice.api.controller.request.ClaimWithdrawalRequest;
+import me.jincrates.claimservice.api.controller.request.DeliveryInfoRequest;
 import me.jincrates.claimservice.api.controller.response.ClaimResponse;
 import me.jincrates.claimservice.api.service.ClaimService;
+import me.jincrates.claimservice.domain.claim.ClaimReason;
+import me.jincrates.claimservice.domain.claim.ClaimType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClaimController {
 
     private final ClaimService claimService;
+
+    @GetMapping("/api/v1/claims/test")
+    public ApiResponse<ClaimResponse> test() {
+        ClaimCreateRequest request = getData();
+        request.validate();
+
+        Long userId = 1L;
+
+        return ApiResponse.ok(claimService.request(request, userId));
+    }
+
+    //
 
     @PostMapping("/api/v1/claims/return/request")
     public ApiResponse<ClaimResponse> returnRequest(
@@ -61,5 +79,58 @@ public class ClaimController {
         @Valid @RequestBody ClaimRejectRequest request
     ) {
         return ApiResponse.ok(claimService.reject(request));
+    }
+
+    private static ClaimCreateRequest getData() {
+        return ClaimCreateRequest.builder()
+            .orderId(1L)
+            .type(ClaimType.EXCHANGE)
+            .reason(ClaimReason.CHANGE_MIND)
+            .memo(String.format("%s(으)로 인한 %s입니다.", ClaimReason.CHANGE_MIND.getDescription(),
+                ClaimType.RETURN.getDescription()))
+            .claimProducts(List.of(
+                    ClaimProductRequest.builder()
+                        .orderProductId(1L)
+                        .quantity(5)
+                        .build(),
+                    ClaimProductRequest.builder()
+                        .orderProductId(2L)
+                        .quantity(10)
+                        .build(),
+                    ClaimProductRequest.builder()
+                        .orderProductId(3L)
+                        .quantity(15)
+                        .build()
+                )
+            )
+            //.imageIdList(null)
+            .collectionDelivery(
+                DeliveryInfoRequest.builder()
+                    .recipientName("김칸트")
+                    .recipientMobileNo("01012345678")
+                    .zipCode("06038")
+                    .address1("서울특별시 도산대로 4길 15(논현동)")
+                    .address2("5층")
+                    .roadAddress("서울특별시 강남구 도산대로 4길 15(논현동)")
+                    .landAddress("서울특별시 강남구 논현동 16-23 큐브타워")
+                    .deliveryTypeCode("V")
+                    .deliveryEnterMethodCode("E")
+                    .deliveryEnterMethodMessage("창문을 통해 들어오세요.")
+                    .build()
+            )
+            .exchangeDelivery(
+                DeliveryInfoRequest.builder()
+                    .recipientName("김칸트")
+                    .recipientMobileNo("01012345678")
+                    .zipCode("06038")
+                    .address1("서울특별시 도산대로 4길 15(논현동)")
+                    .address2("5층")
+                    .roadAddress("서울특별시 강남구 도산대로 4길 15(논현동)")
+                    .landAddress("서울특별시 강남구 논현동 16-23 큐브타워")
+                    .deliveryTypeCode("V")
+                    .deliveryEnterMethodCode("E")
+                    .deliveryEnterMethodMessage("창문을 통해 들어오세요.")
+                    .build())
+            .build();
     }
 }

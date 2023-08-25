@@ -62,7 +62,7 @@ public class Claim extends BaseEntity {
     private String rejectMemo;    // 반려사유
 
     @Column(nullable = false)
-    private int deliveryFee;      // 배송비
+    private Integer deliveryFee;      // 배송비
 
     private String failMessage;   // 결제실패 사유
 
@@ -70,9 +70,10 @@ public class Claim extends BaseEntity {
     List<ClaimProduct> claimProducts = new ArrayList<>();
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Claim(Long orderId, Long paymentId, String claimNo, ClaimType type,
-        ClaimStatus status, ClaimReason reason, String memo, String rejectMemo, int deliveryFee,
+    private Claim(Long userId, Long orderId, Long paymentId, String claimNo, ClaimType type,
+        ClaimStatus status, ClaimReason reason, String memo, String rejectMemo, Integer deliveryFee,
         String failMessage, List<OrderProduct> orderProducts) {
+        this.userId = userId;
         this.orderId = orderId;
         this.paymentId = paymentId;
         this.claimNo = claimNo;
@@ -95,16 +96,34 @@ public class Claim extends BaseEntity {
             .collect(Collectors.toList());
     }
 
-    public static Claim create(Long orderId, ClaimType type, ClaimReason reason, ClaimStatus status,
-        String memo, List<OrderProduct> orderProducts) {
+    public static Claim create(Long userId, Long orderId, ClaimType type, ClaimReason reason,
+        ClaimStatus status, String memo, List<OrderProduct> orderProducts) {
+        int deliveryFee = calculateDeliveryFee(type, reason);
+
         return Claim.builder()
+            .userId(userId)
             .orderId(orderId)
             .type(type)
             .status(status)
             .reason(reason)
             .memo(memo)
+            .rejectMemo(reason.getDescription())
+            .deliveryFee(deliveryFee)
             .orderProducts(orderProducts)
             .build();
+    }
+
+    private static int calculateDeliveryFee(ClaimType type, ClaimReason reason) {
+        int orderedDeliveryFee = 0;
+
+        if (reason.isBuyerResponsibility() && type.isReturn()) {
+            orderedDeliveryFee = 2500;
+        }
+
+        if (reason.isBuyerResponsibility() && type.isExchange()) {
+            orderedDeliveryFee *= 2;
+        }
+        return orderedDeliveryFee;
     }
 
     public void cancel() {

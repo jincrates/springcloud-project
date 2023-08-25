@@ -25,7 +25,7 @@ class ClaimTest {
         );
 
         // when
-        Claim claim = Claim.create(orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND,
+        Claim claim = Claim.create(1L, orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND,
             ClaimStatus.REQUESTED, "상세사유",
             orderProducts);
 
@@ -43,7 +43,7 @@ class ClaimTest {
             createOrderProduct(orderId, 2L, 15),
             createOrderProduct(orderId, 3L, 20)
         );
-        Claim claim = Claim.create(orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND,
+        Claim claim = Claim.create(1L, orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND,
             ClaimStatus.REQUESTED, "상세사유",
             orderProducts);
 
@@ -64,7 +64,7 @@ class ClaimTest {
             createOrderProduct(orderId, 2L, 15),
             createOrderProduct(orderId, 3L, 20)
         );
-        Claim claim = Claim.create(orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND,
+        Claim claim = Claim.create(1L, orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND,
             ClaimStatus.REQUESTED, "상세사유",
             orderProducts);
 
@@ -85,7 +85,7 @@ class ClaimTest {
             createOrderProduct(orderId, 2L, 15),
             createOrderProduct(orderId, 3L, 20)
         );
-        Claim claim = Claim.create(orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND,
+        Claim claim = Claim.create(1L, orderId, ClaimType.EXCHANGE, ClaimReason.CHANGE_MIND,
             ClaimStatus.REQUESTED, "상세사유",
             orderProducts);
 

@@ -1,15 +1,18 @@
 package me.jincrates.claimservice.api.controller.request;
 
+import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.regex.Pattern;
+import me.jincrates.claimservice.domain.delivery.Address;
+import me.jincrates.claimservice.domain.delivery.DeliveryInfo;
+import me.jincrates.claimservice.domain.user.Recipient;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeliveryInfoRequest {
+
     private String recipientName;
     private String recipientMobileNo;
     private String zipCode;
@@ -22,7 +25,10 @@ public class DeliveryInfoRequest {
     private String deliveryEnterMethodMessage;
 
     @Builder
-    private DeliveryInfoRequest(String recipientName, String recipientMobileNo, String zipCode, String address1, String address2, String roadAddress, String landAddress, String deliveryTypeCode, String deliveryEnterMethodCode, String deliveryEnterMethodMessage) {
+    private DeliveryInfoRequest(String recipientName, String recipientMobileNo, String zipCode,
+        String address1, String address2, String roadAddress, String landAddress,
+        String deliveryTypeCode, String deliveryEnterMethodCode,
+        String deliveryEnterMethodMessage) {
         if (!Pattern.matches("^[0-9]+$", recipientMobileNo)) {
             throw new IllegalArgumentException("핸드폰 번호는 -를 빼고 숫자만 입력해주세요.");
         }
@@ -37,5 +43,27 @@ public class DeliveryInfoRequest {
         this.deliveryTypeCode = deliveryTypeCode;
         this.deliveryEnterMethodCode = deliveryEnterMethodCode;
         this.deliveryEnterMethodMessage = deliveryEnterMethodMessage;
+    }
+
+    public DeliveryInfo toDeliveryInfo(Long userId) {
+        return DeliveryInfo.builder()
+            .recipient(
+                Recipient.builder()
+                    .userId(userId)
+                    .name(this.recipientName)
+                    .mobileNo(this.recipientMobileNo)
+                    .build()
+            )
+            .address(
+                Address.builder()
+                    .zipCode(this.zipCode)
+                    .address1(this.address1)
+                    .address2(this.address2)
+                    .roadAddress(this.roadAddress)
+                    .landAddress(this.landAddress)
+                    .build()
+            )
+            .deliveryMethodCode(this.deliveryEnterMethodCode)
+            .build();
     }
 }

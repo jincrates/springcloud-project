@@ -1,5 +1,7 @@
 package me.jincrates.claimservice.api.controller.response;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import me.jincrates.claimservice.domain.claim.Claim;
@@ -7,11 +9,9 @@ import me.jincrates.claimservice.domain.claim.ClaimReason;
 import me.jincrates.claimservice.domain.claim.ClaimStatus;
 import me.jincrates.claimservice.domain.claim.ClaimType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 public class ClaimResponse {
+
     private Long id;
     private Long orderId;         // 주문 ID
     private Long paymentId;       // 결제 ID
@@ -25,7 +25,9 @@ public class ClaimResponse {
     List<ClaimProductResponse> claimProducts = new ArrayList<>();
 
     @Builder
-    private ClaimResponse(Long id, Long orderId, Long paymentId, ClaimType type, ClaimStatus status, ClaimReason reason, String memo, String rejectMemo, int deliveryFee, String invoiceNo, List<ClaimProductResponse> claimProducts) {
+    private ClaimResponse(Long id, Long orderId, Long paymentId, ClaimType type, ClaimStatus status,
+        ClaimReason reason, String memo, String rejectMemo, int deliveryFee, String invoiceNo,
+        List<ClaimProductResponse> claimProducts) {
         this.id = id;
         this.orderId = orderId;
         this.paymentId = paymentId;
@@ -41,21 +43,20 @@ public class ClaimResponse {
 
     public static ClaimResponse of(Claim claim) {
         return ClaimResponse.builder()
-                .id(claim.getId())
-                .orderId(claim.getOrderId())
-                .paymentId(claim.getPaymentId())
-                .type(claim.getType())
-                .status(claim.getStatus())
-                .reason(claim.getReason())
-                .memo(claim.getMemo())
-                .rejectMemo(claim.getRejectMemo())
-                .deliveryFee(claim.getDeliveryFee())
-                .invoiceNo(claim.getInvoiceNo())
-                .claimProducts(
-                        claim.getClaimProducts().stream()
-                                .map(ClaimProductResponse::of)
-                                .toList()
-                )
-                .build();
+            .id(claim.getId())
+            .orderId(claim.getOrderId())
+            .paymentId(claim.getPaymentId())
+            .type(claim.getType())
+            .status(claim.getStatus())
+            .reason(claim.getReason())
+            .memo(claim.getMemo())
+            .rejectMemo(claim.getRejectMemo())
+            .deliveryFee(claim.getDeliveryFee())
+            .claimProducts(
+                claim.getClaimProducts().stream()
+                    .map(ClaimProductResponse::of)
+                    .toList()
+            )
+            .build();
     }
 }

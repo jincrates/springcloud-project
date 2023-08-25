@@ -15,8 +15,14 @@ import me.jincrates.claimservice.api.controller.response.ClaimResponse;
 import me.jincrates.claimservice.domain.claim.Claim;
 import me.jincrates.claimservice.domain.claim.ClaimRepository;
 import me.jincrates.claimservice.domain.claim.ClaimStatus;
+import me.jincrates.claimservice.domain.claim.deliveryFee.ClaimDeliveryFee;
+import me.jincrates.claimservice.domain.claim.deliveryFee.ClaimDeliveryFeeRepository;
 import me.jincrates.claimservice.domain.claim.history.ClaimHistory;
 import me.jincrates.claimservice.domain.claim.history.ClaimHistoryRepository;
+import me.jincrates.claimservice.domain.delivery.collection.CollectionDelivery;
+import me.jincrates.claimservice.domain.delivery.collection.CollectionDeliveryRepository;
+import me.jincrates.claimservice.domain.delivery.exchange.ExchangeDelivery;
+import me.jincrates.claimservice.domain.delivery.exchange.ExchangeDeliveryRepository;
 import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
 import me.jincrates.claimservice.domain.orderproduct.OrderProductRepository;
 import org.springframework.stereotype.Service;
@@ -31,6 +37,9 @@ public class ClaimService {
     private final ClaimRepository claimRepository;
     private final ClaimHistoryRepository claimHistoryRepository;
     private final OrderProductRepository orderProductRepository;
+    private final CollectionDeliveryRepository collectionDeliveryRepository;
+    private final ExchangeDeliveryRepository exchangeDeliveryRepository;
+    private final ClaimDeliveryFeeRepository claimDeliveryFeeRepository;
 
     // 클레임 접수
     @Transactional
@@ -61,7 +70,8 @@ public class ClaimService {
 
         // [COMMAND]
         // 클레임 저장
-        Claim claim = Claim.create(request.getOrderId(), request.getType(), request.getReason(),
+        Claim claim = Claim.create(userId, request.getOrderId(), request.getType(),
+            request.getReason(),
             ClaimStatus.REQUESTED, request.getMemo(), orderProducts);
         Claim savedClaim = claimRepository.save(claim);
 
@@ -70,11 +80,39 @@ public class ClaimService {
         claimHistoryRepository.save(claimHistory);
 
         // 수거지 저장
-//        CollectionDelivery collectionDelivery = CollectionDelivery.create(savedClaim.getId(),
-//            request.getCollectionDelivery());
-        // 재배송지 저장
+        saveCollectionDelivery(request, savedClaim);
+
+        if (request.getType().isExchange()) {
+            // 재배송지 저장
+            savedExceptionDelivery(request, savedClaim);
+        }
+
+        if (request.getReason().isBuyerResponsibility()) {
+            // 사용자 귀책 배송비 저장
+            saveDeliveryFee(request, savedClaim);
+        }
 
         return ClaimResponse.of(savedClaim);
+    }
+
+    private void saveDeliveryFee(ClaimCreateRequest request, Claim savedClaim) {
+        ClaimDeliveryFee claimDeliveryFee = ClaimDeliveryFee.create(savedClaim,
+            request.getCollectionDelivery().getDeliveryTypeCode());
+        claimDeliveryFeeRepository.save(claimDeliveryFee);
+    }
+
+    private void savedExceptionDelivery(ClaimCreateRequest request, Claim claim) {
+        ExchangeDelivery exchangeDelivery = ExchangeDelivery.create(
+            claim.getId(), request.getCollectionDelivery().toDeliveryInfo(claim.getUserId())
+        );
+        exchangeDeliveryRepository.save(exchangeDelivery);
+    }
+
+    private void saveCollectionDelivery(ClaimCreateRequest request, Claim claim) {
+        CollectionDelivery collectionDelivery = CollectionDelivery.create(
+            claim.getId(), request.getCollectionDelivery().toDeliveryInfo(claim.getUserId())
+        );
+        collectionDeliveryRepository.save(collectionDelivery);
     }
 
     // 클레임 상태변경

@@ -53,7 +53,7 @@ public class CollectionDelivery extends BaseEntity {
         return CollectionDelivery.builder()
             .claimId(claimId)
             .statusCode("10")
-            .deliveryMethodCode(deliveryInfo.getDeliveryMethodCode())
+            .deliveryMethodCode(String.valueOf(deliveryInfo.getDeliveryMethodCode()))
             .recipientName(deliveryInfo.getRecipient().getName())
             .recipientMobileNo(deliveryInfo.getRecipient().getMobileNo())
             .recipientZipCode(deliveryInfo.getAddress().getZipCode())
