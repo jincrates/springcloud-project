@@ -3,6 +3,7 @@ package me.jincrates.msa.coffeekiosk.unit.calculator;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Year;
 
 @Getter
@@ -20,8 +21,16 @@ public class PaymentDate {
         this.isLeap = Year.isLeap(this.date.getYear());
     }
 
-    public long getYear() {
+    public static PaymentDate of(int year, Month month, int day) {
+        return new PaymentDate(LocalDate.of(year, month, day));
+    }
+
+    public int getYear() {
         return this.date.getYear();
+    }
+
+    public Month getMonth() {
+        return this.date.getMonth();
     }
 
     public PaymentDate plusMonths(int month) {

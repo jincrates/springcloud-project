@@ -1,6 +1,5 @@
 package me.jincrates.msa.coffeekiosk.unit.calculator;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -23,16 +22,16 @@ public class DayCalculatorRunner {
 
             boolean isLeap = paymentDate.isLeap();
             if (startDate.equalsDayOfMonth(29)) {
-                if (!isLeap && paymentDate.getMonth().getValue() == 3 && paymentDate.getDayOfMonth() == 1) {
-                    endDate = LocalDate.of(paymentDate.getYear(), paymentDate.getMonth(), 28);
+                if (!isLeap && paymentDate.equalsDate(3, 1)) {
+                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth(), 28);
                 }
 
-                if (isLeap && paymentDate.getMonth().getValue() == 2 && paymentDate.getDayOfMonth() == 29) {
-                    endDate = LocalDate.of(paymentDate.getYear(), paymentDate.getMonth().plus(1), 28);
+                if (isLeap && paymentDate.equalsDate(2, 29)) {
+                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth().plus(1), 28);
                 }
             }
 
-            if (startDate.getDayOfMonth() == 30) {
+            if (startDate.equalsDayOfMonth(30)) {
                 if (startDate.getMonth().getValue() == 1) {
 
                 }
@@ -42,9 +41,10 @@ public class DayCalculatorRunner {
             // 날짜 출력
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM월 dd일");
 
-            System.out.println("시작일: " + startDate.format(formatter));
-            System.out.println("결제일: " + paymentDate.format(formatter) + "(" + (isLeap ? "윤년" : "평년") + ")");
-            System.out.println("종료일: " + endDate.format(formatter));
+
+            System.out.println("시작일: " + startDate.getDate().format(formatter));
+            System.out.println("결제일: " + paymentDate.getDate().format(formatter) + "(" + (isLeap ? "윤년" : "평년") + ")");
+            System.out.println("종료일: " + endDate.getDate().format(formatter));
 
             System.out.println("다시 계산하시겠습니까? (Y/N)");
             String retry = scanner.nextLine();
