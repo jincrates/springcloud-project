@@ -18,15 +18,15 @@ public class DayCalculatorRunner {
             PaymentDate paymentDate = new PaymentDate(paymentDateStr);
 
             // 종료일 계산
-            PaymentDate endDate = PaymentDate.calculateEndDate(startDate, paymentDate);
+            PaymentDate endDate = PaymentDate.calculateEndDate(startDate.getDayOfMonth(), paymentDate);
 
             // 날짜 출력
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM월 dd일");
 
 
-            System.out.println("시작일: " + startDate.getDate().format(formatter));
-            System.out.println("결제일: " + paymentDate.getDate().format(formatter) + "(" + (paymentDate.isLeap() ? "윤년" : "평년") + ")");
-            System.out.println("종료일: " + endDate.getDate().format(formatter));
+            System.out.println("시작일: " + startDate.getValue().format(formatter));
+            System.out.println("결제일: " + paymentDate.getValue().format(formatter) + "(" + (paymentDate.isLeap() ? "윤년" : "평년") + ")");
+            System.out.println("종료일: " + endDate.getValue().format(formatter));
 
             System.out.println("다시 계산하시겠습니까? (Y/N)");
             String retry = scanner.nextLine();
