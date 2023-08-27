@@ -10,7 +10,7 @@ import java.time.Month;
 import java.time.Year;
 
 @Getter
-public class PaymentDate {
+public final class PaymentDate {
     private final LocalDate value;
     private final boolean isLeap;
     private final EndDateCalculatorStrategy strategy;
@@ -23,9 +23,9 @@ public class PaymentDate {
                 : new CommonYearEndDateCalculator();
     }
 
-    public static PaymentDate from(LocalDate date) {
-        return new PaymentDate(date);
-    }
+//    public static PaymentDate from(LocalDate date) {
+//        return new PaymentDate(date);
+//    }
 
     public static PaymentDate from(String dateStr) {
         return new PaymentDate(LocalDate.parse(dateStr));
@@ -44,7 +44,7 @@ public class PaymentDate {
     }
 
     public PaymentDate minusOneLastDateOfNextMonth() {
-        LocalDate nextDate = this.getValue().plusMonths(1);
+        LocalDate nextDate = this.value.plusMonths(1);
         return PaymentDate.of(nextDate.getYear(), nextDate.getMonth().getValue(), nextDate.lengthOfMonth() - 1);
     }
 
