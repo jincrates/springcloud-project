@@ -39,7 +39,7 @@ public class CommonYearEndDateCalculator implements EndDateCalculatorStrategy {
         if (paymentDate.equalsDate(3, 1)) {
             return PaymentDate.of(paymentDate.getYear(), 3, 30);
         }
-        return paymentDate.getLastDatOfNextMonthMinus1();
+        return paymentDate.minusOneLastDateOfNextMonth();
     }
 
     private PaymentDate handleStartDay1(PaymentDate paymentDate) {

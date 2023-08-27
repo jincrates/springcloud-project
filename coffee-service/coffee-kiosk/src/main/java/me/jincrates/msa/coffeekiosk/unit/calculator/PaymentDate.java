@@ -13,15 +13,22 @@ import java.time.Year;
 public class PaymentDate {
     private final LocalDate value;
     private final boolean isLeap;
+    private final EndDateCalculatorStrategy strategy;
 
-    public PaymentDate(LocalDate date) {
+    private PaymentDate(LocalDate date) {
         this.value = date;
         this.isLeap = Year.isLeap(date.getYear());
+        this.strategy = isLeap
+                ? new LeapYearEndDateCalculator()
+                : new CommonYearEndDateCalculator();
     }
 
-    public PaymentDate(String dateStr) {
-        this.value = LocalDate.parse(dateStr);
-        this.isLeap = Year.isLeap(this.value.getYear());
+    public static PaymentDate from(LocalDate date) {
+        return new PaymentDate(date);
+    }
+
+    public static PaymentDate from(String dateStr) {
+        return new PaymentDate(LocalDate.parse(dateStr));
     }
 
     public static PaymentDate of(int year, int month, int day) {
@@ -36,7 +43,7 @@ public class PaymentDate {
         return this.value.getDayOfMonth();
     }
 
-    public PaymentDate getLastDatOfNextMonthMinus1() {
+    public PaymentDate minusOneLastDateOfNextMonth() {
         LocalDate nextDate = this.getValue().plusMonths(1);
         return PaymentDate.of(nextDate.getYear(), nextDate.getMonth().getValue(), nextDate.lengthOfMonth() - 1);
     }
@@ -45,8 +52,8 @@ public class PaymentDate {
         return new PaymentDate(this.value.plusMonths(month));
     }
 
-    public PaymentDate minusDays(int month) {
-        return new PaymentDate(this.value.minusDays(month));
+    public PaymentDate minusDays(int days) {
+        return new PaymentDate(this.value.minusDays(days));
     }
 
     public boolean equalsDate(int month, int dayOfMonth) {
@@ -54,10 +61,7 @@ public class PaymentDate {
                 && this.value.getDayOfMonth() == dayOfMonth;
     }
 
-    public static PaymentDate calculateEndDate(int startDay, PaymentDate paymentDate) {
-        EndDateCalculatorStrategy strategy = paymentDate.isLeap
-                ? new LeapYearEndDateCalculator()
-                : new CommonYearEndDateCalculator();
-        return strategy.calculateEndDate(startDay, paymentDate);
+    public PaymentDate calculateEndDate(int startDay) {
+        return strategy.calculateEndDate(startDay, this);
     }
 }

@@ -11,14 +11,14 @@ public class DateCalculatorRunner {
         while (true) {
             System.out.print("시작일을 입력하세요 (예: 2023-01-01): ");
             String startDateStr = scanner.nextLine();
-            PaymentDate startDate = new PaymentDate(startDateStr);
+            PaymentDate startDate = PaymentDate.from(startDateStr);
 
             System.out.print("결제일을 입력하세요 (예: 2023-01-01): ");
             String paymentDateStr = scanner.nextLine();
-            PaymentDate paymentDate = new PaymentDate(paymentDateStr);
+            PaymentDate paymentDate = PaymentDate.from(paymentDateStr);
 
             // 종료일 계산
-            PaymentDate endDate = PaymentDate.calculateEndDate(startDate.getDayOfMonth(), paymentDate);
+            PaymentDate endDate = paymentDate.calculateEndDate(startDate.getDayOfMonth());
 
             // 날짜 출력
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM월 dd일");

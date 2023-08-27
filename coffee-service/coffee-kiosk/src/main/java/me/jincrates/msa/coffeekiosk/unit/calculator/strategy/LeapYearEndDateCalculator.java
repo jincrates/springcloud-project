@@ -39,7 +39,7 @@ public class LeapYearEndDateCalculator implements EndDateCalculatorStrategy {
     }
 
     private PaymentDate handleStartDay31(PaymentDate paymentDate) {
-        return paymentDate.getLastDatOfNextMonthMinus1();
+        return paymentDate.minusOneLastDateOfNextMonth();
     }
 
     private PaymentDate handleStartDay1(PaymentDate paymentDate) {
