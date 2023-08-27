@@ -1,6 +1,9 @@
 package me.jincrates.msa.coffeekiosk.unit.calculator;
 
 import lombok.Getter;
+import me.jincrates.msa.coffeekiosk.unit.calculator.strategy.CommonYearEndDateCalculator;
+import me.jincrates.msa.coffeekiosk.unit.calculator.strategy.EndDateCalculatorStrategy;
+import me.jincrates.msa.coffeekiosk.unit.calculator.strategy.LeapYearEndDateCalculator;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -21,8 +24,8 @@ public class PaymentDate {
         this.isLeap = Year.isLeap(this.value.getYear());
     }
 
-    public static PaymentDate of(int year, Month month, int day) {
-        return new PaymentDate(LocalDate.of(year, month, day));
+    public static PaymentDate of(int year, int month, int day) {
+        return new PaymentDate(LocalDate.of(year, Month.of(month), day));
     }
 
     public int getYear() {
@@ -31,6 +34,11 @@ public class PaymentDate {
 
     public int getDayOfMonth() {
         return this.value.getDayOfMonth();
+    }
+
+    public PaymentDate getLastDatOfNextMonthMinus1() {
+        LocalDate nextDate = this.getValue().plusMonths(1);
+        return PaymentDate.of(nextDate.getYear(), nextDate.getMonth().getValue(), nextDate.lengthOfMonth() - 1);
     }
 
     public PaymentDate plusMonths(int month) {
@@ -51,9 +59,5 @@ public class PaymentDate {
                 ? new LeapYearEndDateCalculator()
                 : new CommonYearEndDateCalculator();
         return strategy.calculateEndDate(startDay, paymentDate);
-    }
-
-    PaymentDate setDate(int month, int dayOfMonth) {
-        return PaymentDate.of(this.getYear(), Month.of(month), dayOfMonth);
     }
 }

@@ -3,7 +3,7 @@ package me.jincrates.msa.coffeekiosk.unit.calculator;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class DayCalculatorRunner {
+public class DateCalculatorRunner {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
