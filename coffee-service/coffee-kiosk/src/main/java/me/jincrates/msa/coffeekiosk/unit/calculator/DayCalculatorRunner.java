@@ -22,18 +22,45 @@ public class DayCalculatorRunner {
 
             boolean isLeap = paymentDate.isLeap();
             if (startDate.equalsDayOfMonth(29)) {
-                if (!isLeap && paymentDate.equalsDate(3, 1)) {
-                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth(), 28);
-                }
-
+                // 윤년
                 if (isLeap && paymentDate.equalsDate(2, 29)) {
                     endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth().plus(1), 28);
+                }
+
+                // 평년
+                if (!isLeap && paymentDate.equalsDate(3, 1)) {
+                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth(), 28);
                 }
             }
 
             if (startDate.equalsDayOfMonth(30)) {
-                if (startDate.getMonth().getValue() == 1) {
+                // 윤년
+                if (isLeap && paymentDate.equalsDate(2, 29)) {
+                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth().plus(1), 29);
+                }
 
+                // 평년
+                if (!isLeap && paymentDate.equalsDate(3, 1)) {
+                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth(), 29);
+                }
+            }
+
+            if (startDate.equalsDayOfMonth(31)) {
+                // 윤년
+                if (isLeap && paymentDate.equalsDate(2, 29)) {
+                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth().plus(1), 30);
+                }
+
+                // 평년
+                if (!isLeap && paymentDate.equalsDate(3, 1)) {
+                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth(), 30);
+                }
+            }
+
+            if (startDate.equalsDayOfMonth(1)) {
+                // 윤년
+                if (isLeap && paymentDate.equalsDate(2, 29)) {
+                    endDate = PaymentDate.of(paymentDate.getYear(), paymentDate.getMonth().plus(1), 31);
                 }
             }
 
