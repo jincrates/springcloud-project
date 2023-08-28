@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.claimservice.domain.BaseEntity;
 import me.jincrates.claimservice.domain.claimproduct.ClaimProduct;
-import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
+import me.jincrates.claimservice.domain.order.orderproduct.OrderProduct;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

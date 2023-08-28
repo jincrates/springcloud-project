@@ -7,11 +7,11 @@ import me.jincrates.claimservice.domain.claim.Claim;
 import me.jincrates.claimservice.domain.claim.ClaimReason;
 import me.jincrates.claimservice.domain.claim.ClaimStatus;
 import me.jincrates.claimservice.domain.claim.ClaimType;
-import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
+import me.jincrates.claimservice.domain.order.orderproduct.OrderProduct;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ClaimTest {
+class OrderTest {
 
     @Test
     @DisplayName("클레임 생성시 클레임 상태는 RECEIPT이다.")

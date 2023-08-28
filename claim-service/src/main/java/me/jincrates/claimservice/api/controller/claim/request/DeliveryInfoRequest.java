@@ -1,4 +1,4 @@
-package me.jincrates.claimservice.api.controller.request;
+package me.jincrates.claimservice.api.controller.claim.request;
 
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
