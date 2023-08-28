@@ -6,12 +6,16 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.28/a2ff5da8bcd8b1b26f36b806ced63213362c6dcc/lombok-1.18.28.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.26/8f8cf0372abf564913e9796623aac4c8ea44025a/lombok-1.18.26.jar" />
         </processorPath>
-        <module name="auth-service.main" />
+        <module name="coffee-service.coffee-order.main" />
+        <module name="coffee-service.coffee-kiosk.main" />
+        <module name="coffee-service.coffee-status.main" />
+        <module name="coffee-service.coffee-member.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="claim-service.querydsl" target="17" />
       <module name="coffee-kiosk" target="17" />
       <module name="coffee-kiosk.main" target="17" />
       <module name="coffee-kiosk.test" target="17" />
