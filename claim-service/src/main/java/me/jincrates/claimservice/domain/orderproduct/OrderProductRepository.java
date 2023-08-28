@@ -1,4 +1,4 @@
-package me.jincrates.claimservice.domain.order.orderproduct;
+package me.jincrates.claimservice.domain.orderproduct;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

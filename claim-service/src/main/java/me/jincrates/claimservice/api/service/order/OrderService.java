@@ -1,7 +1,7 @@
 package me.jincrates.claimservice.api.service.order;
 
 import java.util.List;
-import me.jincrates.claimservice.domain.order.orderproduct.OrderProduct;
+import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
 import org.springframework.stereotype.Service;
 
 @Service

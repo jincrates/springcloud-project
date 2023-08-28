@@ -23,8 +23,8 @@ import me.jincrates.claimservice.domain.delivery.collection.CollectionDelivery;
 import me.jincrates.claimservice.domain.delivery.collection.CollectionDeliveryRepository;
 import me.jincrates.claimservice.domain.delivery.exchange.ExchangeDelivery;
 import me.jincrates.claimservice.domain.delivery.exchange.ExchangeDeliveryRepository;
-import me.jincrates.claimservice.domain.order.orderproduct.OrderProduct;
-import me.jincrates.claimservice.domain.order.orderproduct.OrderProductRepository;
+import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
+import me.jincrates.claimservice.domain.orderproduct.OrderProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

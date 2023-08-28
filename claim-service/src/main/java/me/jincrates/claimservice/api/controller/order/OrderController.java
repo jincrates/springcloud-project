@@ -7,7 +7,7 @@ import me.jincrates.claimservice.api.controller.order.response.OrderListResponse
 import me.jincrates.claimservice.api.controller.order.response.OrderProductListResponse;
 import me.jincrates.claimservice.api.controller.order.response.PageCommonResponse;
 import me.jincrates.claimservice.api.service.order.OrderService;
-import me.jincrates.claimservice.domain.order.orderproduct.OrderProduct;
+import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

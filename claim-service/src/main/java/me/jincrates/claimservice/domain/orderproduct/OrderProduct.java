@@ -1,4 +1,4 @@
-package me.jincrates.claimservice.domain.order.orderproduct;
+package me.jincrates.claimservice.domain.orderproduct;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
