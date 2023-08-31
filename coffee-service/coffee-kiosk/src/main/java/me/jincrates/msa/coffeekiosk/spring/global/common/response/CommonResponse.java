@@ -2,6 +2,7 @@ package me.jincrates.msa.coffeekiosk.spring.global.common.response;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Getter
 public class CommonResponse<T> {
@@ -28,5 +29,10 @@ public class CommonResponse<T> {
 
     public static <T> CommonResponse<T> ok(T data) {
         return of(HttpStatus.OK, data);
+    }
+
+    public static ResponseEntity<?> toResponseEntity(HttpStatus status, String message) {
+        return ResponseEntity.status(status)
+                .body(CommonResponse.of(status, message, null));
     }
 }
