@@ -1,22 +1,24 @@
 package me.jincrates.msa.coffeekiosk.spring.api.service.product;
 
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.SELLING;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.HANDMADE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-
-import java.util.List;
 import me.jincrates.msa.coffeekiosk.spring.IntegrationTestSupport;
-import me.jincrates.msa.coffeekiosk.spring.api.controller.product.request.ProductCreateRequest;
-import me.jincrates.msa.coffeekiosk.spring.api.service.product.response.ProductResponse;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.Product;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductRepository;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.controller.product.request.ProductCreateRequest;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.product.ProductService;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.product.response.ProductResponse;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.Product;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductRepository;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductSellingStatus;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductSellingStatus.SELLING;
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductType.HANDMADE;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 class ProductServiceTest extends IntegrationTestSupport {
 
@@ -55,27 +57,27 @@ class ProductServiceTest extends IntegrationTestSupport {
         productRepository.save(product1);
 
         ProductCreateRequest request = ProductCreateRequest.builder()
-            .type(HANDMADE)
-            .sellingStatus(SELLING)
-            .name("카푸치노")
-            .price(5000)
-            .build();
+                .type(HANDMADE)
+                .sellingStatus(SELLING)
+                .name("카푸치노")
+                .price(5000)
+                .build();
 
         // when
         ProductResponse productResponse = productService.createProduct(request.toServiceRequest());
 
         // then
         assertThat(productResponse)
-            .extracting("productNumber", "type", "sellingStatus", "name", "price")
-            .contains("002", HANDMADE, SELLING, "카푸치노", 5000);
+                .extracting("productNumber", "type", "sellingStatus", "name", "price")
+                .contains("002", HANDMADE, SELLING, "카푸치노", 5000);
 
         List<Product> products = productRepository.findAll();
         assertThat(products).hasSize(2)
-            .extracting("productNumber", "type", "sellingStatus", "name", "price")
-            .containsExactlyInAnyOrder(
-                tuple("001", HANDMADE, SELLING, "아메리카노", 4000),
-                tuple("002", HANDMADE, SELLING, "카푸치노", 5000)
-            );
+                .extracting("productNumber", "type", "sellingStatus", "name", "price")
+                .containsExactlyInAnyOrder(
+                        tuple("001", HANDMADE, SELLING, "아메리카노", 4000),
+                        tuple("002", HANDMADE, SELLING, "카푸치노", 5000)
+                );
     }
 
     @Test
@@ -83,38 +85,38 @@ class ProductServiceTest extends IntegrationTestSupport {
     void createProductWhenProductSIsEmpty() {
         // given
         ProductCreateRequest request = ProductCreateRequest.builder()
-            .type(HANDMADE)
-            .sellingStatus(SELLING)
-            .name("카푸치노")
-            .price(5000)
-            .build();
+                .type(HANDMADE)
+                .sellingStatus(SELLING)
+                .name("카푸치노")
+                .price(5000)
+                .build();
 
         // when
         ProductResponse productResponse = productService.createProduct(request.toServiceRequest());
 
         // then
         assertThat(productResponse)
-            .extracting("productNumber", "type", "sellingStatus", "name", "price")
-            .contains("001", HANDMADE, SELLING, "카푸치노", 5000);
+                .extracting("productNumber", "type", "sellingStatus", "name", "price")
+                .contains("001", HANDMADE, SELLING, "카푸치노", 5000);
 
         List<Product> products = productRepository.findAll();
         assertThat(products).hasSize(1)
-            .extracting("productNumber", "type", "sellingStatus", "name", "price")
-            .contains(
-                tuple("001", HANDMADE, SELLING, "카푸치노", 5000)
-            );
+                .extracting("productNumber", "type", "sellingStatus", "name", "price")
+                .contains(
+                        tuple("001", HANDMADE, SELLING, "카푸치노", 5000)
+                );
     }
 
     // 테스트에 필요한 데이터만 파라미터로 받자
     // 테스트 클래스마다 필요한 빌더를 생성해서 테스트하자
     private Product createProduct(String productNumber, ProductType type,
-        ProductSellingStatus productSellingStatus, String productName, int price) {
+                                  ProductSellingStatus productSellingStatus, String productName, int price) {
         return Product.builder()
-            .productNumber(productNumber)
-            .type(type)
-            .sellingStatus(productSellingStatus)
-            .name(productName)
-            .price(price)
-            .build();
+                .productNumber(productNumber)
+                .type(type)
+                .sellingStatus(productSellingStatus)
+                .name(productName)
+                .price(price)
+                .build();
     }
 }

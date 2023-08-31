@@ -1,14 +1,17 @@
 package me.jincrates.msa.coffeekiosk.spring.domain.order;
 
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.SELLING;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.HANDMADE;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.order.Order;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.order.OrderStatus;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.Product;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.Product;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductSellingStatus.SELLING;
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductType.HANDMADE;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class OrderTest {
 
@@ -17,8 +20,8 @@ class OrderTest {
     void calculateTotalPrice() {
         // given
         List<Product> product = List.of(
-            createProduct("001", 1000),
-            createProduct("002", 2000)
+                createProduct("001", 1000),
+                createProduct("002", 2000)
         );
 
         // when
@@ -33,8 +36,8 @@ class OrderTest {
     void init() {
         // given
         List<Product> product = List.of(
-            createProduct("001", 1000),
-            createProduct("002", 2000)
+                createProduct("001", 1000),
+                createProduct("002", 2000)
         );
 
         // when
@@ -50,8 +53,8 @@ class OrderTest {
         // given
         LocalDateTime registeredAt = LocalDateTime.now();
         List<Product> product = List.of(
-            createProduct("001", 1000),
-            createProduct("002", 2000)
+                createProduct("001", 1000),
+                createProduct("002", 2000)
         );
 
         // when
@@ -63,11 +66,11 @@ class OrderTest {
 
     private Product createProduct(String productNumber, int price) {
         return Product.builder()
-            .productNumber(productNumber)
-            .type(HANDMADE)
-            .price(price)
-            .sellingStatus(SELLING)
-            .name("메뉴 이름")
-            .build();
+                .productNumber(productNumber)
+                .type(HANDMADE)
+                .price(price)
+                .sellingStatus(SELLING)
+                .name("메뉴 이름")
+                .build();
     }
 }

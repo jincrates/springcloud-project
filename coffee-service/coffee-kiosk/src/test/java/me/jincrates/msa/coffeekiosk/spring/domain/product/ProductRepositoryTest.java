@@ -1,18 +1,21 @@
 package me.jincrates.msa.coffeekiosk.spring.domain.product;
 
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.HOLD;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.SELLING;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.STOP_SELLING;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.HANDMADE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-
-import java.util.List;
 import me.jincrates.msa.coffeekiosk.spring.IntegrationTestSupport;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.Product;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductRepository;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductSellingStatus;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductSellingStatus.*;
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductType.HANDMADE;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 //@DataJpaTest  // transcation이 포함되어 있음
 class ProductRepositoryTest extends IntegrationTestSupport {
@@ -40,11 +43,11 @@ class ProductRepositoryTest extends IntegrationTestSupport {
         // then
         // 리스트를 테스트할 때, size와 extracting
         assertThat(products).hasSize(2)
-            .extracting("productNumber", "name", "sellingStatus")
-            .containsExactlyInAnyOrder(
-                tuple("001", "아메리카노", SELLING),
-                tuple("002", "카페라떼", HOLD)
-            );
+                .extracting("productNumber", "name", "sellingStatus")
+                .containsExactlyInAnyOrder(
+                        tuple("001", "아메리카노", SELLING),
+                        tuple("002", "카페라떼", HOLD)
+                );
     }
 
     @Test
@@ -62,11 +65,11 @@ class ProductRepositoryTest extends IntegrationTestSupport {
         // then
         // 리스트를 테스트할 때, size와 extracting
         assertThat(products).hasSize(2)
-            .extracting("productNumber", "name", "sellingStatus")
-            .containsExactlyInAnyOrder(
-                tuple("001", "아메리카노", SELLING),
-                tuple("002", "카페라떼", HOLD)
-            );
+                .extracting("productNumber", "name", "sellingStatus")
+                .containsExactlyInAnyOrder(
+                        tuple("001", "아메리카노", SELLING),
+                        tuple("002", "카페라떼", HOLD)
+                );
     }
 
     @Test
@@ -98,10 +101,10 @@ class ProductRepositoryTest extends IntegrationTestSupport {
 
         // when
         Product latestProduct = productRepository.findTop1ByOrderByIdDesc()
-            .orElse(null);
+                .orElse(null);
 
         Product latestProduct2 = productRepository.findFirstByOrderByIdDesc()
-            .orElse(null);
+                .orElse(null);
 
         // then
         assertThat(latestProduct).isNotNull();
@@ -123,13 +126,13 @@ class ProductRepositoryTest extends IntegrationTestSupport {
     }
 
     private Product createProduct(String productNumber, ProductType type,
-        ProductSellingStatus productSellingStatus, String productName, int price) {
+                                  ProductSellingStatus productSellingStatus, String productName, int price) {
         return Product.builder()
-            .productNumber(productNumber)
-            .type(type)
-            .sellingStatus(productSellingStatus)
-            .name(productName)
-            .price(price)
-            .build();
+                .productNumber(productNumber)
+                .type(type)
+                .sellingStatus(productSellingStatus)
+                .name(productName)
+                .price(price)
+                .build();
     }
 }

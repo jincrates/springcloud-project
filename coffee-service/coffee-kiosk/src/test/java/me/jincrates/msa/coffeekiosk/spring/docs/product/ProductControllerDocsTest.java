@@ -1,17 +1,17 @@
 package me.jincrates.msa.coffeekiosk.spring.docs.product;
 
-import me.jincrates.msa.coffeekiosk.spring.api.controller.product.ProductController;
-import me.jincrates.msa.coffeekiosk.spring.api.controller.product.request.ProductCreateRequest;
-import me.jincrates.msa.coffeekiosk.spring.api.service.product.ProductService;
-import me.jincrates.msa.coffeekiosk.spring.api.service.product.request.ProductCreateServiceRequest;
-import me.jincrates.msa.coffeekiosk.spring.api.service.product.response.ProductResponse;
 import me.jincrates.msa.coffeekiosk.spring.docs.RestDocsSupport;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.controller.product.ProductController;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.controller.product.request.ProductCreateRequest;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.product.ProductService;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.product.request.ProductCreateServiceRequest;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.product.response.ProductResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.SELLING;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.HANDMADE;
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductSellingStatus.SELLING;
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductType.HANDMADE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;

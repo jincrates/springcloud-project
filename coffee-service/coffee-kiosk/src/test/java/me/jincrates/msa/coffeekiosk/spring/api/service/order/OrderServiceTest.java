@@ -1,29 +1,27 @@
 package me.jincrates.msa.coffeekiosk.spring.api.service.order;
 
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductSellingStatus.SELLING;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.BAKERY;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.BOTTLE;
-import static me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType.HANDMADE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.tuple;
-
-import java.time.LocalDateTime;
-import java.util.List;
 import me.jincrates.msa.coffeekiosk.spring.IntegrationTestSupport;
-import me.jincrates.msa.coffeekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
-import me.jincrates.msa.coffeekiosk.spring.api.service.order.response.OrderResponse;
-import me.jincrates.msa.coffeekiosk.spring.domain.order.OrderRepository;
-import me.jincrates.msa.coffeekiosk.spring.domain.orderprodct.OrderProductRepository;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.Product;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductRepository;
-import me.jincrates.msa.coffeekiosk.spring.domain.product.ProductType;
-import me.jincrates.msa.coffeekiosk.spring.domain.stock.Stock;
-import me.jincrates.msa.coffeekiosk.spring.domain.stock.StockRepository;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.order.OrderService;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.order.request.OrderCreateServiceRequest;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.order.response.OrderResponse;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.order.OrderRepository;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.orderprodct.OrderProductRepository;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.Product;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductRepository;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductType;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.stock.Stock;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.stock.StockRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductSellingStatus.SELLING;
+import static me.jincrates.msa.coffeekiosk.spring.temp.domain.product.ProductType.*;
+import static org.assertj.core.api.Assertions.*;
 
 class OrderServiceTest extends IntegrationTestSupport {
 
@@ -64,8 +62,8 @@ class OrderServiceTest extends IntegrationTestSupport {
         productRepository.saveAll(List.of(product1, product2, product3));
 
         OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
-            .productNumbers(List.of("001", "002"))
-            .build();
+                .productNumbers(List.of("001", "002"))
+                .build();
 
         // when
         OrderResponse orderResponse = orderService.createOrder(request, registeredAt);
@@ -73,14 +71,14 @@ class OrderServiceTest extends IntegrationTestSupport {
         // then
         assertThat(orderResponse.getId()).isNotNull();
         assertThat(orderResponse)
-            .extracting("registeredAt", "totalPrice")
-            .contains(registeredAt, 4000);
+                .extracting("registeredAt", "totalPrice")
+                .contains(registeredAt, 4000);
         assertThat(orderResponse.getProducts()).hasSize(2)
-            .extracting("productNumber", "price")
-            .containsExactlyInAnyOrder(
-                tuple("001", 1000),
-                tuple("002", 3000)
-            );
+                .extracting("productNumber", "price")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 1000),
+                        tuple("002", 3000)
+                );
     }
 
     @Test
@@ -95,8 +93,8 @@ class OrderServiceTest extends IntegrationTestSupport {
         productRepository.saveAll(List.of(product1, product2, product3));
 
         OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
-            .productNumbers(List.of("001", "001"))
-            .build();
+                .productNumbers(List.of("001", "001"))
+                .build();
 
         // when
         OrderResponse orderResponse = orderService.createOrder(request, registeredAt);
@@ -104,14 +102,14 @@ class OrderServiceTest extends IntegrationTestSupport {
         // then
         assertThat(orderResponse.getId()).isNotNull();
         assertThat(orderResponse)
-            .extracting("registeredAt", "totalPrice")
-            .contains(registeredAt, 2000);
+                .extracting("registeredAt", "totalPrice")
+                .contains(registeredAt, 2000);
         assertThat(orderResponse.getProducts()).hasSize(2)
-            .extracting("productNumber", "price")
-            .containsExactlyInAnyOrder(
-                tuple("001", 1000),
-                tuple("001", 1000)
-            );
+                .extracting("productNumber", "price")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 1000),
+                        tuple("001", 1000)
+                );
     }
 
     @Test
@@ -130,8 +128,8 @@ class OrderServiceTest extends IntegrationTestSupport {
         stockRepository.saveAll(List.of(stock1, stock2));
 
         OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
-            .productNumbers(List.of("001", "001", "002", "003"))
-            .build();
+                .productNumbers(List.of("001", "001", "002", "003"))
+                .build();
 
         // when
         OrderResponse orderResponse = orderService.createOrder(request, registeredAt);
@@ -139,24 +137,24 @@ class OrderServiceTest extends IntegrationTestSupport {
         // then
         assertThat(orderResponse.getId()).isNotNull();
         assertThat(orderResponse)
-            .extracting("registeredAt", "totalPrice")
-            .contains(registeredAt, 10000);
+                .extracting("registeredAt", "totalPrice")
+                .contains(registeredAt, 10000);
         assertThat(orderResponse.getProducts()).hasSize(4)
-            .extracting("productNumber", "price")
-            .containsExactlyInAnyOrder(
-                tuple("001", 1000),
-                tuple("001", 1000),
-                tuple("002", 3000),
-                tuple("003", 5000)
-            );
+                .extracting("productNumber", "price")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 1000),
+                        tuple("001", 1000),
+                        tuple("002", 3000),
+                        tuple("003", 5000)
+                );
 
         List<Stock> stocks = stockRepository.findAll();
         assertThat(stocks).hasSize(2)
-            .extracting("productNumber", "quantity")
-            .containsExactlyInAnyOrder(
-                tuple("001", 0),
-                tuple("002", 1)
-            );
+                .extracting("productNumber", "quantity")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 0),
+                        tuple("002", 1)
+                );
     }
 
     @Test
@@ -175,22 +173,22 @@ class OrderServiceTest extends IntegrationTestSupport {
         stockRepository.saveAll(List.of(stock1, stock2));
 
         OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
-            .productNumbers(List.of("001", "001", "002", "003"))
-            .build();
+                .productNumbers(List.of("001", "001", "002", "003"))
+                .build();
 
         // when // then
         assertThatThrownBy(() -> orderService.createOrder(request, registeredAt))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("재고가 부족한 상품이 있습니다.");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("재고가 부족한 상품이 있습니다.");
     }
 
     private Product createProduct(ProductType type, String productNumber, int price) {
         return Product.builder()
-            .productNumber(productNumber)
-            .type(type)
-            .price(price)
-            .sellingStatus(SELLING)
-            .name("메뉴 이름")
-            .build();
+                .productNumber(productNumber)
+                .type(type)
+                .price(price)
+                .sellingStatus(SELLING)
+                .name("메뉴 이름")
+                .build();
     }
 }

@@ -1,14 +1,9 @@
 package me.jincrates.msa.coffeekiosk.spring.api.service.mail;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import me.jincrates.msa.coffeekiosk.spring.client.mail.MailSendClient;
-import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistory;
-import me.jincrates.msa.coffeekiosk.spring.domain.history.mail.MailSendHistoryRepository;
+import me.jincrates.msa.coffeekiosk.spring.infra.mail.MailSendClient;
+import me.jincrates.msa.coffeekiosk.spring.temp.api.service.mail.MailService;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.history.mail.MailSendHistory;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.history.mail.MailSendHistoryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +11,12 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MailServiceTest {
@@ -46,8 +47,8 @@ class MailServiceTest {
 
         // stubbing 자체가 BDDMockito를 사용하는 것이 자연스럽다.
         BDDMockito.given(
-                mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
-            .willReturn(true);
+                        mailSendClient.sendEmail(anyString(), anyString(), anyString(), anyString()))
+                .willReturn(true);
 
         // when
         boolean result = mailService.sendMail("", "", "", "");
@@ -55,6 +56,6 @@ class MailServiceTest {
         // then
         assertThat(result).isTrue();
         verify(mailSendHistoryRepository, times(1))
-            .save(any(MailSendHistory.class));
+                .save(any(MailSendHistory.class));
     }
 }

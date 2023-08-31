@@ -1,8 +1,9 @@
 package me.jincrates.msa.coffeekiosk.unit.pg;
 
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.payment.PayMethod;
+
 import java.util.HashMap;
 import java.util.Map;
-import me.jincrates.msa.coffeekiosk.spring.domain.payment.PayMethod;
 
 public class PaymentRunner {
 

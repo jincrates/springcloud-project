@@ -1,13 +1,16 @@
 package me.jincrates.msa.coffeekiosk.spring.domain.stock;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-
-import java.util.List;
 import me.jincrates.msa.coffeekiosk.spring.IntegrationTestSupport;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.stock.Stock;
+import me.jincrates.msa.coffeekiosk.spring.temp.domain.stock.StockRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 class StockRepositoryTest extends IntegrationTestSupport {
 
@@ -29,10 +32,10 @@ class StockRepositoryTest extends IntegrationTestSupport {
         // then
         // 리스트를 테스트할 때, size와 extracting
         assertThat(stocks).hasSize(2)
-            .extracting("productNumber", "quantity")
-            .containsExactlyInAnyOrder(
-                tuple("001", 1),
-                tuple("002", 2)
-            );
+                .extracting("productNumber", "quantity")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 1),
+                        tuple("002", 2)
+                );
     }
 }
