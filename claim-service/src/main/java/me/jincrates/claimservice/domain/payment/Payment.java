@@ -1,5 +1,6 @@
-package me.jincrates.claimservice.domain.orderproduct;
+package me.jincrates.claimservice.domain.payment;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,23 +14,22 @@ import me.jincrates.claimservice.domain.BaseEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "PAYMENT")
 @Entity
-@Table(name = "ORDER_PRODUCT")
-public class OrderProduct extends BaseEntity {
+public class Payment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long orderId;
-    private Long productId;
-    private int quantity;
+
+    @Column(nullable = false)
+    private Long userId;          // 사용자 ID
+
     private int price;
 
     @Builder
-    private OrderProduct(Long orderId, Long productId, int quantity, int price) {
-        this.orderId = orderId;
-        this.productId = productId;
-        this.quantity = quantity;
+    private Payment(Long userId, int price) {
+        this.userId = userId;
         this.price = price;
     }
 }

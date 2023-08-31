@@ -1,4 +1,4 @@
-package me.jincrates.claimservice.api.controller.response;
+package me.jincrates.claimservice.api.controller.claim.response;
 
 import java.util.ArrayList;
 import java.util.List;

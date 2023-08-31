@@ -1,6 +1,10 @@
-package me.jincrates.claimservice.api.controller.request;
+package me.jincrates.claimservice.api.controller.claim.request;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @ToString

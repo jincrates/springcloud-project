@@ -1,17 +1,17 @@
-package me.jincrates.claimservice.api.controller;
+package me.jincrates.claimservice.api.controller.claim;
 
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.claimservice.api.ApiResponse;
-import me.jincrates.claimservice.api.controller.request.ClaimApprovalRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimCreateRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimProductRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimRejectRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimWithdrawalRequest;
-import me.jincrates.claimservice.api.controller.request.DeliveryInfoRequest;
-import me.jincrates.claimservice.api.controller.response.ClaimResponse;
-import me.jincrates.claimservice.api.service.ClaimService;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimApprovalRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimCreateRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimProductRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimRejectRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimWithdrawalRequest;
+import me.jincrates.claimservice.api.controller.claim.request.DeliveryInfoRequest;
+import me.jincrates.claimservice.api.controller.claim.response.ClaimResponse;
+import me.jincrates.claimservice.api.service.claim.ClaimService;
 import me.jincrates.claimservice.domain.claim.ClaimReason;
 import me.jincrates.claimservice.domain.claim.ClaimType;
 import org.springframework.web.bind.annotation.GetMapping;

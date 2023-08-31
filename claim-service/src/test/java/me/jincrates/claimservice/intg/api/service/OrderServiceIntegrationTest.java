@@ -3,10 +3,10 @@ package me.jincrates.claimservice.intg.api.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.jincrates.claimservice.api.controller.request.ClaimCreateRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimProductRequest;
-import me.jincrates.claimservice.api.controller.response.ClaimResponse;
-import me.jincrates.claimservice.api.service.ClaimService;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimCreateRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimProductRequest;
+import me.jincrates.claimservice.api.controller.claim.response.ClaimResponse;
+import me.jincrates.claimservice.api.service.claim.ClaimService;
 import me.jincrates.claimservice.domain.claim.ClaimReason;
 import me.jincrates.claimservice.domain.claim.ClaimRepository;
 import me.jincrates.claimservice.domain.claim.ClaimType;
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class ClaimServiceIntegrationTest extends IntegrationTestSupport {
+class OrderServiceIntegrationTest extends IntegrationTestSupport {
 
     @Autowired
     private ClaimService claimService;

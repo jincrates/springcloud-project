@@ -11,7 +11,7 @@ import me.jincrates.claimservice.domain.orderproduct.OrderProduct;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ClaimTest {
+class OrderTest {
 
     @Test
     @DisplayName("클레임 생성시 클레임 상태는 RECEIPT이다.")

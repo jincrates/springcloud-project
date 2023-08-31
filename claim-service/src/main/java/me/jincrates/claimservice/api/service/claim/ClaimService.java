@@ -1,4 +1,4 @@
-package me.jincrates.claimservice.api.service;
+package me.jincrates.claimservice.api.service.claim;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.jincrates.claimservice.api.controller.request.ClaimApprovalRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimCreateRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimProductRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimRejectRequest;
-import me.jincrates.claimservice.api.controller.request.ClaimWithdrawalRequest;
-import me.jincrates.claimservice.api.controller.response.ClaimResponse;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimApprovalRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimCreateRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimProductRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimRejectRequest;
+import me.jincrates.claimservice.api.controller.claim.request.ClaimWithdrawalRequest;
+import me.jincrates.claimservice.api.controller.claim.response.ClaimResponse;
 import me.jincrates.claimservice.domain.claim.Claim;
 import me.jincrates.claimservice.domain.claim.ClaimRepository;
 import me.jincrates.claimservice.domain.claim.ClaimStatus;
