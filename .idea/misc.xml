@@ -4,10 +4,10 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/api-gateway" />
     <file type="web" url="file://$PROJECT_DIR$/auth-service" />
-    <file type="web" url="file://$PROJECT_DIR$/claim-service" />
     <file type="web" url="file://$PROJECT_DIR$/coffee-service" />
     <file type="web" url="file://$PROJECT_DIR$/config-server" />
     <file type="web" url="file://$PROJECT_DIR$/discovery-server" />
+    <file type="web" url="file://$PROJECT_DIR$/order-service" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_20" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
