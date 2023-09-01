@@ -1,6 +1,5 @@
 package me.jincrates.api.global.core.exception.handler;
 
-import java.nio.file.AccessDeniedException;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.api.global.common.response.CommonResponse;
 import me.jincrates.api.global.core.exception.BadRequestException;
@@ -17,6 +16,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import java.nio.file.AccessDeniedException;
 
 @Slf4j
 @RestControllerAdvice
@@ -117,7 +118,7 @@ public class GlobalExceptionHandler {
 
         StringBuilder builder = new StringBuilder();
         builder.append(error.getField()).append("(은)는 ");
-        builder.append(error.getDefaultMessage()).append(".");
+        builder.append(error.getDefaultMessage());
         builder.append(" 입력된 값: [").append(error.getRejectedValue()).append("]");
 
         return builder.toString();
