@@ -1,57 +1,60 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.1.3'
-	id 'io.spring.dependency-management' version '1.1.3'
+    id 'java'
+    id 'org.springframework.boot' version '3.1.3'
+    id 'io.spring.dependency-management' version '1.1.3'
 }
 
 group = 'me.jincrates.api'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	// lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 
-	// db
-	runtimeOnly 'com.h2database:h2'
+    // db
+    runtimeOnly 'com.h2database:h2'
 
-	// validation
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	// security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	testImplementation 'org.springframework.security:spring-security-test'
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
 
-	// web client
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation group: 'com.google.code.gson', name: 'gson'
-	testImplementation group: 'com.squareup.okhttp3', name: 'okhttp'
-	testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver'
+    // web client
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation group: 'com.google.code.gson', name: 'gson'
+    testImplementation group: 'com.squareup.okhttp3', name: 'okhttp'
+    testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver'
 
-	// JPA
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

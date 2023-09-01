@@ -1,6 +1,7 @@
 package me.jincrates.api.boilerplate.api.controller.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,13 +9,19 @@ import me.jincrates.api.boilerplate.api.service.request.BoilerUpdateServiceReque
 import me.jincrates.api.boilerplate.domain.entity.BoilerStatus;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Schema(description = "Boiler 수정 요청 DTO")
 public class BoilerUpdateRequest {
 
-    @NotEmpty(message = "id는 필수입니다.")
+    @Schema(description = "ID")
+    @Positive(message = "number은 0보다 커야합니다.")
     private Long id;
+
+    @Schema(description = "상태")
     private BoilerStatus status;
-    @NotEmpty(message = "number는 필수입니다.")
+
+    @Schema(description = "NUMBER")
+    @Positive(message = "number은 0보다 커야합니다.")
     private Integer number;
 
     public BoilerUpdateRequest(Long id, BoilerStatus status, Integer number) {

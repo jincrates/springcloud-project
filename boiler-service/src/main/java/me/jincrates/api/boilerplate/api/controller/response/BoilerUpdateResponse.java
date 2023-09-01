@@ -1,16 +1,25 @@
 package me.jincrates.api.boilerplate.api.controller.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import me.jincrates.api.boilerplate.domain.entity.Boiler;
 import me.jincrates.api.boilerplate.domain.entity.BoilerStatus;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Schema(description = "수정된 Boiler DTO")
 public class BoilerUpdateResponse {
 
+    @Schema(description = "ID")
     private Long id;
+
+    @Schema(description = "상태")
     private BoilerStatus status;
+
+    @Schema(description = "NUMBER")
     private Integer number;
 
     @Builder(access = AccessLevel.PRIVATE)
@@ -22,9 +31,9 @@ public class BoilerUpdateResponse {
 
     public static BoilerUpdateResponse of(Boiler boiler) {
         return BoilerUpdateResponse.builder()
-            .id(boiler.getId())
-            .status(boiler.getStatus())
-            .number(boiler.getNumber())
-            .build();
+                .id(boiler.getId())
+                .status(boiler.getStatus())
+                .number(boiler.getNumber())
+                .build();
     }
 }

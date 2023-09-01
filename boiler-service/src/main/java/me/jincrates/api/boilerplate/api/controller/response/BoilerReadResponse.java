@@ -10,8 +10,8 @@ import me.jincrates.api.boilerplate.domain.entity.BoilerStatus;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Schema(description = "등록된 Boiler DTO")
-public class BoilerCreateResponse {
+@Schema(description = "조회된 Boiler DTO")
+public class BoilerReadResponse {
 
     @Schema(description = "ID")
     private Long id;
@@ -23,14 +23,14 @@ public class BoilerCreateResponse {
     private Integer number;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private BoilerCreateResponse(Long id, BoilerStatus status, Integer number) {
+    private BoilerReadResponse(Long id, BoilerStatus status, Integer number) {
         this.id = id;
         this.status = status;
         this.number = number;
     }
 
-    public static BoilerCreateResponse of(Boiler boiler) {
-        return BoilerCreateResponse.builder()
+    public static BoilerReadResponse of(Boiler boiler) {
+        return BoilerReadResponse.builder()
                 .id(boiler.getId())
                 .status(boiler.getStatus())
                 .number(boiler.getNumber())
