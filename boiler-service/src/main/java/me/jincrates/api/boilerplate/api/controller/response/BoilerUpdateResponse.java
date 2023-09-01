@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.api.boilerplate.domain.entity.Boiler;
 import me.jincrates.api.boilerplate.domain.entity.BoilerStatus;
 
 @Getter
@@ -29,11 +28,11 @@ public class BoilerUpdateResponse {
         this.number = number;
     }
 
-    public static BoilerUpdateResponse of(Boiler boiler) {
+    public static BoilerUpdateResponse of(Long id, BoilerStatus status, Integer number) {
         return BoilerUpdateResponse.builder()
-                .id(boiler.getId())
-                .status(boiler.getStatus())
-                .number(boiler.getNumber())
+                .id(id)
+                .status(status)
+                .number(number)
                 .build();
     }
 }

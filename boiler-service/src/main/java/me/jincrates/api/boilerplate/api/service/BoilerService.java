@@ -6,6 +6,9 @@ import me.jincrates.api.boilerplate.api.controller.response.BoilerReadResponse;
 import me.jincrates.api.boilerplate.api.controller.response.BoilerUpdateResponse;
 import me.jincrates.api.boilerplate.api.service.request.BoilerCreateServiceRequest;
 import me.jincrates.api.boilerplate.api.service.request.BoilerUpdateServiceRequest;
+import me.jincrates.api.boilerplate.api.service.response.BoilerCreateServiceResponse;
+import me.jincrates.api.boilerplate.api.service.response.BoilerReadServiceResponse;
+import me.jincrates.api.boilerplate.api.service.response.BoilerUpdateServiceResponse;
 import me.jincrates.api.boilerplate.domain.entity.Boiler;
 import me.jincrates.api.boilerplate.domain.entity.BoilerRepository;
 import me.jincrates.api.global.core.exception.BadRequestException;
@@ -24,19 +27,20 @@ public class BoilerService {
     @Transactional
     public BoilerCreateResponse create(BoilerCreateServiceRequest request) {
         Boiler boiler = Boiler.create(request.getNumber());
-        return BoilerCreateResponse.of(repository.save(boiler));
+        return BoilerCreateServiceResponse.of(repository.save(boiler)).toResponse();
     }
 
     public BoilerReadResponse findById(Long id) {
-        return BoilerReadResponse.of(repository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Boiler를 찾을 수 없습니다. id: " + id)));
+        return BoilerReadServiceResponse.of(repository.findById(id)
+                        .orElseThrow(() -> new BadRequestException("Boiler를 찾을 수 없습니다. id: " + id)))
+                .toResponse();
     }
 
     @Transactional
     public BoilerUpdateResponse update(BoilerUpdateServiceRequest request) {
         Boiler boiler = repository.findById(request.getId())
                 .orElseThrow(() -> new BadRequestException("Boiler를 찾을 수 없습니다. id: " + request.getId()));
-        return BoilerUpdateResponse.of(boiler.update(request));
+        return BoilerUpdateServiceResponse.of(boiler.update(request)).toResponse();
 
     }
 }
