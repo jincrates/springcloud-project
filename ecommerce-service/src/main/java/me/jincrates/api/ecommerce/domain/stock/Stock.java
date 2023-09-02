@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.global.common.BaseEntity;
 
 @Getter
@@ -14,9 +15,12 @@ public class Stock extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "stock_id")
     private Long id;
 
-    private Long productId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private int quantity;
 

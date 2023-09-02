@@ -15,6 +15,7 @@ public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long id;  // 상품 ID
 
     @Column(nullable = false, length = 50)

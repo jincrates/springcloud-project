@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;  // 회원 ID
 
     @Column(nullable = false, length = 50)
