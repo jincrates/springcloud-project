@@ -31,6 +31,14 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/claim-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/claim-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="delegatedBuild" value="false" />
         <option name="testRunner" value="PLATFORM" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/coffee-service" />
@@ -64,14 +72,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/discovery-server" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/order-service" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/order-service" />
           </set>
         </option>
       </GradleProjectSettings>
