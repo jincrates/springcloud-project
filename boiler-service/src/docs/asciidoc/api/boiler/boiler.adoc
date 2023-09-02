@@ -1,0 +1,23 @@
+[[boiler-create]]
+=== 신규 보일러 등록
+
+==== HTTP Request
+include::{snippets}/boiler-create/http-request.adoc[]
+include::{snippets}/boiler-create/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/boiler-create/http-response.adoc[]
+include::{snippets}/boiler-create/response-fields.adoc[]
+
+
+[[boiler-update]]
+=== 보일러 변경
+
+==== HTTP Request
+include::{snippets}/boiler-update/http-request.adoc[]
+include::{snippets}/boiler-update/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/boiler-update/http-response.adoc[]
+include::{snippets}/boiler-update/response-fields.adoc[]
+
