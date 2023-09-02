@@ -1,12 +1,6 @@
-package me.jincrates.api.boilerplate.domain.entity;
+package me.jincrates.api.boilerplate.domain.boiler;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,9 +55,9 @@ public class Boiler extends BaseEntity {
 
     public Boiler update(BoilerUpdateServiceRequest request) {
         return Boiler.builder()
-            .id(request.getId())
-            .status(request.getStatus())
-            .number(request.getNumber())
-            .build();
+                .id(request.getId())
+                .status(request.getStatus())
+                .number(request.getNumber())
+                .build();
     }
 }

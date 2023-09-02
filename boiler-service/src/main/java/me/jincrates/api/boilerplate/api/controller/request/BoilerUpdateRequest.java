@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.api.boilerplate.api.service.request.BoilerUpdateServiceRequest;
-import me.jincrates.api.boilerplate.domain.entity.BoilerStatus;
+import me.jincrates.api.boilerplate.domain.boiler.BoilerStatus;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

@@ -1,4 +1,4 @@
-package me.jincrates.api.boilerplate.domain.entity;
+package me.jincrates.api.boilerplate.domain.boiler;
 
 import lombok.Getter;
 

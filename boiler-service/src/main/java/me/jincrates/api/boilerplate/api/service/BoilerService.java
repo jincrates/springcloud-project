@@ -9,8 +9,8 @@ import me.jincrates.api.boilerplate.api.service.request.BoilerUpdateServiceReque
 import me.jincrates.api.boilerplate.api.service.response.BoilerCreateServiceResponse;
 import me.jincrates.api.boilerplate.api.service.response.BoilerReadServiceResponse;
 import me.jincrates.api.boilerplate.api.service.response.BoilerUpdateServiceResponse;
-import me.jincrates.api.boilerplate.domain.entity.Boiler;
-import me.jincrates.api.boilerplate.domain.entity.BoilerRepository;
+import me.jincrates.api.boilerplate.domain.boiler.Boiler;
+import me.jincrates.api.boilerplate.domain.boiler.BoilerRepository;
 import me.jincrates.api.global.core.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

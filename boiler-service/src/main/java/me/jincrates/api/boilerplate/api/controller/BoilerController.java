@@ -51,7 +51,7 @@ public class BoilerController {
     @ApiResponse(responseCode = "200", description = "보일러 수정 성공",
             content = @Content(schema = @Schema(implementation = BoilerUpdateResponse.class, description = "수정된 boiler")))
     @PutMapping("/api/v1/boiler")
-    public CommonResponse<BoilerUpdateResponse> updateEntity(
+    public CommonResponse<BoilerUpdateResponse> updateBoiler(
             @Valid @RequestBody BoilerUpdateRequest request) {
         return CommonResponse.ok(service.update(request.toServiceRequest()));
     }
