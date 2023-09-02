@@ -23,6 +23,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,29 +56,19 @@ public class BoilerControllerDocsTest extends RestDocsSupport {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("status").type(JsonFieldType.STRING)
-                                        .optional()
-                                        .description("보일러 상태"),
-                                fieldWithPath("number").type(JsonFieldType.NUMBER)
-                                        .description("보일러 넘버")
+                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("보일러 넘버"),
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("보일러 상태").optional()
                         ),
                         responseFields(
-                                fieldWithPath("code").type(JsonFieldType.NUMBER)
-                                        .description("코드"),
-                                fieldWithPath("status").type(JsonFieldType.STRING)
-                                        .description("상태"),
-                                fieldWithPath("message").type(JsonFieldType.STRING)
-                                        .description("메시지"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT)
-                                        .description("응답 데이터"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
 
                                 // data
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER)
-                                        .description("보일러 ID"),
-                                fieldWithPath("data.status").type(JsonFieldType.STRING)
-                                        .description("보일러 상태"),
-                                fieldWithPath("data.number").type(JsonFieldType.NUMBER)
-                                        .description("보일러 넘버")
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("보일러 ID"),
+                                fieldWithPath("data.status").type(JsonFieldType.STRING).description("보일러 상태"),
+                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("보일러 넘버")
                         )
                 ));
     }
@@ -102,30 +93,20 @@ public class BoilerControllerDocsTest extends RestDocsSupport {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER)
-                                        .description("보일러 ID"),
-                                fieldWithPath("status").type(JsonFieldType.STRING)
-                                        .description("보일러 상태"),
-                                fieldWithPath("number").type(JsonFieldType.NUMBER)
-                                        .description("보일러 넘버")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("보일러 ID"),
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("보일러 상태"),
+                                fieldWithPath("number").type(JsonFieldType.NUMBER).description("보일러 넘버")
                         ),
                         responseFields(
-                                fieldWithPath("code").type(JsonFieldType.NUMBER)
-                                        .description("코드"),
-                                fieldWithPath("status").type(JsonFieldType.STRING)
-                                        .description("상태"),
-                                fieldWithPath("message").type(JsonFieldType.STRING)
-                                        .description("메시지"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT)
-                                        .description("응답 데이터"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
 
                                 // data
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER)
-                                        .description("보일러 ID"),
-                                fieldWithPath("data.status").type(JsonFieldType.STRING)
-                                        .description("보일러 상태"),
-                                fieldWithPath("data.number").type(JsonFieldType.NUMBER)
-                                        .description("보일러 넘버")
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("보일러 ID"),
+                                fieldWithPath("data.status").type(JsonFieldType.STRING).description("보일러 상태"),
+                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("보일러 넘버")
                         )
                 ));
     }
