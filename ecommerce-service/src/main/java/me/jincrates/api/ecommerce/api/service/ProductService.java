@@ -1,7 +1,9 @@
 package me.jincrates.api.ecommerce.api.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.api.service.request.ProductCreateServiceRequest;
+import me.jincrates.api.ecommerce.api.service.response.ProductServiceResponse;
 import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductImage;
 import me.jincrates.api.ecommerce.domain.product.ProductImageRepository;
@@ -41,5 +43,19 @@ public class ProductService {
         }
 
         return product.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public ProductServiceResponse getProductDetail(Long productId) {
+        List<ProductImage> productImages = productImageRepository.findByProductIdOrderByIdAsc(productId);
+
+        // ProductImage -> ProductImageServiceResponse
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + productId));
+
+        // Product -> ProductServiceResponse
+
+        return null;
     }
 }
