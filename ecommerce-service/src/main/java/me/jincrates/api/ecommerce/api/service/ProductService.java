@@ -3,12 +3,15 @@ package me.jincrates.api.ecommerce.api.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.api.service.request.ProductCreateServiceRequest;
+import me.jincrates.api.ecommerce.api.service.request.ProductSearchRequest;
 import me.jincrates.api.ecommerce.api.service.request.ProductUpdateServiceRequest;
 import me.jincrates.api.ecommerce.api.service.response.ProductServiceResponse;
 import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductImage;
 import me.jincrates.api.ecommerce.domain.product.ProductImageRepository;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,5 +75,10 @@ public class ProductService {
         }
 
         return product.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Product> getAdminProductPage(ProductSearchRequest request, Pageable pageable) {
+        return productRepository.getAdminProductPage(request, pageable);
     }
 }
