@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.jincrates.api.ecommerce.api.service.request.ProductUpdateServiceRequest;
 import me.jincrates.api.global.common.BaseEntity;
 
 @Getter
@@ -63,5 +64,13 @@ public class Product extends BaseEntity {
                 .productDetail(productDetail)
                 .status(ProductSellingStatus.HOLD)
                 .build();
+    }
+
+    public void update(ProductUpdateServiceRequest request) {
+        this.id = request.getProductId();
+        this.productName = request.getProductName();
+        this.price = request.getPrice();
+        this.productDetail = request.getProductDetail();
+        this.status = request.getStatus();
     }
 }

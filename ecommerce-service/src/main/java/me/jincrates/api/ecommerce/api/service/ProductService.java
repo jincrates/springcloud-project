@@ -3,6 +3,7 @@ package me.jincrates.api.ecommerce.api.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.api.service.request.ProductCreateServiceRequest;
+import me.jincrates.api.ecommerce.api.service.request.ProductUpdateServiceRequest;
 import me.jincrates.api.ecommerce.api.service.response.ProductServiceResponse;
 import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductImage;
@@ -49,13 +50,27 @@ public class ProductService {
     public ProductServiceResponse getProductDetail(Long productId) {
         List<ProductImage> productImages = productImageRepository.findByProductIdOrderByIdAsc(productId);
 
-        // ProductImage -> ProductImageServiceResponse
-
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + productId));
 
-        // Product -> ProductServiceResponse
+        return ProductServiceResponse.of(product, productImages);
+    }
 
-        return null;
+    @Transactional
+    public Long updateProduct(ProductUpdateServiceRequest request, List<MultipartFile> images) {
+        // 상품 조회
+        Product product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + request.getProductId()));
+        product.update(request);
+
+        ProductServiceResponse productDetail = getProductDetail(request.getProductId());
+        List<Long> productImagesIds = productDetail.getProductImagesIds();
+
+        // 이미지 수정
+        for (int i = 0; i < images.size(); i++) {
+            productImageService.updateProductImage(productImagesIds.get(i), images.get(i));
+        }
+
+        return product.getId();
     }
 }

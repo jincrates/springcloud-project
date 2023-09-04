@@ -1,6 +1,10 @@
 package me.jincrates.api.ecommerce.api.service.response;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import me.jincrates.api.ecommerce.domain.product.Product;
+import me.jincrates.api.ecommerce.domain.product.ProductImage;
 import me.jincrates.api.ecommerce.domain.product.ProductSellingStatus;
 
 import java.util.ArrayList;
@@ -16,7 +20,8 @@ public class ProductServiceResponse {
     private List<ProductImageServiceResponse> productImages = new ArrayList<>();
     private List<Long> productImagesIds = new ArrayList<>();
 
-    public ProductServiceResponse(Long id, String productName, int price, String productDetail, ProductSellingStatus status, List<ProductImageServiceResponse> productImages, List<Long> productImagesIds) {
+    @Builder(access = AccessLevel.PRIVATE)
+    private ProductServiceResponse(Long id, String productName, int price, String productDetail, ProductSellingStatus status, List<ProductImageServiceResponse> productImages, List<Long> productImagesIds) {
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -24,5 +29,17 @@ public class ProductServiceResponse {
         this.status = status;
         this.productImages = productImages;
         this.productImagesIds = productImagesIds;
+    }
+
+    public static ProductServiceResponse of(Product product, List<ProductImage> productImages) {
+        return ProductServiceResponse.builder()
+                .id(product.getId())
+                .productName(product.getProductName())
+                .price(product.getPrice())
+                .productDetail(product.getProductDetail())
+                .status(product.getStatus())
+                .productImages(productImages.stream().map(ProductImageServiceResponse::of).toList())
+                .productImagesIds(productImages.stream().map(ProductImage::getId).toList())
+                .build();
     }
 }

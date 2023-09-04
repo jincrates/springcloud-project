@@ -20,4 +20,14 @@ public class ProductImageService {
 
         // 상품 이미지 정보 저장
     }
+
+    public void updateProductImage(Long productImageId, MultipartFile image) {
+        // 259
+        if (!image.isEmpty()) {
+            // save
+        }
+        // 기존 이미지 파일 삭제
+
+        // 파일 업로드 저장
+    }
 }
