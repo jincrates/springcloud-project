@@ -7,6 +7,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
+import me.jincrates.api.ecommerce.api.service.response.OrderListPageServiceResponse;
+import me.jincrates.api.ecommerce.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.domain.member.Member;
 import me.jincrates.api.ecommerce.domain.member.MemberRepository;
 import me.jincrates.api.ecommerce.domain.order.Order;
@@ -14,6 +16,7 @@ import me.jincrates.api.ecommerce.domain.order.OrderProduct;
 import me.jincrates.api.ecommerce.domain.order.OrderRepository;
 import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +51,20 @@ public class OrderService {
         order.success();
 
         return order.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderListPageServiceResponse getOrderListPage(String email, Pageable pageable) {
+        List<Order> orders = orderRepository.findOrders(email, pageable);
+        Long totalCount = orderRepository.countOrder(email);
+
+        // 313
+        List<OrderServiceResponse> orderResponses = new ArrayList<>();
+
+        return OrderListPageServiceResponse.builder()
+            .pageNo(0)
+            .hasNext(true)
+            .contents(orderResponses)
+            .build();
     }
 }
