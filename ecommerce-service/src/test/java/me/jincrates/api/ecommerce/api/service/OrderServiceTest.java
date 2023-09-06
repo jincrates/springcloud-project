@@ -1,5 +1,6 @@
 package me.jincrates.api.ecommerce.api.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
 import me.jincrates.api.ecommerce.api.service.response.OrderServiceResponse;
@@ -7,6 +8,7 @@ import me.jincrates.api.ecommerce.domain.member.Member;
 import me.jincrates.api.ecommerce.domain.member.MemberRepository;
 import me.jincrates.api.ecommerce.domain.order.OrderProductRepository;
 import me.jincrates.api.ecommerce.domain.order.OrderRepository;
+import me.jincrates.api.ecommerce.domain.order.OrderStatus;
 import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
 import me.jincrates.api.ecommerce.domain.stock.Stock;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 class OrderServiceTest extends IntegrationTestSupport {
 
@@ -63,7 +66,7 @@ class OrderServiceTest extends IntegrationTestSupport {
         Product product = Product.create("상품명", 10000, "상품 상세설명");
         productRepository.save(product);
 
-        Stock stock = Stock.create(product, quantity);
+        Stock stock = Stock.create(product, 10);
         stockRepository.save(stock);
 
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(product.getId(),
@@ -73,6 +76,15 @@ class OrderServiceTest extends IntegrationTestSupport {
         OrderServiceResponse response = orderService.order(request, member.getEmail());
 
         // then
-        assertThat(response).isNotNull();
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getOrderStatus()).isEqualTo(OrderStatus.SUCCESS);
+        assertThat(response.getOrderProducts()).hasSize(1)
+                .extracting("productId", "orderPrice", "quantity")
+                .contains(
+                        tuple(1L, 10000, 1)
+                );
+
+        Stock restedStock = stockRepository.findById(stock.getId()).orElseThrow(EntityNotFoundException::new);
+        assertThat(restedStock.getQuantity()).isEqualTo(9);
     }
 }
