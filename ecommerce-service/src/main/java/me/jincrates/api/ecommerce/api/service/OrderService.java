@@ -1,8 +1,6 @@
 package me.jincrates.api.ecommerce.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
@@ -17,9 +15,15 @@ import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
 import me.jincrates.api.ecommerce.domain.stock.Stock;
 import me.jincrates.api.ecommerce.domain.stock.StockRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -35,11 +39,11 @@ public class OrderService {
     @Transactional
     public OrderServiceResponse order(OrderCreateServiceRequest request, String email) {
         Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email:" + email));
+            .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
 
         Product product = productRepository.findById(request.getProductId())
             .orElseThrow(() -> new EntityNotFoundException(
-                "상품을 찾을 수 없습니다. productId:" + request.getProductId()));
+                "상품을 찾을 수 없습니다. productId=" + request.getProductId()));
 
         // 재고 차감
         deductStockQuantity(product, request.getQuantity());
@@ -60,17 +64,36 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public OrderListPageServiceResponse getOrderListPage(String email, Pageable pageable) {
-        List<Order> orders = orderRepository.findOrders(email, pageable);
-        Long totalCount = orderRepository.countOrder(email);
+        Page<Order> orders = orderRepository.findOrdersPage(email, pageable);
 
-        // 313
-        List<OrderServiceResponse> orderResponses = new ArrayList<>();
+        List<OrderServiceResponse> responses = orders.stream().map(OrderServiceResponse::of).toList();
 
         return OrderListPageServiceResponse.builder()
-            .pageNo(0)
-            .hasNext(true)
-            .contents(orderResponses)
+            .pageNo(orders.getPageable().getPageNumber())
+            .hasNext(orders.hasNext())
+            .contents(responses)
             .build();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean validateOrder(UUID orderId, String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. orderId=" + orderId));
+
+        Member orderMember = order.getMember();
+
+        return Objects.equals(member.getEmail(), orderMember.getEmail());
+    }
+
+    @Transactional
+    public void cancel(UUID orderId) {
+        // TODO: 324
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. orderId=" + orderId));
+        order.cancel();;
     }
 
     private void deductStockQuantity(Product product, int quantity) {

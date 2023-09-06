@@ -1,15 +1,6 @@
 package me.jincrates.api.ecommerce.domain.product;
 
-import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,7 +33,6 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductSellingStatus status;  // 상품 판매상태
 
-    @QueryProjection
     @Builder(access = AccessLevel.PRIVATE)
     private Product(String productName, int price, String productDetail,
         ProductSellingStatus status) {

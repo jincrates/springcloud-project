@@ -5,7 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import me.jincrates.api.ecommerce.api.service.request.ProductSearchRequest;
+import me.jincrates.api.ecommerce.api.service.request.ProductSearchServiceRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -21,7 +21,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Product> getAdminProductPage(ProductSearchRequest request, Pageable pageable) {
+    public Page<Product> getAdminProductPage(ProductSearchServiceRequest request, Pageable pageable) {
 
         List<Product> contents = queryFactory
                 .selectFrom(product)

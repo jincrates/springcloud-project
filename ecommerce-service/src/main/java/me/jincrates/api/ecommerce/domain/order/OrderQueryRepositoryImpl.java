@@ -1,11 +1,15 @@
 package me.jincrates.api.ecommerce.domain.order;
 
-import static me.jincrates.api.ecommerce.domain.order.QOrder.order;
-
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+
+import java.util.List;
+
+import static me.jincrates.api.ecommerce.domain.order.QOrder.order;
 
 @RequiredArgsConstructor
 public class OrderQueryRepositoryImpl implements OrderQueryRepository {
@@ -28,5 +32,23 @@ public class OrderQueryRepositoryImpl implements OrderQueryRepository {
             .from(order)
             .where(order.member.email.eq(email))
             .fetchOne();
+    }
+
+    @Override
+    public Page<Order> findOrdersPage(String email, Pageable pageable) {
+        List<Order> contents = queryFactory
+                .selectFrom(order)
+                .where(order.member.email.eq(email))
+                .orderBy(order.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(order.count())
+                .from(order)
+                .where(order.member.email.eq(email));
+
+        return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchOne);
     }
 }

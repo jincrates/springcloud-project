@@ -18,6 +18,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 1000
     defer-datasource-initialization: true
 
   # 파일 한 개당 최대 사이즈: max-file-size
