@@ -32,7 +32,7 @@ public class OrderProduct extends BaseEntity {
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", columnDefinition = "bigint")
     private Product product;
 
     private int orderPrice;  // 주문 가격
@@ -52,11 +52,8 @@ public class OrderProduct extends BaseEntity {
         return OrderProduct.builder()
             .product(product)
             .quantity(quantity)
+            .orderPrice(product.getPrice() * quantity)
             .build();
-    }
-
-    public int calculateTotalProduct() {
-        return orderPrice * quantity;
     }
 
     public void setOrder(Order order) {

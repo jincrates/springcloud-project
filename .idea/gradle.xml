@@ -76,6 +76,8 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="delegatedBuild" value="false" />
+        <option name="testRunner" value="PLATFORM" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/ecommerce-service" />
         <option name="modules">
           <set>

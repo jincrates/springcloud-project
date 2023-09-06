@@ -1,7 +1,15 @@
 package me.jincrates.api.ecommerce.domain.member;
 
 
-import jakarta.persistence.*;
+import com.querydsl.core.annotations.QueryProjection;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Table(name = "MEMBER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -37,15 +46,16 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;  // 상태
 
+    @QueryProjection
     @Builder(access = AccessLevel.PRIVATE)
     private Member(String name, String email, String password, Role role, Status status) {
-        if(name == null) {
+        if (name == null) {
             throw new IllegalArgumentException("이름은 필수입니다.");
         }
-        if(email == null) {
+        if (email == null) {
             throw new IllegalArgumentException("이메일은 필수입니다.");
         }
-        if(password == null) {
+        if (password == null) {
             throw new IllegalArgumentException("비밀번호는 필수입니다.");
         }
 
@@ -56,13 +66,14 @@ public class Member extends BaseEntity {
         this.status = status;
     }
 
-    public static Member create(String name, String email, String password, PasswordEncoder passwordEncoder) {
+    public static Member create(String name, String email, String password,
+        PasswordEncoder passwordEncoder) {
         return Member.builder()
-                .name(name)
-                .email(email)
-                .password(passwordEncoder.encode(password))
-                .role(Role.USER)
-                .status(Status.ACTIVE)
-                .build();
+            .name(name)
+            .email(email)
+            .password(passwordEncoder.encode(password))
+            .role(Role.USER)
+            .status(Status.ACTIVE)
+            .build();
     }
 }

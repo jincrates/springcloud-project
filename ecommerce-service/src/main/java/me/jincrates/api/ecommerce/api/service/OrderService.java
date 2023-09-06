@@ -3,7 +3,6 @@ package me.jincrates.api.ecommerce.api.service;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
@@ -16,6 +15,8 @@ import me.jincrates.api.ecommerce.domain.order.OrderProduct;
 import me.jincrates.api.ecommerce.domain.order.OrderRepository;
 import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
+import me.jincrates.api.ecommerce.domain.stock.Stock;
+import me.jincrates.api.ecommerce.domain.stock.StockRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,15 +30,19 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final StockRepository stockRepository;
 
     @Transactional
-    public UUID order(OrderCreateServiceRequest request, String email) {
+    public OrderServiceResponse order(OrderCreateServiceRequest request, String email) {
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email:" + email));
 
         Product product = productRepository.findById(request.getProductId())
             .orElseThrow(() -> new EntityNotFoundException(
                 "상품을 찾을 수 없습니다. productId:" + request.getProductId()));
+
+        // 재고 차감
+        deductStockQuantity(product, request.getQuantity());
 
         List<OrderProduct> orderProducts = new ArrayList<>();
         OrderProduct orderProduct = OrderProduct.create(product, request.getQuantity());
@@ -50,7 +55,7 @@ public class OrderService {
         order.progress();
         order.success();
 
-        return order.getId();
+        return OrderServiceResponse.of(order);
     }
 
     @Transactional(readOnly = true)
@@ -67,4 +72,18 @@ public class OrderService {
             .contents(orderResponses)
             .build();
     }
+
+    private void deductStockQuantity(Product product, int quantity) {
+        Stock stock = stockRepository.findByProduct(product);
+
+        // 재고 차감 시도
+        if (stock.isQuantityLessThan(quantity)) {
+            log.warn("재고가 부족한 상품이 있습니다. productId={}, stock.quantity={}", product.getId(),
+                stock.getQuantity());
+            throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
+        }
+
+        stock.deductQuantity(quantity);
+    }
+
 }

@@ -1,6 +1,15 @@
 package me.jincrates.api.ecommerce.domain.product;
 
-import jakarta.persistence.*;
+import com.querydsl.core.annotations.QueryProjection;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,8 +42,10 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductSellingStatus status;  // 상품 판매상태
 
+    @QueryProjection
     @Builder(access = AccessLevel.PRIVATE)
-    private Product(String productName, int price, String productDetail, ProductSellingStatus status) {
+    private Product(String productName, int price, String productDetail,
+        ProductSellingStatus status) {
         if (productName == null) {
             throw new IllegalArgumentException("상품명은 필수입니다.");
         }
@@ -59,11 +70,11 @@ public class Product extends BaseEntity {
 
     public static Product create(String productName, int price, String productDetail) {
         return Product.builder()
-                .productName(productName)
-                .price(price)
-                .productDetail(productDetail)
-                .status(ProductSellingStatus.HOLD)
-                .build();
+            .productName(productName)
+            .price(price)
+            .productDetail(productDetail)
+            .status(ProductSellingStatus.HOLD)
+            .build();
     }
 
     public void update(ProductUpdateServiceRequest request) {

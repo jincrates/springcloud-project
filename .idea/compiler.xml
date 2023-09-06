@@ -53,8 +53,6 @@
       <module name="discovery-service" target="17" />
       <module name="discovery-service.main" target="17" />
       <module name="discovery-service.test" target="17" />
-      <module name="order-service.main" target="17" />
-      <module name="order-service.test" target="17" />
       <module name="root" target="17" />
       <module name="root.coffee-member" target="17" />
       <module name="root.coffee-member.main" target="17" />

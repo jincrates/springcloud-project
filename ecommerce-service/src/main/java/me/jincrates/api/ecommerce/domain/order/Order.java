@@ -1,5 +1,6 @@
 package me.jincrates.api.ecommerce.domain.order;
 
+import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,6 +47,7 @@ public class Order extends BaseEntity {
 
     private String failMessage;
 
+    @QueryProjection
     @Builder(access = AccessLevel.PRIVATE)
     private Order(UUID id, Member member, LocalDateTime orderedAt, OrderStatus orderStatus,
         List<OrderProduct> orderProducts) {
@@ -56,28 +58,24 @@ public class Order extends BaseEntity {
         this.orderProducts = orderProducts;
     }
 
-    public void addOrderProduct(OrderProduct orderProduct) {
-        orderProducts.add(orderProduct);
-        orderProduct.setOrder(this);
-    }
-
     public static Order create(Member member, List<OrderProduct> orderProducts) {
         Order order = Order.builder()
             .id(UUID.randomUUID())  // 주문번호 채번
             .member(member)
             .orderedAt(LocalDateTime.now())
             .orderStatus(OrderStatus.RECEIPT)
+            .orderProducts(orderProducts)
             .build();
 
         for (OrderProduct orderProduct : orderProducts) {
-            order.addOrderProduct(orderProduct);
+            orderProduct.setOrder(order);
         }
 
         return order;
     }
 
     public int calculateTotalProduct() {
-        return orderProducts.stream().mapToInt(OrderProduct::calculateTotalProduct).sum();
+        return orderProducts.stream().mapToInt(OrderProduct::getOrderPrice).sum();
     }
 
     public void progress() {
