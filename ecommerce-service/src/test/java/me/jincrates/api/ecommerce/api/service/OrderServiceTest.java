@@ -1,12 +1,11 @@
 package me.jincrates.api.ecommerce.api.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
 import me.jincrates.api.ecommerce.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.domain.member.Member;
 import me.jincrates.api.ecommerce.domain.member.MemberRepository;
+import me.jincrates.api.ecommerce.domain.order.OrderProductRepository;
 import me.jincrates.api.ecommerce.domain.order.OrderRepository;
 import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
@@ -17,6 +16,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class OrderServiceTest extends IntegrationTestSupport {
 
@@ -33,6 +34,9 @@ class OrderServiceTest extends IntegrationTestSupport {
     private ProductRepository productRepository;
 
     @Autowired
+    private OrderProductRepository orderProductRepository;
+
+    @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
@@ -40,10 +44,11 @@ class OrderServiceTest extends IntegrationTestSupport {
 
     @AfterEach
     void tearDown() {
-        productRepository.deleteAllInBatch();
-        stockRepository.deleteAllInBatch();
+        orderProductRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
+        stockRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
     }
 
     @Test
