@@ -2,6 +2,7 @@ package me.jincrates.api.ecommerce.domain.cart;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.api.ecommerce.domain.product.Product;
@@ -27,4 +28,23 @@ public class CartProduct extends BaseEntity {
     private Product product;
 
     private int quantity;  // 담은 수량
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private CartProduct(Cart cart, Product product, int quantity) {
+        this.cart = cart;
+        this.product = product;
+        this.quantity = quantity;
+    }
+
+    public static CartProduct create(Cart cart, Product product, int quantity) {
+        return CartProduct.builder()
+                .cart(cart)
+                .product(product)
+                .quantity(quantity)
+                .build();
+    }
+
+    public void addQuantity(int quantity) {
+        this.quantity += quantity;
+    }
 }

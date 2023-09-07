@@ -2,6 +2,7 @@ package me.jincrates.api.ecommerce.domain.cart;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.api.ecommerce.domain.member.Member;
@@ -20,4 +21,15 @@ public class Cart extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private Cart(Member member) {
+        this.member = member;
+    }
+
+    public static Cart create(Member member) {
+        return Cart.builder()
+                .member(member)
+                .build();
+    }
 }
