@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @RequiredArgsConstructor
-public class CartQueryRepositoryImpl implements CartQueryRepository{
+public class CartProductQueryRepositoryImpl implements CartProductQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
