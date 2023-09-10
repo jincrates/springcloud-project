@@ -33,6 +33,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository{
                 .limit(pageable.getPageSize())
                 .fetch();
 
+        // TODO: 카운트 쿼리 개선 필요
         JPAQuery<Long> countQuery = queryFactory
                 .select(product.count())
                 .where(createdAtAfter(request.getSearchDateType()),
