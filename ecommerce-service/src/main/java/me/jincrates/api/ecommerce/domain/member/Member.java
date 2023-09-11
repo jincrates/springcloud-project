@@ -14,8 +14,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.api.ecommerce.domain.Status;
 import me.jincrates.api.global.common.BaseEntity;
+import me.jincrates.api.global.common.enumtype.Status;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter

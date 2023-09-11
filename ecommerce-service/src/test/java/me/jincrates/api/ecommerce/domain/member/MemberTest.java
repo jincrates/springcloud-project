@@ -1,13 +1,13 @@
 package me.jincrates.api.ecommerce.domain.member;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
-import me.jincrates.api.ecommerce.domain.Status;
+import me.jincrates.api.global.common.enumtype.Status;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberTest extends IntegrationTestSupport {
 
@@ -22,8 +22,8 @@ class MemberTest extends IntegrationTestSupport {
 
         // then
         assertThat(member).isNotNull()
-                .extracting("name", "email", "role", "status")
-                .contains("회원명", "user@email.com", Role.USER, Status.ACTIVE);
+            .extracting("name", "email", "role", "status")
+            .contains("회원명", "user@email.com", Role.USER, Status.ACTIVE);
         assertThat(passwordEncoder.matches("password", member.getPassword())).isTrue();
     }
 }

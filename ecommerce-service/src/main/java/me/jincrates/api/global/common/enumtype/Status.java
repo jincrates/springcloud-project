@@ -1,4 +1,4 @@
-package me.jincrates.api.ecommerce.domain;
+package me.jincrates.api.global.common.enumtype;
 
 import lombok.Getter;
 

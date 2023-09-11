@@ -3,9 +3,9 @@ package me.jincrates.api.ecommerce.api.service.response;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import me.jincrates.api.ecommerce.domain.Status;
 import me.jincrates.api.ecommerce.domain.member.Member;
 import me.jincrates.api.ecommerce.domain.member.Role;
+import me.jincrates.api.global.common.enumtype.Status;
 
 @Getter
 public class MemberCreateServiceResponse {
@@ -17,7 +17,8 @@ public class MemberCreateServiceResponse {
     private Status status;  // 상태
 
     @Builder(access = AccessLevel.PRIVATE)
-    private MemberCreateServiceResponse(Long id, String name, String email, Role role, Status status) {
+    private MemberCreateServiceResponse(Long id, String name, String email, Role role,
+        Status status) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -27,11 +28,11 @@ public class MemberCreateServiceResponse {
 
     public static MemberCreateServiceResponse of(Member member) {
         return MemberCreateServiceResponse.builder()
-                .id(member.getId())
-                .name(member.getName())
-                .email(member.getEmail())
-                .role(member.getRole())
-                .status(member.getStatus())
-                .build();
+            .id(member.getId())
+            .name(member.getName())
+            .email(member.getEmail())
+            .role(member.getRole())
+            .status(member.getStatus())
+            .build();
     }
 }
