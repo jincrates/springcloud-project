@@ -7,9 +7,13 @@ import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.jincrates.api.ecommerce.api.service.request.CartProductOrderServiceRequest;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
 import me.jincrates.api.ecommerce.api.service.response.OrderListPageServiceResponse;
 import me.jincrates.api.ecommerce.api.service.response.OrderServiceResponse;
+import me.jincrates.api.ecommerce.domain.cart.CartProduct;
+import me.jincrates.api.ecommerce.domain.cart.CartProductRepository;
+import me.jincrates.api.ecommerce.domain.cart.CartRepository;
 import me.jincrates.api.ecommerce.domain.member.Member;
 import me.jincrates.api.ecommerce.domain.member.MemberRepository;
 import me.jincrates.api.ecommerce.domain.order.Order;
@@ -34,14 +38,14 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final StockRepository stockRepository;
+    private final CartRepository cartRepository;
+    private final CartProductRepository cartProductRepository;
 
     @Transactional
     public OrderServiceResponse order(OrderCreateServiceRequest request, String email) {
         Member member = getMemberByEmail(email);
 
-        Product product = productRepository.findById(request.getProductId())
-            .orElseThrow(() -> new EntityNotFoundException(
-                "상품을 찾을 수 없습니다. productId=" + request.getProductId()));
+        Product product = getProductById(request.getProductId());
 
         // 재고 차감
         deductStockQuantity(product, request.getQuantity());
@@ -58,6 +62,60 @@ public class OrderService {
         order.success();
 
         return OrderServiceResponse.of(order);
+    }
+
+    @Transactional
+    public OrderServiceResponse orders(List<OrderCreateServiceRequest> requests, String email) {
+        Member member = getMemberByEmail(email);
+
+        List<OrderProduct> orderProducts = new ArrayList<>();
+        for (OrderCreateServiceRequest request : requests) {
+            Product product = getProductById(request.getProductId());
+            OrderProduct orderProduct = OrderProduct.create(product, request.getQuantity());
+            orderProducts.add(orderProduct);
+        }
+
+        Order order = Order.create(member, orderProducts);
+        orderRepository.save(order);
+
+        // 결제로직
+        order.progress();
+        order.success();
+
+        return OrderServiceResponse.of(order);
+    }
+
+    @Transactional
+    public OrderServiceResponse orderCartProducts(List<CartProductOrderServiceRequest> requests,
+        String email) {
+        Member member = getMemberByEmail(email);
+
+        // TODO: 메소드 추출
+        List<OrderProduct> orderProducts = new ArrayList<>();
+
+        for (CartProductOrderServiceRequest request : requests) {
+            CartProduct cartProduct = getCartProductById(request.getCartProductId());
+
+            OrderProduct orderProduct = OrderProduct.create(cartProduct.getProduct(),
+                cartProduct.getQuantity());
+            orderProducts.add(orderProduct);
+        }
+
+        Order order = Order.create(member, orderProducts);
+        orderRepository.save(order);
+
+        // 결제로직
+        order.progress();
+        order.success();
+
+        // 장바구니 제거
+        // TODO: 각 서비스로 역할 분리
+        for (CartProductOrderServiceRequest request : requests) {
+            CartProduct cartProduct = getCartProductById(request.getCartProductId());
+
+            cartProductRepository.delete(cartProduct);
+        }
+        return null;
     }
 
     public OrderListPageServiceResponse getOrderListPage(String email, Pageable pageable) {
@@ -103,14 +161,24 @@ public class OrderService {
     }
 
     private Member getMemberByEmail(String email) {
-        Member member = memberRepository.findByEmail(email)
+        return memberRepository.findByEmail(email)
             .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
-        return member;
+    }
+
+    private Product getProductById(Long productId) {
+        return productRepository.findById(productId)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "상품을 찾을 수 없습니다. productId=" + productId));
     }
 
     private Order getOrderById(UUID orderId) {
-        Order order = orderRepository.findById(orderId)
+        return orderRepository.findById(orderId)
             .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. orderId=" + orderId));
-        return order;
+    }
+
+    private CartProduct getCartProductById(Long cartProductId) {
+        return cartProductRepository.findById(cartProductId)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "장바구니 상품을 찾을 수 없습니다. cartProductId=" + cartProductId));
     }
 }
