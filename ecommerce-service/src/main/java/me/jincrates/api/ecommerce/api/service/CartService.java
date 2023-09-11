@@ -1,8 +1,11 @@
 package me.jincrates.api.ecommerce.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.api.service.request.CartProductServiceRequest;
+import me.jincrates.api.ecommerce.api.service.response.CartDetailServiceResponse;
 import me.jincrates.api.ecommerce.domain.cart.Cart;
 import me.jincrates.api.ecommerce.domain.cart.CartProduct;
 import me.jincrates.api.ecommerce.domain.cart.CartProductRepository;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CartService {
+
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
@@ -26,9 +30,9 @@ public class CartService {
     @Transactional
     public Long addCart(CartProductServiceRequest request, String email) {
         Product product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + request.getProductId()));
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
+            .orElseThrow(() -> new EntityNotFoundException(
+                "상품을 찾을 수 없습니다. productId=" + request.getProductId()));
+        Member member = getMemberByEmail(email);
 
         Cart cart = cartRepository.findByMemberId(member.getId());
         if (cart == null) {
@@ -36,7 +40,8 @@ public class CartService {
             cartRepository.save(cart);
         }
 
-        CartProduct savedCartProduct = cartProductRepository.findByCartIdAndProductId(cart.getId(), product.getId());
+        CartProduct savedCartProduct = cartProductRepository.findByCartIdAndProductId(cart.getId(),
+            product.getId());
         if (savedCartProduct == null) {
             CartProduct cartProduct = CartProduct.create(cart, product, request.getQuantity());
             cartProductRepository.save(cartProduct);
@@ -45,5 +50,21 @@ public class CartService {
 
         savedCartProduct.addQuantity(request.getQuantity());
         return savedCartProduct.getId();
+    }
+
+    public List<CartDetailServiceResponse> getCartDetails(String email) {
+        Member member = getMemberByEmail(email);
+
+        Cart cart = cartRepository.findByMemberId(member.getId());
+        if (cart == null) {
+            return new ArrayList<>();
+        }
+
+        return cartProductRepository.findCartDetails(cart.getId());
+    }
+
+    private Member getMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+            .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
     }
 }

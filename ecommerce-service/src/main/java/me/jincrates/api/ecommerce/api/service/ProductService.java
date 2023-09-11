@@ -1,6 +1,7 @@
 package me.jincrates.api.ecommerce.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.api.service.request.ProductCreateServiceRequest;
 import me.jincrates.api.ecommerce.api.service.request.ProductSearchServiceRequest;
@@ -18,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Service
 @RestController
@@ -55,14 +54,11 @@ public class ProductService {
         return product.getId();
     }
 
-    @Transactional(readOnly = true)
     public ProductServiceResponse getProductDetail(Long productId) {
         List<ProductImage> productImages = productImageRepository.findByProductIdOrderByIdAsc(
             productId);
 
-        Product product = productRepository.findById(productId)
-            .orElseThrow(
-                () -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + productId));
+        Product product = getProductById(productId);
 
         return ProductServiceResponse.of(product, productImages);
     }
@@ -70,9 +66,7 @@ public class ProductService {
     @Transactional
     public Long updateProduct(ProductUpdateServiceRequest request, List<MultipartFile> images) {
         // 상품 조회
-        Product product = productRepository.findById(request.getProductId())
-            .orElseThrow(() -> new EntityNotFoundException(
-                "상품을 찾을 수 없습니다. productId=" + request.getProductId()));
+        Product product = getProductById(request.getProductId());
         product.update(request);
 
         ProductServiceResponse productDetail = getProductDetail(request.getProductId());
@@ -86,8 +80,14 @@ public class ProductService {
         return product.getId();
     }
 
-    @Transactional(readOnly = true)
-    public Page<Product> getAdminProductPage(ProductSearchServiceRequest request, Pageable pageable) {
+    public Page<Product> getAdminProductPage(ProductSearchServiceRequest request,
+        Pageable pageable) {
         return productRepository.getAdminProductPage(request, pageable);
+    }
+
+    private Product getProductById(Long productId) {
+        return productRepository.findById(productId)
+            .orElseThrow(
+                () -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + productId));
     }
 }

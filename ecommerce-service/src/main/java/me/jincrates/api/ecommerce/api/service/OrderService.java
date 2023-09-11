@@ -1,6 +1,10 @@
 package me.jincrates.api.ecommerce.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
@@ -20,11 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -38,8 +37,7 @@ public class OrderService {
 
     @Transactional
     public OrderServiceResponse order(OrderCreateServiceRequest request, String email) {
-        Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
+        Member member = getMemberByEmail(email);
 
         Product product = productRepository.findById(request.getProductId())
             .orElseThrow(() -> new EntityNotFoundException(
@@ -62,11 +60,11 @@ public class OrderService {
         return OrderServiceResponse.of(order);
     }
 
-    @Transactional(readOnly = true)
     public OrderListPageServiceResponse getOrderListPage(String email, Pageable pageable) {
         Page<Order> orders = orderRepository.findOrdersPage(email, pageable);
 
-        List<OrderServiceResponse> responses = orders.stream().map(OrderServiceResponse::of).toList();
+        List<OrderServiceResponse> responses = orders.stream().map(OrderServiceResponse::of)
+            .toList();
 
         return OrderListPageServiceResponse.builder()
             .pageNo(orders.getPageable().getPageNumber())
@@ -75,14 +73,9 @@ public class OrderService {
             .build();
     }
 
-    @Transactional(readOnly = true)
     public boolean validateOrder(UUID orderId, String email) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
-
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. orderId=" + orderId));
-
+        Member member = getMemberByEmail(email);
+        Order order = getOrderById(orderId);
         Member orderMember = order.getMember();
 
         return Objects.equals(member.getEmail(), orderMember.getEmail());
@@ -91,10 +84,10 @@ public class OrderService {
     @Transactional
     public void cancel(UUID orderId) {
         // TODO: 324
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. orderId=" + orderId));
-        order.cancel();;
+        Order order = getOrderById(orderId);
+        order.cancel();
     }
+
 
     private void deductStockQuantity(Product product, int quantity) {
         Stock stock = stockRepository.findByProduct(product);
@@ -109,4 +102,15 @@ public class OrderService {
         stock.deductQuantity(quantity);
     }
 
+    private Member getMemberByEmail(String email) {
+        Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
+        return member;
+    }
+
+    private Order getOrderById(UUID orderId) {
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. orderId=" + orderId));
+        return order;
+    }
 }
