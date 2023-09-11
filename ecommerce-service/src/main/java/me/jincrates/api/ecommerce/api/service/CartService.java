@@ -1,8 +1,6 @@
 package me.jincrates.api.ecommerce.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.api.service.request.CartProductServiceRequest;
 import me.jincrates.api.ecommerce.api.service.response.CartDetailServiceResponse;
@@ -16,6 +14,9 @@ import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class CartService {
 
         Cart cart = cartRepository.findByMemberId(member.getId());
         if (cart == null) {
-            cart = Cart.create(member);
+            cart = Cart.create(member, null);
             cartRepository.save(cart);
         }
 

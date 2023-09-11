@@ -1,16 +1,12 @@
 package me.jincrates.api.ecommerce.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.jincrates.api.ecommerce.api.service.request.CartProductOrderServiceRequest;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
 import me.jincrates.api.ecommerce.api.service.response.OrderListPageServiceResponse;
 import me.jincrates.api.ecommerce.api.service.response.OrderServiceResponse;
+import me.jincrates.api.ecommerce.domain.cart.Cart;
 import me.jincrates.api.ecommerce.domain.cart.CartProduct;
 import me.jincrates.api.ecommerce.domain.cart.CartProductRepository;
 import me.jincrates.api.ecommerce.domain.cart.CartRepository;
@@ -27,6 +23,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -86,19 +87,21 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderServiceResponse orderCartProducts(List<CartProductOrderServiceRequest> requests,
-        String email) {
+    public OrderServiceResponse orderFromCart(String email) {
         Member member = getMemberByEmail(email);
 
-        // TODO: 메소드 추출
+        Cart cart = cartRepository.findByMemberId(member.getId());
+
         List<OrderProduct> orderProducts = new ArrayList<>();
 
-        for (CartProductOrderServiceRequest request : requests) {
-            CartProduct cartProduct = getCartProductById(request.getCartProductId());
-
+        for(CartProduct cartProduct : cart.getCartProducts()) {
             OrderProduct orderProduct = OrderProduct.create(cartProduct.getProduct(),
-                cartProduct.getQuantity());
+                    cartProduct.getQuantity());
             orderProducts.add(orderProduct);
+
+            // 재고감소
+            Stock stock = getStockByProduct(cartProduct.getProduct());
+            stock.deductQuantity(cartProduct.getQuantity());
         }
 
         Order order = Order.create(member, orderProducts);
@@ -109,13 +112,9 @@ public class OrderService {
         order.success();
 
         // 장바구니 제거
-        // TODO: 각 서비스로 역할 분리
-        for (CartProductOrderServiceRequest request : requests) {
-            CartProduct cartProduct = getCartProductById(request.getCartProductId());
+        cartProductRepository.deleteAll(cart.getCartProducts());
 
-            cartProductRepository.delete(cartProduct);
-        }
-        return null;
+        return OrderServiceResponse.of(order);
     }
 
     public OrderListPageServiceResponse getOrderListPage(String email, Pageable pageable) {
@@ -148,7 +147,7 @@ public class OrderService {
 
 
     private void deductStockQuantity(Product product, int quantity) {
-        Stock stock = stockRepository.findByProduct(product);
+        Stock stock = getStockByProduct(product);
 
         // 재고 차감 시도
         if (stock.isQuantityLessThan(quantity)) {
@@ -180,5 +179,10 @@ public class OrderService {
         return cartProductRepository.findById(cartProductId)
             .orElseThrow(() -> new EntityNotFoundException(
                 "장바구니 상품을 찾을 수 없습니다. cartProductId=" + cartProductId));
+    }
+
+    private Stock getStockByProduct(Product product) {
+        return stockRepository.findByProduct(product)
+                .orElseThrow(() -> new EntityNotFoundException("상품 재고를 찾을 수 없습니다. productId=" + product.getId()));
     }
 }

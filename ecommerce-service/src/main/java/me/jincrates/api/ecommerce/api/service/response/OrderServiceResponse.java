@@ -1,15 +1,16 @@
 package me.jincrates.api.ecommerce.api.service.response;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import me.jincrates.api.ecommerce.domain.order.Order;
 import me.jincrates.api.ecommerce.domain.order.OrderStatus;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Getter
 public class OrderServiceResponse {
@@ -31,7 +32,7 @@ public class OrderServiceResponse {
     public static OrderServiceResponse of(Order order) {
         return OrderServiceResponse.builder()
             .id(order.getId())
-            .orderedAt(order.getOrderedAt())
+            .orderedAt(order.getCreatedAt())
             .orderStatus(order.getOrderStatus())
             .orderProducts(order.getOrderProducts().stream()
                 .map(OrderProductServiceResponse::of)
