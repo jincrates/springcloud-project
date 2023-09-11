@@ -63,8 +63,28 @@ public class CartService {
         return cartProductRepository.findCartDetails(cart.getId());
     }
 
+    @Transactional
+    public void updateCartProductQuantity(Long cartProductId, int quantity) {
+        // TODO: 유저 인증 추가
+        CartProduct cartProduct = getCartProductById(cartProductId);
+        cartProduct.updateQuantity(quantity);
+    }
+
+    @Transactional
+    public void deleteCartProduct(Long cartProductId) {
+        // TODO: 유저 인증 추가
+        CartProduct cartProduct = getCartProductById(cartProductId);
+        cartProductRepository.delete(cartProduct);
+    }
+
     private Member getMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
             .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
+    }
+
+    private CartProduct getCartProductById(Long cartProductId) {
+        return cartProductRepository.findById(cartProductId)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "장바구님 상품을 찾을 수 없습니다. cartProductId=" + cartProductId));
     }
 }
