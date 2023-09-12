@@ -19,7 +19,6 @@ import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
 import me.jincrates.api.ecommerce.domain.stock.Stock;
 import me.jincrates.api.ecommerce.domain.stock.StockRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,15 +117,15 @@ public class OrderService {
     }
 
     public OrderListPageServiceResponse getOrderListPage(String email, Pageable pageable) {
-        Page<Order> orders = orderRepository.findOrdersPage(email, pageable);
+        List<Order> orders = orderRepository.findOrders(email, pageable);
 
         List<OrderServiceResponse> responses = orders.stream().map(OrderServiceResponse::of)
             .toList();
 
         return OrderListPageServiceResponse.builder()
-            .pageNo(orders.getPageable().getPageNumber())
-            .hasNext(orders.hasNext())
-            .contents(responses)
+            .pageNo(pageable.getPageNumber())
+            .hasNext(orders.size() > pageable.getPageSize())
+            .contents(responses.subList(0, pageable.getPageSize()))
             .build();
     }
 
