@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.api.ecommerce.api.service.request.OrderCreateServiceRequest;
-import me.jincrates.api.ecommerce.api.service.response.OrderListPageServiceResponse;
 import me.jincrates.api.ecommerce.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.domain.cart.Cart;
 import me.jincrates.api.ecommerce.domain.cart.CartProduct;
@@ -19,14 +18,12 @@ import me.jincrates.api.ecommerce.domain.product.Product;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
 import me.jincrates.api.ecommerce.domain.stock.Stock;
 import me.jincrates.api.ecommerce.domain.stock.StockRepository;
+import me.jincrates.api.global.common.response.PageResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -116,16 +113,16 @@ public class OrderService {
         return OrderServiceResponse.of(order);
     }
 
-    public OrderListPageServiceResponse getOrderListPage(String email, Pageable pageable) {
+    public PageResponse<?> getOrders(String email, Pageable pageable) {
         List<Order> orders = orderRepository.findOrders(email, pageable);
 
         List<OrderServiceResponse> responses = orders.stream().map(OrderServiceResponse::of)
             .toList();
 
-        return OrderListPageServiceResponse.builder()
+        return PageResponse.builder()
             .pageNo(pageable.getPageNumber())
             .hasNext(orders.size() > pageable.getPageSize())
-            .contents(responses.subList(0, pageable.getPageSize()))
+            .contents(Collections.singletonList(responses.subList(0, pageable.getPageSize())))
             .build();
     }
 

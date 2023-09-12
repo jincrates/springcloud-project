@@ -2,13 +2,10 @@ package me.jincrates.api.ecommerce.domain.product;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.api.service.request.ProductSearchServiceRequest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,26 +18,16 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Product> getAdminProductPage(ProductSearchServiceRequest request, Pageable pageable) {
-
-        List<Product> contents = queryFactory
+    public List<Product> getAdminProducts(ProductSearchServiceRequest request, Pageable pageable) {
+        return queryFactory
                 .selectFrom(product)
                 .where(createdAtAfter(request.getSearchDateType()),
                         searchStatusEq(request.getSearchStatus()),
                         searchByLike(request.getSearchBy(), request.getSearchQuery()))
                 .orderBy(product.id.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
-
-        // TODO: 카운트 쿼리 개선 필요
-        JPAQuery<Long> countQuery = queryFactory
-                .select(product.count())
-                .where(createdAtAfter(request.getSearchDateType()),
-                        searchStatusEq(request.getSearchStatus()),
-                        searchByLike(request.getSearchBy(), request.getSearchQuery()));
-
-        return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchOne);
     }
 
     private BooleanExpression createdAtAfter(String searchDateType) {

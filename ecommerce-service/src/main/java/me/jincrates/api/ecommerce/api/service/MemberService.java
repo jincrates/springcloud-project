@@ -23,14 +23,14 @@ public class MemberService {
     @Transactional
     public MemberCreateServiceResponse saveMember(MemberCreateServiceRequest request) {
         Member member = Member.create(request.getName(), request.getEmail(), request.getPassword(), passwordEncoder);
-        validateDuplicateMember(member);
+        validateDuplicateMember(member.getEmail());
         return MemberCreateServiceResponse.of(memberRepository.save(member));
     }
 
-    private void validateDuplicateMember(Member member) {
-        Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
+    private void validateDuplicateMember(String email) {
+        Optional<Member> findMember = memberRepository.findByEmail(email);
         if(findMember.isPresent()) {
-            log.warn("이미 가입된 회원입니다. email={}", member.getEmail());
+            log.warn("이미 가입된 회원입니다. email={}", email);
             throw new IllegalArgumentException("이미 가입된 회원입니다.");
         }
     }

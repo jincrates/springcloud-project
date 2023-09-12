@@ -1,7 +1,6 @@
 package me.jincrates.api.ecommerce.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.api.service.request.ProductCreateServiceRequest;
 import me.jincrates.api.ecommerce.api.service.request.ProductSearchServiceRequest;
@@ -13,12 +12,15 @@ import me.jincrates.api.ecommerce.domain.product.ProductImageRepository;
 import me.jincrates.api.ecommerce.domain.product.ProductRepository;
 import me.jincrates.api.ecommerce.domain.stock.Stock;
 import me.jincrates.api.ecommerce.domain.stock.StockRepository;
-import org.springframework.data.domain.Page;
+import me.jincrates.api.global.common.response.PageResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RestController
@@ -80,9 +82,15 @@ public class ProductService {
         return product.getId();
     }
 
-    public Page<Product> getAdminProductPage(ProductSearchServiceRequest request,
-        Pageable pageable) {
-        return productRepository.getAdminProductPage(request, pageable);
+    public PageResponse<?> getAdminProductPage(ProductSearchServiceRequest request,
+                                               Pageable pageable) {
+        List<Product> products = productRepository.getAdminProducts(request, pageable);
+
+        return PageResponse.builder()
+                .pageNo(pageable.getPageNumber())
+                .hasNext(products.size() > pageable.getPageSize())
+                .contents(Collections.singletonList(products.subList(0, pageable.getPageSize())))
+                .build();
     }
 
     private Product getProductById(Long productId) {
