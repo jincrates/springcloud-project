@@ -2,21 +2,13 @@ package me.jincrates.api.ecommerce.members.domain;
 
 
 import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.api.global.common.BaseEntity;
 import me.jincrates.api.global.common.enumtype.Status;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Entity
@@ -66,14 +58,13 @@ public class Member extends BaseEntity {
         this.status = status;
     }
 
-    public static Member create(String name, String email, String password,
-        PasswordEncoder passwordEncoder) {
+    public static Member create(String name, String email, String password) {
         return Member.builder()
-            .name(name)
-            .email(email)
-            .password(passwordEncoder.encode(password))
-            .role(Role.USER)
-            .status(Status.ACTIVE)
-            .build();
+                .name(name)
+                .email(email)
+                .password(password)
+                .role(Role.USER)
+                .status(Status.ACTIVE)
+                .build();
     }
 }

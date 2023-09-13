@@ -2,11 +2,10 @@ package me.jincrates.api.ecommerce.orders.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
-import me.jincrates.api.ecommerce.orders.api.service.request.OrderCreateServiceRequest;
-import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.members.domain.Member;
 import me.jincrates.api.ecommerce.members.domain.MemberRepository;
-import me.jincrates.api.ecommerce.orders.api.service.OrderService;
+import me.jincrates.api.ecommerce.orders.api.service.request.OrderCreateServiceRequest;
+import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.orders.domain.OrderProductRepository;
 import me.jincrates.api.ecommerce.orders.domain.OrderRepository;
 import me.jincrates.api.ecommerce.orders.domain.OrderStatus;
@@ -61,7 +60,7 @@ class OrderServiceTest extends IntegrationTestSupport {
         // given
         int quantity = 1;  // 주문수량
 
-        Member member = Member.create("홍길동", "user@email.com", "1234", passwordEncoder);
+        Member member = Member.create("홍길동", "user@email.com", passwordEncoder.encode("1234"));
         memberRepository.save(member);
 
         Product product = Product.create("상품명", 10000, "상품 상세설명");
@@ -71,7 +70,7 @@ class OrderServiceTest extends IntegrationTestSupport {
         stockRepository.save(stock);
 
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(product.getId(),
-            quantity);
+                quantity);
 
         // when
         OrderServiceResponse response = orderService.order(request, member.getEmail());

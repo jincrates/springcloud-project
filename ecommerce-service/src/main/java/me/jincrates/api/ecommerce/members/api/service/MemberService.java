@@ -27,7 +27,7 @@ public class MemberService {
 
     @Transactional
     public MemberCreateServiceResponse register(MemberCreateServiceRequest request) {
-        Member member = Member.create(request.getName(), request.getEmail(), request.getPassword(), passwordEncoder);
+        Member member = Member.create(request.getName(), request.getEmail(), encryptPassword(request.getPassword()));
         validateDuplicateMember(member.getEmail());
         return MemberCreateServiceResponse.of(memberRepository.save(member));
     }
@@ -49,6 +49,10 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다. email=" + email));
         return MemberServiceResponse.of(member);
+    }
+
+    private String encryptPassword(String password) {
+        return passwordEncoder.encode(password);
     }
 
     private void validateDuplicateMember(String email) {

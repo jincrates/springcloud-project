@@ -26,8 +26,8 @@ public class SwaggerConfig {
 
     private Info info() {
         return new Info()
-                .title("boiler-plate")
-                .description("보일러 플레이트 API")
+                .title("Ecommerce-Project")
+                .description("이커머스 API")
                 .version("1.0");
     }
 

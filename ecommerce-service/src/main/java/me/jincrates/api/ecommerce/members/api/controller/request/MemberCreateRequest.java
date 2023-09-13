@@ -36,6 +36,14 @@ public class MemberCreateRequest {
         this.password = password;
     }
 
+    public static MemberCreateRequest create(String name, String email, String password) {
+        return MemberCreateRequest.builder()
+                .name(name)
+                .email(email)
+                .password(password)
+                .build();
+    }
+
     public MemberCreateServiceRequest toServiceRequest() {
         return MemberCreateServiceRequest.of(this);
     }
