@@ -32,17 +32,17 @@ public class MemberService {
         return MemberCreateServiceResponse.of(memberRepository.save(member));
     }
 
-    public MemberServiceResponse getMemberById(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다. id=" + memberId));
-        return MemberServiceResponse.of(member);
-    }
-
     public List<MemberServiceResponse> getMembers() {
         List<Member> members = memberRepository.findAll();
         return members.stream()
                 .map(MemberServiceResponse::of)
                 .collect(toList());
+    }
+
+    public MemberServiceResponse getMemberById(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다. id=" + memberId));
+        return MemberServiceResponse.of(member);
     }
 
     public MemberServiceResponse getMemberByEmail(String email) {
@@ -58,8 +58,8 @@ public class MemberService {
     private void validateDuplicateMember(String email) {
         Optional<Member> findMember = memberRepository.findByEmail(email);
         if (findMember.isPresent()) {
-            log.warn("이미 가입된 회원입니다. email={}", email);
-            throw new IllegalArgumentException("이미 가입된 회원입니다.");
+            log.warn("이미 가입한 회원입니다. email={}", email);
+            throw new IllegalArgumentException("이미 가입한 회원입니다.");
         }
     }
 }

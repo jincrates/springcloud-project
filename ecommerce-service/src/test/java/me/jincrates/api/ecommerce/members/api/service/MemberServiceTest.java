@@ -49,7 +49,7 @@ class MemberServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("신규 회원을 등록할 때, 이미 가입된 이메일은 가입할 수 없습니다.")
+    @DisplayName("신규 회원을 등록할 때, 이미 가입한 이메일은 가입할 수 없습니다.")
     void createMemberWithDuplicateEmail() {
         // given
         MemberCreateServiceRequest member = MemberCreateServiceRequest.create("회원명2", "user@email.com",
@@ -62,6 +62,6 @@ class MemberServiceTest extends IntegrationTestSupport {
         // when // then
         assertThatThrownBy(() -> memberService.register(request))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 가입된 회원입니다.");
+                .hasMessage("이미 가입한 회원입니다.");
     }
 }
