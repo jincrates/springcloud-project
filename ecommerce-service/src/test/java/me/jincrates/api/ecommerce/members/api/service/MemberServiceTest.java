@@ -1,12 +1,8 @@
 package me.jincrates.api.ecommerce.members.api.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
 import me.jincrates.api.ecommerce.members.api.service.request.MemberCreateServiceRequest;
 import me.jincrates.api.ecommerce.members.api.service.response.MemberCreateServiceResponse;
-import me.jincrates.api.ecommerce.members.api.service.MemberService;
 import me.jincrates.api.ecommerce.members.domain.MemberRepository;
 import me.jincrates.api.ecommerce.members.domain.Role;
 import me.jincrates.api.global.common.enumtype.Status;
@@ -15,6 +11,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemberServiceTest extends IntegrationTestSupport {
 
@@ -37,32 +36,32 @@ class MemberServiceTest extends IntegrationTestSupport {
     @DisplayName("신규 회원을 등록합니다.")
     void createMember() {
         // given
-        MemberCreateServiceRequest request = new MemberCreateServiceRequest("회원명", "user@email.com",
-            "password");
+        MemberCreateServiceRequest request = MemberCreateServiceRequest.create("회원명", "user@email.com",
+                "password");
 
         // when
-        MemberCreateServiceResponse result = memberService.saveMember(request);
+        MemberCreateServiceResponse result = memberService.register(request);
 
         // then
         assertThat(result).isNotNull()
-            .extracting("name", "email", "role", "status")
-            .contains("회원명", "user@email.com", Role.USER, Status.ACTIVE);
+                .extracting("name", "email", "role", "status")
+                .contains("회원명", "user@email.com", Role.USER, Status.ACTIVE);
     }
 
     @Test
     @DisplayName("신규 회원을 등록할 때, 이미 가입된 이메일은 가입할 수 없습니다.")
     void createMemberWithDuplicateEmail() {
         // given
-        MemberCreateServiceRequest member = new MemberCreateServiceRequest("회원명2", "user@email.com",
-            "password1");
-        memberService.saveMember(member);
+        MemberCreateServiceRequest member = MemberCreateServiceRequest.create("회원명2", "user@email.com",
+                "password1");
+        memberService.register(member);
 
-        MemberCreateServiceRequest request = new MemberCreateServiceRequest("회원명2",
-            "user@email.com", "password2");
+        MemberCreateServiceRequest request = MemberCreateServiceRequest.create("회원명2",
+                "user@email.com", "password2");
 
         // when // then
-        assertThatThrownBy(() -> memberService.saveMember(request))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("이미 가입된 회원입니다.");
+        assertThatThrownBy(() -> memberService.register(request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("이미 가입된 회원입니다.");
     }
 }

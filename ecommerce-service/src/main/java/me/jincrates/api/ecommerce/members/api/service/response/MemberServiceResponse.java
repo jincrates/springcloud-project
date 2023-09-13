@@ -3,13 +3,13 @@ package me.jincrates.api.ecommerce.members.api.service.response;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import me.jincrates.api.ecommerce.members.api.controller.response.MemberCreateResponse;
+import me.jincrates.api.ecommerce.members.api.controller.response.MemberResponse;
 import me.jincrates.api.ecommerce.members.domain.Member;
 import me.jincrates.api.ecommerce.members.domain.Role;
 import me.jincrates.api.global.common.enumtype.Status;
 
 @Getter
-public class MemberCreateServiceResponse {
+public class MemberServiceResponse {
 
     private Long id;  // 회원 ID
     private String name;  // 회원명
@@ -18,7 +18,7 @@ public class MemberCreateServiceResponse {
     private Status status;  // 상태
 
     @Builder(access = AccessLevel.PRIVATE)
-    private MemberCreateServiceResponse(Long id, String name, String email, Role role, Status status) {
+    private MemberServiceResponse(Long id, String name, String email, Role role, Status status) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -26,8 +26,8 @@ public class MemberCreateServiceResponse {
         this.status = status;
     }
 
-    public static MemberCreateServiceResponse of(Member member) {
-        return MemberCreateServiceResponse.builder()
+    public static MemberServiceResponse of(Member member) {
+        return MemberServiceResponse.builder()
                 .id(member.getId())
                 .name(member.getName())
                 .email(member.getEmail())
@@ -36,7 +36,7 @@ public class MemberCreateServiceResponse {
                 .build();
     }
 
-    public MemberCreateResponse toResponse() {
-        return MemberCreateResponse.of(this);
+    public MemberResponse toResponse() {
+        return MemberResponse.of(this);
     }
 }

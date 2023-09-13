@@ -23,6 +23,12 @@ import java.nio.file.AccessDeniedException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handlerIllegalArgumentException(final IllegalArgumentException exception) {
+        log.warn("IllegalArgumentException", exception);
+        return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
     @ExceptionHandler(BindException.class)
     public ResponseEntity<?> handlerBindException(final BindException exception) {
         log.warn("BindException", exception);

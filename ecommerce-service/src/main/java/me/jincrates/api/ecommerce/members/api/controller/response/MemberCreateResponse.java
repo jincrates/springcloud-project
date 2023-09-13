@@ -1,0 +1,48 @@
+package me.jincrates.api.ecommerce.members.api.controller.response;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import me.jincrates.api.ecommerce.members.api.service.response.MemberCreateServiceResponse;
+import me.jincrates.api.ecommerce.members.domain.Role;
+import me.jincrates.api.global.common.enumtype.Status;
+
+@Schema(description = "회원 등록 response")
+@Getter
+public class MemberCreateResponse {
+
+    @Schema(description = "회원 ID", example = "1")
+    private Long id;  // 회원 ID
+
+    @Schema(description = "회원명", example = "진크라테스")
+    private String name;  // 회원명
+
+    @Schema(description = "이메일", example = "user@email.com")
+    private String email;  // 이메일
+
+    @Schema(description = "권한", example = "USER")
+    private Role role; // 권한
+
+    @Schema(description = "상태", example = "ACTIVE")
+    private Status status;  // 상태
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private MemberCreateResponse(Long id, String name, String email, Role role, Status status) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.status = status;
+    }
+
+    public static MemberCreateResponse of(MemberCreateServiceResponse response) {
+        return MemberCreateResponse.builder()
+                .id(response.getId())
+                .name(response.getName())
+                .email(response.getEmail())
+                .role(response.getRole())
+                .status(response.getStatus())
+                .build();
+    }
+}
