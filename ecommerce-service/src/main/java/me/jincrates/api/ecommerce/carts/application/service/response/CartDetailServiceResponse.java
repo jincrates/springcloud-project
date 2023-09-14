@@ -1,4 +1,4 @@
-package me.jincrates.api.ecommerce.carts.api.service.response;
+package me.jincrates.api.ecommerce.carts.application.service.response;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;

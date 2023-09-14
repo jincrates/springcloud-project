@@ -1,17 +1,17 @@
-package me.jincrates.api.ecommerce.carts.domain;
-
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
-import me.jincrates.api.ecommerce.carts.api.service.response.CartDetailServiceResponse;
-import me.jincrates.api.ecommerce.carts.api.service.response.QCartDetailServiceResponse;
+package me.jincrates.api.ecommerce.carts.adapter.database;
 
 import static me.jincrates.api.ecommerce.carts.domain.QCartProduct.cartProduct;
 import static me.jincrates.api.ecommerce.products.domain.product.QProductImage.productImage;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import me.jincrates.api.ecommerce.carts.application.service.response.CartDetailServiceResponse;
+import me.jincrates.api.ecommerce.carts.application.service.response.QCartDetailServiceResponse;
+
 
 @RequiredArgsConstructor
-public class CartProductQueryRepositoryImpl implements CartProductQueryRepository {
+class CartProductQueryRepositoryImpl implements CartProductQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 

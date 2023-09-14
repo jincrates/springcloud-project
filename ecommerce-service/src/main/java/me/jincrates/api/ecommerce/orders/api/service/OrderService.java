@@ -1,16 +1,21 @@
 package me.jincrates.api.ecommerce.orders.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.jincrates.api.ecommerce.orders.api.service.request.OrderCreateServiceRequest;
-import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceResponse;
+import me.jincrates.api.ecommerce.carts.adapter.database.CartProductRepository;
+import me.jincrates.api.ecommerce.carts.adapter.database.CartRepository;
 import me.jincrates.api.ecommerce.carts.domain.Cart;
 import me.jincrates.api.ecommerce.carts.domain.CartProduct;
-import me.jincrates.api.ecommerce.carts.domain.CartProductRepository;
-import me.jincrates.api.ecommerce.carts.domain.CartRepository;
 import me.jincrates.api.ecommerce.members.domain.Member;
 import me.jincrates.api.ecommerce.members.domain.MemberRepository;
+import me.jincrates.api.ecommerce.orders.api.service.request.OrderCreateServiceRequest;
+import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.orders.domain.Order;
 import me.jincrates.api.ecommerce.orders.domain.OrderProduct;
 import me.jincrates.api.ecommerce.orders.domain.OrderRepository;
@@ -22,8 +27,6 @@ import me.jincrates.api.global.common.response.PageResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 @Slf4j
 @Service
@@ -90,9 +93,9 @@ public class OrderService {
 
         List<OrderProduct> orderProducts = new ArrayList<>();
 
-        for(CartProduct cartProduct : cart.getCartProducts()) {
+        for (CartProduct cartProduct : cart.getCartProducts()) {
             OrderProduct orderProduct = OrderProduct.create(cartProduct.getProduct(),
-                    cartProduct.getQuantity());
+                cartProduct.getQuantity());
             orderProducts.add(orderProduct);
 
             // 재고감소
@@ -179,6 +182,7 @@ public class OrderService {
 
     private Stock getStockByProduct(Product product) {
         return stockRepository.findByProduct(product)
-                .orElseThrow(() -> new EntityNotFoundException("상품 재고를 찾을 수 없습니다. productId=" + product.getId()));
+            .orElseThrow(() -> new EntityNotFoundException(
+                "상품 재고를 찾을 수 없습니다. productId=" + product.getId()));
     }
 }

@@ -1,4 +1,4 @@
-package me.jincrates.api.ecommerce.carts.api.service.request;
+package me.jincrates.api.ecommerce.carts.application.service.request;
 
 import lombok.Getter;
 
