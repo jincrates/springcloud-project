@@ -1,4 +1,4 @@
-package me.jincrates.api.ecommerce.members.api.controller;
+package me.jincrates.api.ecommerce.members.adapter.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -8,12 +8,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import me.jincrates.api.ecommerce.members.api.controller.request.MemberCreateRequest;
-import me.jincrates.api.ecommerce.members.api.controller.response.MemberCreateResponse;
-import me.jincrates.api.ecommerce.members.api.controller.response.MemberResponse;
-import me.jincrates.api.ecommerce.members.api.service.MemberService;
-import me.jincrates.api.ecommerce.members.api.service.response.MemberCreateServiceResponse;
-import me.jincrates.api.ecommerce.members.api.service.response.MemberServiceResponse;
+import me.jincrates.api.ecommerce.members.adapter.web.request.MemberCreateRequest;
+import me.jincrates.api.ecommerce.members.adapter.web.response.MemberCreateResponse;
+import me.jincrates.api.ecommerce.members.adapter.web.response.MemberResponse;
+import me.jincrates.api.ecommerce.members.application.service.MemberService;
+import me.jincrates.api.ecommerce.members.application.service.response.MemberCreateServiceResponse;
+import me.jincrates.api.ecommerce.members.application.service.response.MemberServiceResponse;
 import me.jincrates.api.global.common.response.CommonResponse;
 import org.springframework.web.bind.annotation.*;
 

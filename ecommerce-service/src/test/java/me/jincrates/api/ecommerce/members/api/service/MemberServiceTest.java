@@ -1,9 +1,10 @@
 package me.jincrates.api.ecommerce.members.api.service;
 
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
-import me.jincrates.api.ecommerce.members.api.service.request.MemberCreateServiceRequest;
-import me.jincrates.api.ecommerce.members.api.service.response.MemberCreateServiceResponse;
-import me.jincrates.api.ecommerce.members.domain.MemberRepository;
+import me.jincrates.api.ecommerce.members.adapter.database.MemberRepository;
+import me.jincrates.api.ecommerce.members.application.service.MemberService;
+import me.jincrates.api.ecommerce.members.application.service.request.MemberCreateServiceRequest;
+import me.jincrates.api.ecommerce.members.application.service.response.MemberCreateServiceResponse;
 import me.jincrates.api.ecommerce.members.domain.Role;
 import me.jincrates.api.global.common.enumtype.Status;
 import org.junit.jupiter.api.AfterEach;

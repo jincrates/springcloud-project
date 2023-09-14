@@ -1,9 +1,9 @@
-package me.jincrates.api.ecommerce.members.api.service.request;
+package me.jincrates.api.ecommerce.members.application.service.request;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import me.jincrates.api.ecommerce.members.api.controller.request.MemberCreateRequest;
+import me.jincrates.api.ecommerce.members.adapter.web.request.MemberCreateRequest;
 
 @Getter
 public class MemberCreateServiceRequest {

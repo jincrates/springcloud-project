@@ -1,9 +1,9 @@
-package me.jincrates.api.ecommerce.members.api.service.response;
+package me.jincrates.api.ecommerce.members.application.service.response;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import me.jincrates.api.ecommerce.members.api.controller.response.MemberCreateResponse;
+import me.jincrates.api.ecommerce.members.adapter.web.response.MemberCreateResponse;
 import me.jincrates.api.ecommerce.members.domain.Member;
 import me.jincrates.api.ecommerce.members.domain.Role;
 import me.jincrates.api.global.common.enumtype.Status;

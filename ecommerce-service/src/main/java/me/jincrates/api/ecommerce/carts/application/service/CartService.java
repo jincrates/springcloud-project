@@ -7,8 +7,8 @@ import me.jincrates.api.ecommerce.carts.application.service.request.CartProductS
 import me.jincrates.api.ecommerce.carts.application.service.response.CartDetailServiceResponse;
 import me.jincrates.api.ecommerce.carts.domain.Cart;
 import me.jincrates.api.ecommerce.carts.domain.CartProduct;
+import me.jincrates.api.ecommerce.members.application.port.MemberPort;
 import me.jincrates.api.ecommerce.members.domain.Member;
-import me.jincrates.api.ecommerce.members.domain.MemberRepository;
 import me.jincrates.api.ecommerce.products.domain.product.Product;
 import me.jincrates.api.ecommerce.products.domain.product.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -23,15 +23,15 @@ import java.util.List;
 public class CartService {
 
     private final ProductRepository productRepository;
-    private final MemberRepository memberRepository;
 
     private final CartPort cartPort;
+    private final MemberPort memberPort;
 
     public Long addCart(CartProductServiceRequest request, String email) {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "상품을 찾을 수 없습니다. productId=" + request.getProductId()));
-        Member member = getMemberByEmail(email);
+        Member member = memberPort.findMemberByEmail(email);
 
         Cart cart = cartPort.findCartByMemberId(member.getId());
         if (cart == null) {
@@ -52,7 +52,7 @@ public class CartService {
     }
 
     public List<CartDetailServiceResponse> getCartDetails(String email) {
-        Member member = getMemberByEmail(email);
+        Member member = memberPort.findMemberByEmail(email);
 
         Cart cart = cartPort.findCartByMemberId(member.getId());
         if (cart == null) {
@@ -72,10 +72,5 @@ public class CartService {
         // TODO: 유저 인증 추가
         CartProduct cartProduct = cartPort.findCartProductById(cartProductId);
         cartPort.deleteCartProduct(cartProduct);
-    }
-
-    private Member getMemberByEmail(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
     }
 }

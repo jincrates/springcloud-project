@@ -1,8 +1,8 @@
 package me.jincrates.api.ecommerce.members.api.controller;
 
 import me.jincrates.api.ecommerce.ControllerTestSupport;
-import me.jincrates.api.ecommerce.members.api.controller.request.MemberCreateRequest;
-import me.jincrates.api.ecommerce.members.api.service.response.MemberCreateServiceResponse;
+import me.jincrates.api.ecommerce.members.adapter.web.request.MemberCreateRequest;
+import me.jincrates.api.ecommerce.members.application.service.response.MemberCreateServiceResponse;
 import me.jincrates.api.ecommerce.members.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

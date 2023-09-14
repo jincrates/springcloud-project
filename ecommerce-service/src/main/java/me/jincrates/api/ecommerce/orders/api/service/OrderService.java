@@ -1,19 +1,13 @@
 package me.jincrates.api.ecommerce.orders.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.jincrates.api.ecommerce.carts.adapter.database.CartProductRepository;
-import me.jincrates.api.ecommerce.carts.adapter.database.CartRepository;
+import me.jincrates.api.ecommerce.carts.application.port.CartPort;
 import me.jincrates.api.ecommerce.carts.domain.Cart;
 import me.jincrates.api.ecommerce.carts.domain.CartProduct;
+import me.jincrates.api.ecommerce.members.application.port.MemberPort;
 import me.jincrates.api.ecommerce.members.domain.Member;
-import me.jincrates.api.ecommerce.members.domain.MemberRepository;
 import me.jincrates.api.ecommerce.orders.api.service.request.OrderCreateServiceRequest;
 import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.orders.domain.Order;
@@ -28,22 +22,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class OrderService {
-
-    private final MemberRepository memberRepository;
+    private final MemberPort memberPort;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final StockRepository stockRepository;
-    private final CartRepository cartRepository;
-    private final CartProductRepository cartProductRepository;
+    private final CartPort cartPort;
 
     @Transactional
     public OrderServiceResponse order(OrderCreateServiceRequest request, String email) {
-        Member member = getMemberByEmail(email);
+        Member member = memberPort.findMemberByEmail(email);
 
         Product product = getProductById(request.getProductId());
 
@@ -66,7 +60,7 @@ public class OrderService {
 
     @Transactional
     public OrderServiceResponse orders(List<OrderCreateServiceRequest> requests, String email) {
-        Member member = getMemberByEmail(email);
+        Member member = memberPort.findMemberByEmail(email);
 
         List<OrderProduct> orderProducts = new ArrayList<>();
         for (OrderCreateServiceRequest request : requests) {
@@ -89,13 +83,13 @@ public class OrderService {
     public OrderServiceResponse orderFromCart(String email) {
         Member member = getMemberByEmail(email);
 
-        Cart cart = cartRepository.findByMemberId(member.getId());
+        Cart cart = cartPort.findCartByMemberId(member.getId());
 
         List<OrderProduct> orderProducts = new ArrayList<>();
 
         for (CartProduct cartProduct : cart.getCartProducts()) {
             OrderProduct orderProduct = OrderProduct.create(cartProduct.getProduct(),
-                cartProduct.getQuantity());
+                    cartProduct.getQuantity());
             orderProducts.add(orderProduct);
 
             // 재고감소
@@ -111,7 +105,7 @@ public class OrderService {
         order.success();
 
         // 장바구니 제거
-        cartProductRepository.deleteAll(cart.getCartProducts());
+        cartPort.deleteAllCartProduct(cart.getCartProducts());
 
         return OrderServiceResponse.of(order);
     }
@@ -120,13 +114,13 @@ public class OrderService {
         List<Order> orders = orderRepository.findOrders(email, pageable);
 
         List<OrderServiceResponse> responses = orders.stream().map(OrderServiceResponse::of)
-            .toList();
+                .toList();
 
         return PageResponse.builder()
-            .pageNo(pageable.getPageNumber())
-            .hasNext(orders.size() > pageable.getPageSize())
-            .contents(Collections.singletonList(responses.subList(0, pageable.getPageSize())))
-            .build();
+                .pageNo(pageable.getPageNumber())
+                .hasNext(orders.size() > pageable.getPageSize())
+                .contents(Collections.singletonList(responses.subList(0, pageable.getPageSize())))
+                .build();
     }
 
     public boolean validateOrder(UUID orderId, String email) {
@@ -151,7 +145,7 @@ public class OrderService {
         // 재고 차감 시도
         if (stock.isQuantityLessThan(quantity)) {
             log.warn("재고가 부족한 상품이 있습니다. productId={}, stock.quantity={}", product.getId(),
-                stock.getQuantity());
+                    stock.getQuantity());
             throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
         }
 
@@ -159,30 +153,23 @@ public class OrderService {
     }
 
     private Member getMemberByEmail(String email) {
-        return memberRepository.findByEmail(email)
-            .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. email=" + email));
+        return memberPort.findMemberByEmail(email);
     }
 
     private Product getProductById(Long productId) {
         return productRepository.findById(productId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "상품을 찾을 수 없습니다. productId=" + productId));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "상품을 찾을 수 없습니다. productId=" + productId));
     }
 
     private Order getOrderById(UUID orderId) {
         return orderRepository.findById(orderId)
-            .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. orderId=" + orderId));
-    }
-
-    private CartProduct getCartProductById(Long cartProductId) {
-        return cartProductRepository.findById(cartProductId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "장바구니 상품을 찾을 수 없습니다. cartProductId=" + cartProductId));
+                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다. orderId=" + orderId));
     }
 
     private Stock getStockByProduct(Product product) {
         return stockRepository.findByProduct(product)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "상품 재고를 찾을 수 없습니다. productId=" + product.getId()));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "상품 재고를 찾을 수 없습니다. productId=" + product.getId()));
     }
 }

@@ -1,4 +1,4 @@
-package me.jincrates.api.ecommerce.members.api.controller.request;
+package me.jincrates.api.ecommerce.members.adapter.web.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.api.ecommerce.members.api.service.request.MemberCreateServiceRequest;
+import me.jincrates.api.ecommerce.members.application.service.request.MemberCreateServiceRequest;
 
 @Schema(description = "회원 등록 request")
 @Getter

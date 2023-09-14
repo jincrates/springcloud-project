@@ -2,8 +2,8 @@ package me.jincrates.api.ecommerce.orders.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
+import me.jincrates.api.ecommerce.members.adapter.database.MemberRepository;
 import me.jincrates.api.ecommerce.members.domain.Member;
-import me.jincrates.api.ecommerce.members.domain.MemberRepository;
 import me.jincrates.api.ecommerce.orders.api.service.request.OrderCreateServiceRequest;
 import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.orders.domain.OrderProductRepository;
