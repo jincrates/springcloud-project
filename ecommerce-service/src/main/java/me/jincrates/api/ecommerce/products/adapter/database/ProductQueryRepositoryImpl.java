@@ -15,7 +15,7 @@ import java.util.List;
 import static me.jincrates.api.ecommerce.products.domain.QProduct.product;
 
 @RequiredArgsConstructor
-public class ProductQueryRepositoryImpl implements ProductQueryRepository {
+class ProductQueryRepositoryImpl implements ProductQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 

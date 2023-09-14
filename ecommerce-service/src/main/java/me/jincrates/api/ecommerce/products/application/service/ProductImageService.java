@@ -1,7 +1,7 @@
 package me.jincrates.api.ecommerce.products.application.service;
 
 import lombok.RequiredArgsConstructor;
-import me.jincrates.api.ecommerce.products.adapter.database.ProductImageRepository;
+import me.jincrates.api.ecommerce.products.application.port.ProductPort;
 import me.jincrates.api.ecommerce.products.domain.ProductImage;
 import me.jincrates.api.global.common.service.FileService;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductImageService {
-    private final ProductImageRepository productImageRepository;
+    private final ProductPort productPort;
     private final FileService fileService;
 
     public void saveProductImage(ProductImage productImage, MultipartFile image) {
