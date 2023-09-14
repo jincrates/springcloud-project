@@ -1,4 +1,4 @@
-package me.jincrates.api.ecommerce.products.domain.product;
+package me.jincrates.api.ecommerce.products.domain;
 
 import lombok.Getter;
 

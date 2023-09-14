@@ -1,4 +1,4 @@
-package me.jincrates.api.ecommerce.products.api.service.request;
+package me.jincrates.api.ecommerce.products.application.service.request;
 
 import lombok.Getter;
 
@@ -11,7 +11,7 @@ public class ProductCreateServiceRequest {
     private int quantity; // 재고 수량
 
     public ProductCreateServiceRequest(String productName, int price, String productDetail,
-        int quantity) {
+                                       int quantity) {
         this.productName = productName;
         this.price = price;
         this.productDetail = productDetail;

@@ -1,7 +1,7 @@
 package me.jincrates.docs.boiler;
 
-import me.jincrates.api.ecommerce.products.api.controller.ProductController;
-import me.jincrates.api.ecommerce.products.api.service.ProductService;
+import me.jincrates.api.ecommerce.products.adapter.web.ProductController;
+import me.jincrates.api.ecommerce.products.application.service.ProductService;
 import me.jincrates.docs.RestDocsSupport;
 
 import static org.mockito.Mockito.mock;

@@ -1,8 +1,8 @@
-package me.jincrates.api.ecommerce.products.api.controller;
+package me.jincrates.api.ecommerce.products.adapter.web;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import me.jincrates.api.ecommerce.products.api.service.ProductService;
+import me.jincrates.api.ecommerce.products.application.service.ProductService;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "상품 서비스", description = "상품 등록/수정/조회 API")

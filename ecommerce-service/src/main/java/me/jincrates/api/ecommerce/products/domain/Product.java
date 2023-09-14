@@ -1,11 +1,11 @@
-package me.jincrates.api.ecommerce.products.domain.product;
+package me.jincrates.api.ecommerce.products.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.api.ecommerce.products.api.service.request.ProductUpdateServiceRequest;
+import me.jincrates.api.ecommerce.products.application.service.request.ProductUpdateServiceRequest;
 import me.jincrates.api.global.common.BaseEntity;
 
 @Getter
@@ -35,7 +35,7 @@ public class Product extends BaseEntity {
 
     @Builder(access = AccessLevel.PRIVATE)
     private Product(String productName, int price, String productDetail,
-        ProductSellingStatus status) {
+                    ProductSellingStatus status) {
         if (productName == null) {
             throw new IllegalArgumentException("상품명은 필수입니다.");
         }
@@ -60,11 +60,11 @@ public class Product extends BaseEntity {
 
     public static Product create(String productName, int price, String productDetail) {
         return Product.builder()
-            .productName(productName)
-            .price(price)
-            .productDetail(productDetail)
-            .status(ProductSellingStatus.HOLD)
-            .build();
+                .productName(productName)
+                .price(price)
+                .productDetail(productDetail)
+                .status(ProductSellingStatus.HOLD)
+                .build();
     }
 
     public void update(ProductUpdateServiceRequest request) {

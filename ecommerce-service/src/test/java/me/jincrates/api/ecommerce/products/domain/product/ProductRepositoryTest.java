@@ -1,9 +1,9 @@
 package me.jincrates.api.ecommerce.products.domain.product;
 
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
-import me.jincrates.api.ecommerce.products.domain.product.ProductRepository;
-import me.jincrates.api.ecommerce.products.domain.product.ProductSellingStatus;
+import me.jincrates.api.ecommerce.products.adapter.database.ProductRepository;
+import me.jincrates.api.ecommerce.products.domain.Product;
+import me.jincrates.api.ecommerce.products.domain.ProductSellingStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

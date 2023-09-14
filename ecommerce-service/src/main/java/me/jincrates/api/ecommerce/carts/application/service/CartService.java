@@ -9,8 +9,8 @@ import me.jincrates.api.ecommerce.carts.domain.Cart;
 import me.jincrates.api.ecommerce.carts.domain.CartProduct;
 import me.jincrates.api.ecommerce.members.application.port.MemberPort;
 import me.jincrates.api.ecommerce.members.domain.Member;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
-import me.jincrates.api.ecommerce.products.domain.product.ProductRepository;
+import me.jincrates.api.ecommerce.products.adapter.database.ProductRepository;
+import me.jincrates.api.ecommerce.products.domain.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

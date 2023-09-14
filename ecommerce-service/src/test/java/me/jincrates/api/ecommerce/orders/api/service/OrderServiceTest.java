@@ -9,10 +9,10 @@ import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceRespon
 import me.jincrates.api.ecommerce.orders.domain.OrderProductRepository;
 import me.jincrates.api.ecommerce.orders.domain.OrderRepository;
 import me.jincrates.api.ecommerce.orders.domain.OrderStatus;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
-import me.jincrates.api.ecommerce.products.domain.product.ProductRepository;
-import me.jincrates.api.ecommerce.products.domain.stock.Stock;
-import me.jincrates.api.ecommerce.products.domain.stock.StockRepository;
+import me.jincrates.api.ecommerce.products.adapter.database.ProductRepository;
+import me.jincrates.api.ecommerce.products.adapter.database.StockRepository;
+import me.jincrates.api.ecommerce.products.domain.Product;
+import me.jincrates.api.ecommerce.products.domain.Stock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

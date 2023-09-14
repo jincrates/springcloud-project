@@ -1,9 +1,9 @@
-package me.jincrates.api.ecommerce.products.api.service;
+package me.jincrates.api.ecommerce.products.application.service;
 
 import lombok.RequiredArgsConstructor;
+import me.jincrates.api.ecommerce.products.adapter.database.ProductImageRepository;
+import me.jincrates.api.ecommerce.products.domain.ProductImage;
 import me.jincrates.api.global.common.service.FileService;
-import me.jincrates.api.ecommerce.products.domain.product.ProductImage;
-import me.jincrates.api.ecommerce.products.domain.product.ProductImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

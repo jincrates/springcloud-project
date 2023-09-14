@@ -1,17 +1,15 @@
-package me.jincrates.api.ecommerce.products.api.service;
+package me.jincrates.api.ecommerce.products.application.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import me.jincrates.api.ecommerce.products.api.service.request.ProductCreateServiceRequest;
-import me.jincrates.api.ecommerce.products.api.service.request.ProductSearchServiceRequest;
-import me.jincrates.api.ecommerce.products.api.service.request.ProductUpdateServiceRequest;
-import me.jincrates.api.ecommerce.products.api.service.response.ProductServiceResponse;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
-import me.jincrates.api.ecommerce.products.domain.product.ProductImage;
-import me.jincrates.api.ecommerce.products.domain.product.ProductImageRepository;
-import me.jincrates.api.ecommerce.products.domain.product.ProductRepository;
-import me.jincrates.api.ecommerce.products.domain.stock.Stock;
-import me.jincrates.api.ecommerce.products.domain.stock.StockRepository;
+import me.jincrates.api.ecommerce.products.application.port.ProductPort;
+import me.jincrates.api.ecommerce.products.application.port.StockPort;
+import me.jincrates.api.ecommerce.products.application.service.request.ProductCreateServiceRequest;
+import me.jincrates.api.ecommerce.products.application.service.request.ProductSearchServiceRequest;
+import me.jincrates.api.ecommerce.products.application.service.request.ProductUpdateServiceRequest;
+import me.jincrates.api.ecommerce.products.application.service.response.ProductServiceResponse;
+import me.jincrates.api.ecommerce.products.domain.Product;
+import me.jincrates.api.ecommerce.products.domain.ProductImage;
+import me.jincrates.api.ecommerce.products.domain.Stock;
 import me.jincrates.api.global.common.response.PageResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,20 +26,19 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ProductService {
 
-    private final ProductRepository productRepository;
+    private final ProductPort productPort;
+    private final StockPort stockPort;
     private final ProductImageService productImageService;
-    private final ProductImageRepository productImageRepository;
-    private final StockRepository stockRepository;
 
     @Transactional
     public Long createProduct(ProductCreateServiceRequest request, List<MultipartFile> images) {
         // 상품 등록
         Product product = Product.create(request.getProductName(), request.getPrice(),
-            request.getProductDetail());
-        productRepository.save(product);
+                request.getProductDetail());
+        productPort.saveProduct(product);
 
         // 재고 등록
-        stockRepository.save(Stock.create(product, request.getQuantity()));
+        stockPort.saveStock(Stock.create(product, request.getQuantity()));
 
         // 이미지 등록
         for (int i = 0; i < images.size(); i++) {
@@ -57,10 +54,9 @@ public class ProductService {
     }
 
     public ProductServiceResponse getProductDetail(Long productId) {
-        List<ProductImage> productImages = productImageRepository.findByProductIdOrderByIdAsc(
-            productId);
+        List<ProductImage> productImages = productPort.findProductImageByProductIdOrderByIdAsc(productId);
 
-        Product product = getProductById(productId);
+        Product product = productPort.findProductById(productId);
 
         return ProductServiceResponse.of(product, productImages);
     }
@@ -68,7 +64,7 @@ public class ProductService {
     @Transactional
     public Long updateProduct(ProductUpdateServiceRequest request, List<MultipartFile> images) {
         // 상품 조회
-        Product product = getProductById(request.getProductId());
+        Product product = productPort.findProductById(request.getProductId());
         product.update(request);
 
         ProductServiceResponse productDetail = getProductDetail(request.getProductId());
@@ -82,20 +78,13 @@ public class ProductService {
         return product.getId();
     }
 
-    public PageResponse<?> getAdminProductPage(ProductSearchServiceRequest request,
-                                               Pageable pageable) {
-        List<Product> products = productRepository.getAdminProducts(request, pageable);
+    public PageResponse<?> getProducts(ProductSearchServiceRequest request, Pageable pageable) {
+        List<Product> products = productPort.findAllProduct(request, pageable);
 
         return PageResponse.builder()
                 .pageNo(pageable.getPageNumber())
                 .hasNext(products.size() > pageable.getPageSize())
                 .contents(Collections.singletonList(products.subList(0, pageable.getPageSize())))
                 .build();
-    }
-
-    private Product getProductById(Long productId) {
-        return productRepository.findById(productId)
-            .orElseThrow(
-                () -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + productId));
     }
 }

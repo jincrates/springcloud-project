@@ -1,9 +1,9 @@
-package me.jincrates.api.ecommerce.products.api.service.response;
+package me.jincrates.api.ecommerce.products.application.service.response;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import me.jincrates.api.ecommerce.products.domain.product.ProductImage;
+import me.jincrates.api.ecommerce.products.domain.ProductImage;
 
 @Getter
 public class ProductImageServiceResponse {

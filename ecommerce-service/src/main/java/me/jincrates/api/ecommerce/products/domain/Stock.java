@@ -1,11 +1,10 @@
-package me.jincrates.api.ecommerce.products.domain.stock;
+package me.jincrates.api.ecommerce.products.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
 import me.jincrates.api.global.common.BaseEntity;
 
 @Getter
@@ -33,9 +32,9 @@ public class Stock extends BaseEntity {
 
     public static Stock create(Product product, int quantity) {
         return Stock.builder()
-            .product(product)
-            .quantity(quantity)
-            .build();
+                .product(product)
+                .quantity(quantity)
+                .build();
     }
 
     public boolean isQuantityLessThan(int quantity) {

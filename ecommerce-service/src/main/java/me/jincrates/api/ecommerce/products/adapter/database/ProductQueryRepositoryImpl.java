@@ -1,24 +1,26 @@
-package me.jincrates.api.ecommerce.products.domain.product;
+package me.jincrates.api.ecommerce.products.adapter.database;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import me.jincrates.api.ecommerce.products.api.service.request.ProductSearchServiceRequest;
+import me.jincrates.api.ecommerce.products.application.service.request.ProductSearchServiceRequest;
+import me.jincrates.api.ecommerce.products.domain.Product;
+import me.jincrates.api.ecommerce.products.domain.ProductSellingStatus;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static me.jincrates.api.ecommerce.products.domain.product.QProduct.product;
+import static me.jincrates.api.ecommerce.products.domain.QProduct.product;
 
 @RequiredArgsConstructor
-public class ProductQueryRepositoryImpl implements ProductQueryRepository{
+public class ProductQueryRepositoryImpl implements ProductQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Product> getAdminProducts(ProductSearchServiceRequest request, Pageable pageable) {
+    public List<Product> findAllProduct(ProductSearchServiceRequest request, Pageable pageable) {
         return queryFactory
                 .selectFrom(product)
                 .where(createdAtAfter(request.getSearchDateType()),

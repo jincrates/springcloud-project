@@ -1,19 +1,11 @@
 package me.jincrates.api.ecommerce.carts.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
+import me.jincrates.api.ecommerce.products.domain.Product;
 import me.jincrates.api.global.common.BaseEntity;
 
 @Getter
@@ -46,10 +38,10 @@ public class CartProduct extends BaseEntity {
 
     public static CartProduct create(Cart cart, Product product, int quantity) {
         return CartProduct.builder()
-            .cart(cart)
-            .product(product)
-            .quantity(quantity)
-            .build();
+                .cart(cart)
+                .product(product)
+                .quantity(quantity)
+                .build();
     }
 
     public void addQuantity(int quantity) {

@@ -1,7 +1,7 @@
-package me.jincrates.api.ecommerce.products.api.service.request;
+package me.jincrates.api.ecommerce.products.application.service.request;
 
 import lombok.Getter;
-import me.jincrates.api.ecommerce.products.domain.product.ProductSellingStatus;
+import me.jincrates.api.ecommerce.products.domain.ProductSellingStatus;
 
 @Getter
 public class ProductSearchServiceRequest {

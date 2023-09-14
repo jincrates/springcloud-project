@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
+import me.jincrates.api.ecommerce.products.domain.Product;
 import me.jincrates.api.global.common.BaseEntity;
 
 @Getter
@@ -42,10 +42,10 @@ public class OrderProduct extends BaseEntity {
     public static OrderProduct create(Product product, int quantity) {
         // 재고 감소
         return OrderProduct.builder()
-            .product(product)
-            .quantity(quantity)
-            .orderPrice(product.getPrice() * quantity)
-            .build();
+                .product(product)
+                .quantity(quantity)
+                .orderPrice(product.getPrice() * quantity)
+                .build();
     }
 
     public void setOrder(Order order) {

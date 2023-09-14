@@ -13,10 +13,10 @@ import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceRespon
 import me.jincrates.api.ecommerce.orders.domain.Order;
 import me.jincrates.api.ecommerce.orders.domain.OrderProduct;
 import me.jincrates.api.ecommerce.orders.domain.OrderRepository;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
-import me.jincrates.api.ecommerce.products.domain.product.ProductRepository;
-import me.jincrates.api.ecommerce.products.domain.stock.Stock;
-import me.jincrates.api.ecommerce.products.domain.stock.StockRepository;
+import me.jincrates.api.ecommerce.products.adapter.database.ProductRepository;
+import me.jincrates.api.ecommerce.products.adapter.database.StockRepository;
+import me.jincrates.api.ecommerce.products.domain.Product;
+import me.jincrates.api.ecommerce.products.domain.Stock;
 import me.jincrates.api.global.common.response.PageResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

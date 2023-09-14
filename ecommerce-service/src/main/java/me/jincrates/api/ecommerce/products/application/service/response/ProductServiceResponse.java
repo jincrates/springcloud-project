@@ -1,11 +1,11 @@
-package me.jincrates.api.ecommerce.products.api.service.response;
+package me.jincrates.api.ecommerce.products.application.service.response;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import me.jincrates.api.ecommerce.products.domain.product.Product;
-import me.jincrates.api.ecommerce.products.domain.product.ProductImage;
-import me.jincrates.api.ecommerce.products.domain.product.ProductSellingStatus;
+import me.jincrates.api.ecommerce.products.domain.Product;
+import me.jincrates.api.ecommerce.products.domain.ProductImage;
+import me.jincrates.api.ecommerce.products.domain.ProductSellingStatus;
 
 import java.util.ArrayList;
 import java.util.List;

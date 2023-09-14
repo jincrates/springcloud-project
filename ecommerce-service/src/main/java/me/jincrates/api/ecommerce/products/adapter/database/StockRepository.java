@@ -1,6 +1,7 @@
-package me.jincrates.api.ecommerce.products.domain.stock;
+package me.jincrates.api.ecommerce.products.adapter.database;
 
-import me.jincrates.api.ecommerce.products.domain.product.Product;
+import me.jincrates.api.ecommerce.products.domain.Product;
+import me.jincrates.api.ecommerce.products.domain.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
