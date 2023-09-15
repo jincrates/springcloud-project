@@ -1,16 +1,16 @@
-package me.jincrates.api.ecommerce.members.adapter.database;
+package me.jincrates.api.ecommerce.members.adapter.persistence;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.members.application.port.MemberPort;
 import me.jincrates.api.ecommerce.members.domain.Member;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 class MemberAdapter implements MemberPort {
+
     private final MemberRepository memberRepository;
 
     @Override
@@ -26,13 +26,13 @@ class MemberAdapter implements MemberPort {
     @Override
     public Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다. id=" + memberId));
+            .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다. id=" + memberId));
     }
 
     @Override
     public Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다. email=" + email));
+            .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다. email=" + email));
     }
 
     @Override

@@ -1,16 +1,19 @@
 package me.jincrates.api.ecommerce.orders.api.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
+
 import jakarta.persistence.EntityNotFoundException;
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
-import me.jincrates.api.ecommerce.members.adapter.database.MemberRepository;
+import me.jincrates.api.ecommerce.members.adapter.persistence.MemberRepository;
 import me.jincrates.api.ecommerce.members.domain.Member;
 import me.jincrates.api.ecommerce.orders.api.service.request.OrderCreateServiceRequest;
 import me.jincrates.api.ecommerce.orders.api.service.response.OrderServiceResponse;
 import me.jincrates.api.ecommerce.orders.domain.OrderProductRepository;
 import me.jincrates.api.ecommerce.orders.domain.OrderRepository;
 import me.jincrates.api.ecommerce.orders.domain.OrderStatus;
-import me.jincrates.api.ecommerce.products.adapter.database.ProductRepository;
-import me.jincrates.api.ecommerce.products.adapter.database.StockRepository;
+import me.jincrates.api.ecommerce.products.adapter.persistence.ProductRepository;
+import me.jincrates.api.ecommerce.products.adapter.persistence.StockRepository;
 import me.jincrates.api.ecommerce.products.domain.Product;
 import me.jincrates.api.ecommerce.products.domain.Stock;
 import org.junit.jupiter.api.AfterEach;
@@ -18,9 +21,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 class OrderServiceTest extends IntegrationTestSupport {
 
@@ -70,7 +70,7 @@ class OrderServiceTest extends IntegrationTestSupport {
         stockRepository.save(stock);
 
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(product.getId(),
-                quantity);
+            quantity);
 
         // when
         OrderServiceResponse response = orderService.order(request, member.getEmail());
@@ -79,12 +79,13 @@ class OrderServiceTest extends IntegrationTestSupport {
         assertThat(response.getId()).isNotNull();
         assertThat(response.getOrderStatus()).isEqualTo(OrderStatus.SUCCESS);
         assertThat(response.getOrderProducts()).hasSize(1)
-                .extracting("productId", "orderPrice", "quantity")
-                .contains(
-                        tuple(1L, 10000, 1)
-                );
+            .extracting("productId", "orderPrice", "quantity")
+            .contains(
+                tuple(1L, 10000, 1)
+            );
 
-        Stock restedStock = stockRepository.findById(stock.getId()).orElseThrow(EntityNotFoundException::new);
+        Stock restedStock = stockRepository.findById(stock.getId())
+            .orElseThrow(EntityNotFoundException::new);
         assertThat(restedStock.getQuantity()).isEqualTo(9);
     }
 }

@@ -1,18 +1,17 @@
 package me.jincrates.api.ecommerce.products.domain.product;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
+
+import java.util.List;
 import me.jincrates.api.ecommerce.IntegrationTestSupport;
-import me.jincrates.api.ecommerce.products.adapter.database.ProductRepository;
+import me.jincrates.api.ecommerce.products.adapter.persistence.ProductRepository;
 import me.jincrates.api.ecommerce.products.domain.Product;
 import me.jincrates.api.ecommerce.products.domain.ProductSellingStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
 
 class ProductRepositoryTest extends IntegrationTestSupport {
 
@@ -35,8 +34,8 @@ class ProductRepositoryTest extends IntegrationTestSupport {
 
         // then
         assertThat(result).isNotNull()
-                .extracting("productName", "price", "productDetail", "status")
-                .contains("상품명", 1000, "상품 상세설명", ProductSellingStatus.HOLD);
+            .extracting("productName", "price", "productDetail", "status")
+            .contains("상품명", 1000, "상품 상세설명", ProductSellingStatus.HOLD);
     }
 
     @Test
@@ -55,10 +54,10 @@ class ProductRepositoryTest extends IntegrationTestSupport {
 
         // then
         assertThat(result).isNotNull()
-                .hasSize(1)
-                .extracting("productName", "price", "productDetail", "status")
-                .containsExactlyInAnyOrder(
-                        tuple("상품명3", 3000, "상품 상세설명3", ProductSellingStatus.HOLD)
-                );
+            .hasSize(1)
+            .extracting("productName", "price", "productDetail", "status")
+            .containsExactlyInAnyOrder(
+                tuple("상품명3", 3000, "상품 상세설명3", ProductSellingStatus.HOLD)
+            );
     }
 }

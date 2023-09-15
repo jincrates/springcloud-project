@@ -1,4 +1,4 @@
-package me.jincrates.api.ecommerce.carts.adapter.database;
+package me.jincrates.api.ecommerce.carts.adapter.persistence;
 
 import me.jincrates.api.ecommerce.carts.domain.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;

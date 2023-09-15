@@ -1,6 +1,7 @@
-package me.jincrates.api.ecommerce.products.adapter.database;
+package me.jincrates.api.ecommerce.products.adapter.persistence;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.products.application.port.ProductPort;
 import me.jincrates.api.ecommerce.products.application.port.StockPort;
@@ -11,11 +12,10 @@ import me.jincrates.api.ecommerce.products.domain.Stock;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 class ProductAdapter implements ProductPort, StockPort {
+
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final StockRepository stockRepository;
@@ -28,7 +28,8 @@ class ProductAdapter implements ProductPort, StockPort {
     @Override
     public Product findProductById(Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + productId));
+            .orElseThrow(
+                () -> new EntityNotFoundException("상품을 찾을 수 없습니다. productId=" + productId));
     }
 
     @Override

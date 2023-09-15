@@ -1,18 +1,17 @@
-package me.jincrates.api.ecommerce.products.adapter.database;
+package me.jincrates.api.ecommerce.products.adapter.persistence;
+
+import static me.jincrates.api.ecommerce.products.domain.QProduct.product;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.api.ecommerce.products.application.service.request.ProductSearchServiceRequest;
 import me.jincrates.api.ecommerce.products.domain.Product;
 import me.jincrates.api.ecommerce.products.domain.ProductSellingStatus;
 import org.springframework.data.domain.Pageable;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static me.jincrates.api.ecommerce.products.domain.QProduct.product;
 
 @RequiredArgsConstructor
 class ProductQueryRepositoryImpl implements ProductQueryRepository {
@@ -22,14 +21,14 @@ class ProductQueryRepositoryImpl implements ProductQueryRepository {
     @Override
     public List<Product> findAllProduct(ProductSearchServiceRequest request, Pageable pageable) {
         return queryFactory
-                .selectFrom(product)
-                .where(createdAtAfter(request.getSearchDateType()),
-                        searchStatusEq(request.getSearchStatus()),
-                        searchByLike(request.getSearchBy(), request.getSearchQuery()))
-                .orderBy(product.id.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1)
-                .fetch();
+            .selectFrom(product)
+            .where(createdAtAfter(request.getSearchDateType()),
+                searchStatusEq(request.getSearchStatus()),
+                searchByLike(request.getSearchBy(), request.getSearchQuery()))
+            .orderBy(product.id.desc())
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize() + 1)
+            .fetch();
     }
 
     private BooleanExpression createdAtAfter(String searchDateType) {
