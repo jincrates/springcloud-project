@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
+import me.jincrates.ecommerce.product.application.port.ProductUseCase;
 import me.jincrates.ecommerce.product.application.port.StockPort;
 import me.jincrates.ecommerce.product.application.service.request.ProductCreateServiceRequest;
 import me.jincrates.ecommerce.product.application.service.request.ProductSearchServiceRequest;
@@ -23,11 +24,24 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ProductService {
+public class ProductService implements ProductUseCase {
 
     private final ProductPort productPort;
     private final StockPort stockPort;
     private final ProductImageService productImageService;
+
+    @Override
+    public ProductServiceResponse createProduct(ProductCreateServiceRequest request) {
+        // 상품 등록
+        Product product = Product.create(request.getProductName(), request.getPrice(),
+            request.getProductDetail());
+        productPort.saveProduct(product);
+
+        // 재고 등록
+        stockPort.saveStock(Stock.create(product, request.getQuantity()));
+
+        return ProductServiceResponse.of(product);
+    }
 
     @Transactional
     public Long createProduct(ProductCreateServiceRequest request, List<MultipartFile> images) {

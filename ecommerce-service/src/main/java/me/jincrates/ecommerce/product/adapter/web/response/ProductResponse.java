@@ -1,17 +1,18 @@
-package me.jincrates.ecommerce.product.application.service.response;
+package me.jincrates.ecommerce.product.adapter.web.response;
 
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import me.jincrates.ecommerce.product.adapter.web.response.ProductResponse;
+import me.jincrates.ecommerce.product.application.service.response.ProductImageServiceResponse;
+import me.jincrates.ecommerce.product.application.service.response.ProductServiceResponse;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.ecommerce.product.domain.ProductImage;
 import me.jincrates.ecommerce.product.domain.ProductSellingStatus;
 
 @Getter
-public class ProductServiceResponse {
+public class ProductResponse {
 
     private Long id;  // 상품 ID
     private String productName;  // 상품명
@@ -22,7 +23,7 @@ public class ProductServiceResponse {
     private List<Long> productImagesIds = new ArrayList<>();
 
     @Builder(access = AccessLevel.PRIVATE)
-    private ProductServiceResponse(Long id, String productName, int price, String productDetail,
+    private ProductResponse(Long id, String productName, int price, String productDetail,
         ProductSellingStatus status, List<ProductImageServiceResponse> productImages,
         List<Long> productImagesIds) {
         this.id = id;
@@ -34,18 +35,8 @@ public class ProductServiceResponse {
         this.productImagesIds = productImagesIds;
     }
 
-    public static ProductServiceResponse of(Product product) {
-        return ProductServiceResponse.builder()
-            .id(product.getId())
-            .productName(product.getProductName())
-            .price(product.getPrice())
-            .productDetail(product.getProductDetail())
-            .status(product.getStatus())
-            .build();
-    }
-
-    public static ProductServiceResponse of(Product product, List<ProductImage> productImages) {
-        return ProductServiceResponse.builder()
+    public static ProductResponse of(Product product, List<ProductImage> productImages) {
+        return ProductResponse.builder()
             .id(product.getId())
             .productName(product.getProductName())
             .price(product.getPrice())
@@ -56,7 +47,13 @@ public class ProductServiceResponse {
             .build();
     }
 
-    public ProductResponse toResponse() {
-        return ProductResponse.of(this);
+    public static ProductResponse of(ProductServiceResponse response) {
+        return ProductResponse.builder()
+            .id(response.getId())
+            .productName(response.getProductName())
+            .price(response.getPrice())
+            .productDetail(response.getProductDetail())
+            .status(response.getStatus())
+            .build();
     }
 }
