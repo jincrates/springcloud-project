@@ -1,8 +1,12 @@
 package me.jincrates.api.ecommerce.members.application.service;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.api.ecommerce.members.application.port.MemberPort;
+import me.jincrates.api.ecommerce.members.application.port.MemberUseCase;
 import me.jincrates.api.ecommerce.members.application.service.request.MemberCreateServiceRequest;
 import me.jincrates.api.ecommerce.members.application.service.response.MemberCreateServiceResponse;
 import me.jincrates.api.ecommerce.members.application.service.response.MemberServiceResponse;
@@ -11,37 +15,39 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberService {
+public class MemberService implements MemberUseCase {
+
     private final PasswordEncoder passwordEncoder;
     private final MemberPort memberPort;
 
+    @Override
     @Transactional
     public MemberCreateServiceResponse register(MemberCreateServiceRequest request) {
-        Member member = Member.create(request.getName(), request.getEmail(), encryptPassword(request.getPassword()));
+        Member member = Member.create(request.getName(), request.getEmail(),
+            encryptPassword(request.getPassword()));
         validateDuplicateMember(member.getEmail());
         return MemberCreateServiceResponse.of(memberPort.saveMember(member));
     }
 
+    @Override
     public List<MemberServiceResponse> getMembers() {
         List<Member> members = memberPort.findAllMember();
         return members.stream()
-                .map(MemberServiceResponse::of)
-                .collect(toList());
+            .map(MemberServiceResponse::of)
+            .collect(toList());
     }
 
+    @Override
     public MemberServiceResponse getMemberById(Long memberId) {
         Member member = memberPort.findMemberById(memberId);
         return MemberServiceResponse.of(member);
     }
 
+    @Override
     public MemberServiceResponse getMemberByEmail(String email) {
         Member member = memberPort.findMemberByEmail(email);
         return MemberServiceResponse.of(member);
