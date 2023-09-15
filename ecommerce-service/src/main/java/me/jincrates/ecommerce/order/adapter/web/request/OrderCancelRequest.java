@@ -4,6 +4,7 @@ import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.jincrates.ecommerce.order.application.service.request.OrderCancelServiceRequest;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -19,5 +20,9 @@ public class OrderCancelRequest {
 
     public void assignMemberId(Long memberId) {
         this.memberId = memberId;
+    }
+
+    public OrderCancelServiceRequest toServiceRequest() {
+        return OrderCancelServiceRequest.of(this);
     }
 }

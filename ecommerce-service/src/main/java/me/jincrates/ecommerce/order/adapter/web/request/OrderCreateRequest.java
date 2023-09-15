@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.jincrates.ecommerce.order.application.service.request.OrderCreateServiceRequest;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -20,5 +21,9 @@ public class OrderCreateRequest {
 
     public void assignMemberId(Long memberId) {
         this.memberId = memberId;
+    }
+
+    public OrderCreateServiceRequest toServiceRequest() {
+        return null;
     }
 }

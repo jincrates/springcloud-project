@@ -12,8 +12,10 @@ import me.jincrates.ecommerce.cart.domain.Cart;
 import me.jincrates.ecommerce.cart.domain.CartProduct;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
+import me.jincrates.ecommerce.order.application.port.OrderCancelUseCase;
+import me.jincrates.ecommerce.order.application.port.OrderCreateUseCase;
 import me.jincrates.ecommerce.order.application.port.OrderPort;
-import me.jincrates.ecommerce.order.application.port.OrderUseCase;
+import me.jincrates.ecommerce.order.application.service.request.OrderCancelServiceRequest;
 import me.jincrates.ecommerce.order.application.service.request.OrderCreateServiceRequest;
 import me.jincrates.ecommerce.order.application.service.response.OrderServiceResponse;
 import me.jincrates.ecommerce.order.domain.Order;
@@ -31,7 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class OrderService implements OrderUseCase {
+public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
+
+    // QueryPort, CommandPort
 
     private final MemberPort memberPort;
     private final ProductPort productPort;
@@ -46,7 +50,7 @@ public class OrderService implements OrderUseCase {
     }
 
     @Override
-    public OrderServiceResponse cancelOrder(OrderCreateServiceRequest request) {
+    public OrderServiceResponse cancelOrder(OrderCancelServiceRequest request) {
         return null;
     }
 
