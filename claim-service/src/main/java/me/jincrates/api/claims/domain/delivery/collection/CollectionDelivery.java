@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.api.claims.domain.delivery.DeliveryInfo;
-import me.jincrates.api.global.common.BaseEntity;
+import me.jincrates.global.common.BaseEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

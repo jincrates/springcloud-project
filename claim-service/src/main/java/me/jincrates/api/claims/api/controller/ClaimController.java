@@ -7,7 +7,7 @@ import me.jincrates.api.claims.domain.claim.ClaimReason;
 import me.jincrates.api.claims.domain.claim.ClaimType;
 import me.jincrates.api.claims.api.controller.response.ClaimResponse;
 import me.jincrates.api.claims.api.service.ClaimService;
-import me.jincrates.api.global.common.response.CommonResponse;
+import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

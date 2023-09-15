@@ -15,7 +15,7 @@ import me.jincrates.api.boilerplate.api.controller.response.BoilerCreateResponse
 import me.jincrates.api.boilerplate.api.controller.response.BoilerReadResponse;
 import me.jincrates.api.boilerplate.api.controller.response.BoilerUpdateResponse;
 import me.jincrates.api.boilerplate.api.service.BoilerService;
-import me.jincrates.api.global.common.response.CommonResponse;
+import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "보일러 서비스", description = "Boiler API")

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.api.claims.domain.claimproduct.ClaimProduct;
 import me.jincrates.api.claims.domain.orderproduct.OrderProduct;
-import me.jincrates.api.global.common.BaseEntity;
+import me.jincrates.global.common.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;

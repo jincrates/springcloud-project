@@ -11,7 +11,7 @@ import me.jincrates.api.boilerplate.api.service.response.BoilerReadServiceRespon
 import me.jincrates.api.boilerplate.api.service.response.BoilerUpdateServiceResponse;
 import me.jincrates.api.boilerplate.domain.boiler.Boiler;
 import me.jincrates.api.boilerplate.domain.boiler.BoilerRepository;
-import me.jincrates.api.global.core.exception.BadRequestException;
+import me.jincrates.global.core.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;

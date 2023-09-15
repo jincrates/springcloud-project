@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.api.boilerplate.api.service.request.BoilerUpdateServiceRequest;
-import me.jincrates.api.global.common.BaseEntity;
+import me.jincrates.global.common.BaseEntity;
 
 @Getter
 @jakarta.persistence.Entity
