@@ -16,12 +16,7 @@ import me.jincrates.ecommerce.order.application.port.OrderCreateUseCase;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "주문 서비스", description = "주문 등록/조회 API")
 @RestController
@@ -34,12 +29,12 @@ public class OrderController {
 
     @Operation(summary = "주문 등록")
     @ApiResponse(responseCode = "200", description = "주문 등록 성공",
-        content = @Content(schema = @Schema(implementation = OrderResponse.class, description = "등록된 주문")))
+            content = @Content(schema = @Schema(implementation = OrderResponse.class, description = "등록된 주문")))
     @PostMapping("/api/v1/orders")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<?> createOrder(
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
-        @Valid @RequestBody OrderCreateRequest request
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
+            @Valid @RequestBody OrderCreateRequest request
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
         request.assignMemberId(memberId);
@@ -49,12 +44,12 @@ public class OrderController {
 
     @Operation(summary = "주문 취소")
     @ApiResponse(responseCode = "200", description = "주문 취소 성공",
-        content = @Content(schema = @Schema(implementation = OrderResponse.class, description = "등록된 주문")))
-    @PutMapping("/api/v1/orders")
+            content = @Content(schema = @Schema(implementation = OrderResponse.class, description = "등록된 주문")))
+    @PatchMapping("/api/v1/orders")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<?> cancelOrder(
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
-        @Valid @RequestBody OrderCancelRequest request
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
+            @Valid @RequestBody OrderCancelRequest request
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
         request.assignMemberId(memberId);
