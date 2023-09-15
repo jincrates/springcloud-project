@@ -39,7 +39,17 @@ public class OrderService implements OrderUseCase {
     private final StockPort stockPort;
     private final CartPort cartPort;
 
+
     @Override
+    public OrderServiceResponse createOrder(OrderCreateServiceRequest request) {
+        return null;
+    }
+
+    @Override
+    public OrderServiceResponse cancelOrder(OrderCreateServiceRequest request) {
+        return null;
+    }
+
     @Transactional
     public OrderServiceResponse order(OrderCreateServiceRequest request, String email) {
         Member member = memberPort.findMemberByEmail(email);
@@ -63,7 +73,6 @@ public class OrderService implements OrderUseCase {
         return OrderServiceResponse.of(order);
     }
 
-    @Override
     @Transactional
     public OrderServiceResponse orders(List<OrderCreateServiceRequest> requests, String email) {
         Member member = memberPort.findMemberByEmail(email);
@@ -85,7 +94,6 @@ public class OrderService implements OrderUseCase {
         return OrderServiceResponse.of(order);
     }
 
-    @Override
     @Transactional
     public OrderServiceResponse orderFromCart(String email) {
         Member member = memberPort.findMemberByEmail(email);
@@ -117,7 +125,6 @@ public class OrderService implements OrderUseCase {
         return OrderServiceResponse.of(order);
     }
 
-    @Override
     public PageResponse<?> getOrders(String email, Pageable pageable) {
         List<Order> orders = orderPort.findOrders(email, pageable);
 
@@ -139,7 +146,6 @@ public class OrderService implements OrderUseCase {
         return Objects.equals(member.getEmail(), orderMember.getEmail());
     }
 
-    @Override
     @Transactional
     public void cancel(UUID orderId) {
         // TODO: 324

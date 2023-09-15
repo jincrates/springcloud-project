@@ -42,7 +42,8 @@ public class MemberController {
         content = @Content(schema = @Schema(implementation = MemberCreateResponse.class, description = "회원 정보")))
     @PostMapping("/api/v1/members")
     public ResponseEntity<?> createMember(
-        @Valid @RequestBody MemberCreateRequest request) {
+        @Valid @RequestBody MemberCreateRequest request
+    ) {
         MemberCreateResponse response = memberUseCase.register(request.toServiceRequest())
             .toResponse();
 
