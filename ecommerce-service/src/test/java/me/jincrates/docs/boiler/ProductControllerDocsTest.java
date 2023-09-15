@@ -1,10 +1,10 @@
 package me.jincrates.docs.boiler;
 
-import me.jincrates.ecommerce.products.adapter.web.ProductController;
-import me.jincrates.ecommerce.products.application.service.ProductService;
-import me.jincrates.docs.RestDocsSupport;
-
 import static org.mockito.Mockito.mock;
+
+import me.jincrates.docs.RestDocsSupport;
+import me.jincrates.ecommerce.product.adapter.web.ProductController;
+import me.jincrates.ecommerce.product.application.service.ProductService;
 
 public class ProductControllerDocsTest extends RestDocsSupport {
 

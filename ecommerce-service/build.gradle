@@ -6,6 +6,7 @@ buildscript {
         h2DatabaseVersion = '2.1.214'
         asciidoctorJvmConvertVersion = '3.3.2'
         queryDslVersion = '1.0.10'
+        jwtVersion = '0.11.5'
     }
 }
 
@@ -76,6 +77,11 @@ dependencies {
     // Rest Docs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // jwt
+    implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
 }
 
 tasks.named('test') {
