@@ -13,11 +13,11 @@ public class OrderListPageServiceResponse {
 
     private int pageNo;
     private boolean hasNext;
-    private List<OrderServiceResponse> contents;
+    private List<OrderResponse> contents;
 
     @Builder
     private OrderListPageServiceResponse(int pageNo, boolean hasNext,
-                                         List<OrderServiceResponse> contents) {
+                                         List<OrderResponse> contents) {
         this.pageNo = pageNo;
         this.hasNext = hasNext;
         this.contents = contents;

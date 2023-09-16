@@ -1,14 +1,6 @@
 package me.jincrates.ecommerce.product.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +24,7 @@ public class ProductImage extends BaseEntity {
 
     private String imageUrl;  // 이미지 조회 경로
 
-    private boolean represented;  // 대표 이미지 여부
+    private Boolean represented;  // 대표 이미지 여부
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -40,16 +32,16 @@ public class ProductImage extends BaseEntity {
 
     public ProductImage(Product product) {
         this.product = product;
-        this.represented = false;
+        this.represented = Boolean.FALSE;
     }
 
     @Builder(access = AccessLevel.PRIVATE)
     private ProductImage(String imageName, String originImageName, String imageUrl,
-        Product product) {
+                         Product product) {
         this.imageName = imageName;
         this.originImageName = originImageName;
         this.imageUrl = imageUrl;
-        this.represented = false;
+        this.represented = Boolean.FALSE;
         this.product = product;
     }
 
@@ -60,6 +52,6 @@ public class ProductImage extends BaseEntity {
     }
 
     public void represented() {
-        this.represented = true;
+        this.represented = Boolean.TRUE;
     }
 }

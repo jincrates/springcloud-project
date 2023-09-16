@@ -1,11 +1,11 @@
 package me.jincrates.ecommerce.cart.application.port;
 
-import me.jincrates.ecommerce.cart.application.service.request.CartCreateServiceRequest;
-import me.jincrates.ecommerce.cart.application.service.response.CartServiceResponse;
+import me.jincrates.ecommerce.cart.application.service.request.CartCreateRequest;
+import me.jincrates.ecommerce.cart.application.service.response.CartResponse;
 
 public interface CartUseCase {
 
-    CartServiceResponse createCart(CartCreateServiceRequest request);
+    CartResponse createCart(CartCreateRequest request, Long memberId);
 
 //    Long addCart(CartProductServiceRequest request, String email);
 //

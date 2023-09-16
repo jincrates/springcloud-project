@@ -15,6 +15,4 @@ public interface MemberUseCase {
     List<MemberResponse> getMembers();
 
     MemberResponse getMemberById(Long memberId);
-
-    MemberResponse getMemberByEmail(String email);
 }

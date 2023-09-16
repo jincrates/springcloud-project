@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
-    RECEIPT("접수"),
+    REQUEST("접수"),
     PROGRESS("진행"),
     SUCCESS("완료"),
     REJECT("불가"),

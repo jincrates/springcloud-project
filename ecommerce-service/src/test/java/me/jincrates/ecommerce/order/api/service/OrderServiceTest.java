@@ -1,8 +1,5 @@
 package me.jincrates.ecommerce.order.api.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-
 import jakarta.persistence.EntityNotFoundException;
 import me.jincrates.ecommerce.IntegrationTestSupport;
 import me.jincrates.ecommerce.member.adapter.persistence.MemberRepository;
@@ -10,8 +7,7 @@ import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.ecommerce.order.adapter.persistence.OrderProductRepository;
 import me.jincrates.ecommerce.order.adapter.persistence.OrderRepository;
 import me.jincrates.ecommerce.order.application.service.OrderService;
-import me.jincrates.ecommerce.order.application.service.request.OrderCreateServiceRequest;
-import me.jincrates.ecommerce.order.application.service.response.OrderServiceResponse;
+import me.jincrates.ecommerce.order.application.service.response.OrderResponse;
 import me.jincrates.ecommerce.order.domain.OrderStatus;
 import me.jincrates.ecommerce.product.adapter.persistence.ProductRepository;
 import me.jincrates.ecommerce.product.adapter.persistence.StockRepository;
@@ -22,6 +18,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 class OrderServiceTest extends IntegrationTestSupport {
 
@@ -71,22 +70,22 @@ class OrderServiceTest extends IntegrationTestSupport {
         stockRepository.save(stock);
 
         OrderCreateServiceRequest request = new OrderCreateServiceRequest(product.getId(),
-            quantity);
+                quantity);
 
         // when
-        OrderServiceResponse response = orderService.order(request, member.getEmail());
+        OrderResponse response = orderService.order(request, member.getEmail());
 
         // then
         assertThat(response.getId()).isNotNull();
         assertThat(response.getOrderStatus()).isEqualTo(OrderStatus.SUCCESS);
         assertThat(response.getOrderProducts()).hasSize(1)
-            .extracting("productId", "orderPrice", "quantity")
-            .contains(
-                tuple(1L, 10000, 1)
-            );
+                .extracting("id", "orderPrice", "quantity")
+                .contains(
+                        tuple(1L, 10000, 1)
+                );
 
         Stock restedStock = stockRepository.findById(stock.getId())
-            .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         assertThat(restedStock.getQuantity()).isEqualTo(9);
     }
 }

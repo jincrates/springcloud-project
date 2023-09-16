@@ -56,12 +56,6 @@ public class MemberService implements MemberUseCase {
         return MemberResponse.of(member);
     }
 
-    @Override
-    public MemberResponse getMemberByEmail(String email) {
-        Member member = memberPort.findMemberByEmail(email);
-        return MemberResponse.of(member);
-    }
-
     private String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }

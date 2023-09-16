@@ -1,14 +1,6 @@
 package me.jincrates.ecommerce.product.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,33 +22,33 @@ public class Stock extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private int quantity;
+    private Integer quantity;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Stock(Product product, int quantity) {
+    private Stock(Product product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 
-    public static Stock create(Product product, int quantity) {
+    public static Stock create(Product product, Integer quantity) {
         return Stock.builder()
-            .product(product)
-            .quantity(quantity)
-            .build();
+                .product(product)
+                .quantity(quantity)
+                .build();
     }
 
-    public boolean isQuantityLessThan(int quantity) {
+    public boolean isQuantityLessThan(Integer quantity) {
         return this.quantity < quantity;
     }
 
-    public void deductQuantity(int quantity) {
+    public void deductQuantity(Integer quantity) {
         if (isQuantityLessThan(quantity)) {
             throw new IllegalArgumentException("차감할 재고 수량이 없습니다.");
         }
         this.quantity -= quantity;
     }
 
-    public void addQuantity(int quantity) {
+    public void addQuantity(Integer quantity) {
         this.quantity += quantity;
     }
 }

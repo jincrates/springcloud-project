@@ -1,9 +1,9 @@
 package me.jincrates.ecommerce.product.application.port;
 
-import me.jincrates.ecommerce.product.application.service.request.ProductCreateServiceRequest;
-import me.jincrates.ecommerce.product.application.service.response.ProductServiceResponse;
+import me.jincrates.ecommerce.product.application.service.request.ProductCreateRequest;
+import me.jincrates.ecommerce.product.application.service.response.ProductResponse;
 
 public interface ProductUseCase {
 
-    ProductServiceResponse createProduct(ProductCreateServiceRequest request);
+    ProductResponse createProduct(ProductCreateRequest request);
 }

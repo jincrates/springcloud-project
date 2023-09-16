@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.cart.domain.CartProduct;
-import me.jincrates.ecommerce.product.application.service.response.ProductServiceResponse;
+import me.jincrates.ecommerce.product.application.service.response.ProductResponse;
 import me.jincrates.ecommerce.product.domain.Product;
 
 @Getter
@@ -12,20 +12,20 @@ import me.jincrates.ecommerce.product.domain.Product;
 public class CartProductServiceResponse {
     private Long id;  // 장바구니 상품 ID
     private Long cartId;
-    private ProductServiceResponse product;
-    private int quantity;  // 담은 수량
+    private ProductResponse product;
+    private Integer quantity;  // 담은 수량
 
-    public CartProductServiceResponse(Long id, Long cartId, Product product, int quantity) {
+    public CartProductServiceResponse(Long id, Long cartId, Product product, Integer quantity) {
         this.id = id;
         this.cartId = cartId;
-        this.product = ProductServiceResponse.of(product);
+        this.product = ProductResponse.of(product);
         this.quantity = quantity;
     }
 
     public CartProductServiceResponse(CartProduct entity) {
         this.id = entity.getId();
         this.cartId = entity.getCart().getId();
-        this.product = ProductServiceResponse.of(entity.getProduct());
+        this.product = ProductResponse.of(entity.getProduct());
         this.quantity = entity.getQuantity();
     }
 }

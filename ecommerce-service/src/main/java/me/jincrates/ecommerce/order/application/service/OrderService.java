@@ -8,21 +8,20 @@ import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.ecommerce.order.application.port.OrderCancelUseCase;
 import me.jincrates.ecommerce.order.application.port.OrderCreateUseCase;
 import me.jincrates.ecommerce.order.application.port.OrderPort;
-import me.jincrates.ecommerce.order.application.service.request.OrderCancelServiceRequest;
-import me.jincrates.ecommerce.order.application.service.request.OrderCreateServiceRequest;
-import me.jincrates.ecommerce.order.application.service.response.OrderServiceResponse;
+import me.jincrates.ecommerce.order.application.service.request.OrderCancelRequest;
+import me.jincrates.ecommerce.order.application.service.request.OrderCreateRequest;
+import me.jincrates.ecommerce.order.application.service.response.OrderResponse;
 import me.jincrates.ecommerce.order.domain.Order;
 import me.jincrates.ecommerce.order.domain.OrderProduct;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.application.port.StockPort;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.ecommerce.product.domain.Stock;
-import me.jincrates.global.common.response.PageResponse;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -31,67 +30,92 @@ import java.util.*;
 public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
 
     // QueryPort, CommandPort
-
     private final MemberPort memberPort;
     private final ProductPort productPort;
     private final OrderPort orderPort;
     private final StockPort stockPort;
     private final CartPort cartPort;
 
-
     @Override
-    public OrderServiceResponse createOrder(OrderCreateServiceRequest request) {
-        return null;
-    }
-
-    @Override
-    public OrderServiceResponse cancelOrder(OrderCancelServiceRequest request) {
-        return null;
-    }
-
     @Transactional
-    public OrderServiceResponse order(OrderCreateServiceRequest request, String email) {
-        Member member = memberPort.findMemberByEmail(email);
+    public OrderResponse createOrder(OrderCreateRequest request, Long memberId) {
+        Member member = memberPort.findMemberById(memberId);
 
-        Product product = productPort.findProductById(request.getProductId());
-
-        // 재고 차감
-        deductStockQuantity(product, request.getQuantity());
-
-        List<OrderProduct> orderProducts = new ArrayList<>();
-        OrderProduct orderProduct = OrderProduct.create(product, request.getQuantity());
-        orderProducts.add(orderProduct);
-
-        Order order = Order.create(member, orderProducts);
-        orderPort.saveOrder(order);
+        List<OrderProduct> orderProducts = request.orderProducts().stream()
+                .map(op -> {
+                    Product product = productPort.findProductById(op.productId());
+                    // 재고 차감
+                    deductStockQuantity(product, op.quantity());
+                    return OrderProduct.create(product, op.quantity());
+                }).toList();
+        
+        Order order = orderPort.saveOrder(Order.create(member, orderProducts));
 
         // 결제로직
         order.progress();
         order.success();
 
-        return OrderServiceResponse.of(order);
+        return OrderResponse.of(order);
     }
 
+    @Override
     @Transactional
-    public OrderServiceResponse orders(List<OrderCreateServiceRequest> requests, String email) {
-        Member member = memberPort.findMemberByEmail(email);
+    public OrderResponse cancelOrder(OrderCancelRequest request, Long memberId) {
+        Member member = memberPort.findMemberById(memberId);
+        Order order = orderPort.findOrderById(request.orderId());
 
-        List<OrderProduct> orderProducts = new ArrayList<>();
-        for (OrderCreateServiceRequest request : requests) {
-            Product product = productPort.findProductById(request.getProductId());
-            OrderProduct orderProduct = OrderProduct.create(product, request.getQuantity());
-            orderProducts.add(orderProduct);
+        if (!Objects.equals(member.getId(), order.getMember().getId())) {
+            throw new IllegalArgumentException("주문자 정보와 일치하지 않습니다. order.memberId" + order.getMember().getId());
         }
 
-        Order order = Order.create(member, orderProducts);
-        orderPort.saveOrder(order);
+        order.cancel();
 
-        // 결제로직
-        order.progress();
-        order.success();
-
-        return OrderServiceResponse.of(order);
+        return OrderResponse.of(order);
     }
+
+//    @Transactional
+//    public OrderResponse order(OrderCreateRequest request, String email) {
+//        Member member = memberPort.findMemberByEmail(email);
+//
+//        Product product = productPort.findProductById(request.);
+//
+//        // 재고 차감
+//        deductStockQuantity(product, request.getQuantity());
+//
+//        List<OrderProduct> orderProducts = new ArrayList<>();
+//        OrderProduct orderProduct = OrderProduct.create(product, request.getQuantity());
+//        orderProducts.add(orderProduct);
+//
+//        Order order = Order.create(member, orderProducts);
+//        orderPort.saveOrder(order);
+//
+//        // 결제로직
+//        order.progress();
+//        order.success();
+//
+//        return OrderResponse.of(order);
+//    }
+//
+//    @Transactional
+//    public OrderResponse orders(List<OrderCreateServiceRequest> requests, String email) {
+//        Member member = memberPort.findMemberByEmail(email);
+//
+//        List<OrderProduct> orderProducts = new ArrayList<>();
+//        for (OrderCreateServiceRequest request : requests) {
+//            Product product = productPort.findProductById(request.getProductId());
+//            OrderProduct orderProduct = OrderProduct.create(product, request.getQuantity());
+//            orderProducts.add(orderProduct);
+//        }
+//
+//        Order order = Order.create(member, orderProducts);
+//        orderPort.saveOrder(order);
+//
+//        // 결제로직
+//        order.progress();
+//        order.success();
+//
+//        return OrderResponse.of(order);
+//    }
 
 //    @Transactional
 //    public OrderServiceResponse orderFromCart(String email) {
@@ -124,36 +148,7 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
 //        return OrderServiceResponse.of(order);
 //    }
 
-    public PageResponse<?> getOrders(String email, Pageable pageable) {
-        List<Order> orders = orderPort.findOrders(email, pageable);
-
-        List<OrderServiceResponse> responses = orders.stream().map(OrderServiceResponse::of)
-                .toList();
-
-        return PageResponse.builder()
-                .pageNo(pageable.getPageNumber())
-                .hasNext(orders.size() > pageable.getPageSize())
-                .contents(Collections.singletonList(responses.subList(0, pageable.getPageSize())))
-                .build();
-    }
-
-    public boolean validateOrder(UUID orderId, String email) {
-        Member member = memberPort.findMemberByEmail(email);
-        Order order = orderPort.findOrderById(orderId);
-        Member orderMember = order.getMember();
-
-        return Objects.equals(member.getEmail(), orderMember.getEmail());
-    }
-
-    @Transactional
-    public void cancel(UUID orderId) {
-        // TODO: 324
-        Order order = orderPort.findOrderById(orderId);
-        order.cancel();
-    }
-
-
-    private void deductStockQuantity(Product product, int quantity) {
+    private void deductStockQuantity(Product product, Integer quantity) {
         Stock stock = stockPort.findStockByProduct(product);
 
         // 재고 차감 시도

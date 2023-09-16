@@ -1,9 +1,9 @@
 package me.jincrates.ecommerce.order.application.port;
 
-import me.jincrates.ecommerce.order.application.service.request.OrderCancelServiceRequest;
-import me.jincrates.ecommerce.order.application.service.response.OrderServiceResponse;
+import me.jincrates.ecommerce.order.application.service.request.OrderCancelRequest;
+import me.jincrates.ecommerce.order.application.service.response.OrderResponse;
 
 public interface OrderCancelUseCase {
 
-    OrderServiceResponse cancelOrder(OrderCancelServiceRequest request);
+    OrderResponse cancelOrder(OrderCancelRequest request, Long memberId);
 }

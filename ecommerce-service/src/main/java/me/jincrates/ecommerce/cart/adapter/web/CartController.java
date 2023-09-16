@@ -10,9 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.auth.JwtProvider;
-import me.jincrates.ecommerce.cart.adapter.web.request.CartCreateRequest;
-import me.jincrates.ecommerce.cart.adapter.web.response.CartResponse;
 import me.jincrates.ecommerce.cart.application.port.CartUseCase;
+import me.jincrates.ecommerce.cart.application.service.request.CartCreateRequest;
+import me.jincrates.ecommerce.cart.application.service.response.CartResponse;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,8 +37,7 @@ public class CartController {
             @Valid @RequestBody CartCreateRequest request
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
-        request.assignMemberId(memberId);
 
-        return CommonResponse.ok(new CartResponse(cartUseCase.createCart(request.toServiceRequest())));
+        return CommonResponse.ok(cartUseCase.createCart(request, memberId));
     }
 }

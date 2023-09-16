@@ -1,11 +1,12 @@
 package me.jincrates.ecommerce.product.adapter.persistence;
 
-import java.util.List;
-import me.jincrates.ecommerce.product.application.service.request.ProductSearchServiceRequest;
+import me.jincrates.ecommerce.product.application.service.request.ProductSearchRequest;
 import me.jincrates.ecommerce.product.domain.Product;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 interface ProductQueryRepository {
 
-    List<Product> findAllProduct(ProductSearchServiceRequest request, Pageable pageable);
+    List<Product> findAllProduct(ProductSearchRequest request, Pageable pageable);
 }

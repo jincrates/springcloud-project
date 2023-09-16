@@ -1,19 +1,11 @@
 package me.jincrates.ecommerce.product.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.ecommerce.product.application.service.request.ProductUpdateServiceRequest;
+import me.jincrates.ecommerce.product.application.service.request.ProductUpdateRequest;
 import me.jincrates.global.common.BaseEntity;
 
 @Getter
@@ -31,7 +23,7 @@ public class Product extends BaseEntity {
     private String productName;  // 상품명
 
     @Column(nullable = false)  // 가격
-    private int price;
+    private Integer price;
 
     @Lob
     @Column(nullable = false)
@@ -42,8 +34,8 @@ public class Product extends BaseEntity {
     private ProductSellingStatus status;  // 상품 판매상태
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Product(String productName, int price, String productDetail,
-        ProductSellingStatus status) {
+    private Product(String productName, Integer price, String productDetail,
+                    ProductSellingStatus status) {
         if (productName == null) {
             throw new IllegalArgumentException("상품명은 필수입니다.");
         }
@@ -66,20 +58,20 @@ public class Product extends BaseEntity {
         this.status = status;
     }
 
-    public static Product create(String productName, int price, String productDetail) {
+    public static Product create(String productName, Integer price, String productDetail) {
         return Product.builder()
-            .productName(productName)
-            .price(price)
-            .productDetail(productDetail)
-            .status(ProductSellingStatus.HOLD)
-            .build();
+                .productName(productName)
+                .price(price)
+                .productDetail(productDetail)
+                .status(ProductSellingStatus.HOLD)
+                .build();
     }
 
-    public void update(ProductUpdateServiceRequest request) {
-        this.id = request.getProductId();
-        this.productName = request.getProductName();
-        this.price = request.getPrice();
-        this.productDetail = request.getProductDetail();
-        this.status = request.getStatus();
+    public void update(ProductUpdateRequest request) {
+        this.id = request.productId();
+        this.productName = request.productName();
+        this.price = request.price();
+        this.productDetail = request.productDetail();
+        this.status = request.status();
     }
 }

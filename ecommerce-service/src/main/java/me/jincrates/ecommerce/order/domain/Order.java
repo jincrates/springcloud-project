@@ -1,26 +1,17 @@
 package me.jincrates.ecommerce.order.domain;
 
 import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.global.common.BaseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -47,7 +38,7 @@ public class Order extends BaseEntity {
     @QueryProjection
     @Builder(access = AccessLevel.PRIVATE)
     private Order(UUID id, Member member, OrderStatus orderStatus,
-        List<OrderProduct> orderProducts) {
+                  List<OrderProduct> orderProducts) {
         this.id = id;
         this.member = member;
         this.orderStatus = orderStatus;
@@ -56,11 +47,11 @@ public class Order extends BaseEntity {
 
     public static Order create(Member member, List<OrderProduct> orderProducts) {
         Order order = Order.builder()
-            .id(UUID.randomUUID())  // 주문번호 채번
-            .member(member)
-            .orderStatus(OrderStatus.RECEIPT)
-            .orderProducts(orderProducts)
-            .build();
+                .id(UUID.randomUUID())  // 주문번호 채번
+                .member(member)
+                .orderStatus(OrderStatus.REQUEST)
+                .orderProducts(orderProducts)
+                .build();
 
         for (OrderProduct orderProduct : orderProducts) {
             orderProduct.setOrder(order);
