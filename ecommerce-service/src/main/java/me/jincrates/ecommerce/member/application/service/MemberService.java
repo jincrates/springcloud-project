@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.application.port.MemberUseCase;
-import me.jincrates.ecommerce.member.application.service.request.MemberCreateServiceRequest;
-import me.jincrates.ecommerce.member.application.service.request.MemberLoginServiceRequest;
-import me.jincrates.ecommerce.member.application.service.response.MemberCreateServiceResponse;
-import me.jincrates.ecommerce.member.application.service.response.MemberServiceResponse;
+import me.jincrates.ecommerce.member.application.service.request.MemberCreateRequest;
+import me.jincrates.ecommerce.member.application.service.request.MemberLoginRequest;
+import me.jincrates.ecommerce.member.application.service.response.MemberResponse;
 import me.jincrates.ecommerce.member.domain.Member;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,40 +27,39 @@ public class MemberService implements MemberUseCase {
 
     @Override
     @Transactional
-    public MemberCreateServiceResponse register(MemberCreateServiceRequest request) {
-        Member member = Member.create(request.getName(), request.getEmail(),
-                encryptPassword(request.getPassword()));
+    public MemberResponse register(MemberCreateRequest request) {
+        Member member = Member.create(request.name(), request.email(), encryptPassword(request.password()));
         validateDuplicateMember(member.getEmail());
-        return MemberCreateServiceResponse.of(memberPort.saveMember(member));
+        return MemberResponse.of(memberPort.saveMember(member));
     }
 
     @Override
-    public MemberServiceResponse login(MemberLoginServiceRequest request) {
-        Member member = memberPort.findMemberByEmail(request.getEmail());
-        if (!isValidPassword(request.getPassword(), member.getPassword())) {
+    public MemberResponse login(MemberLoginRequest request) {
+        Member member = memberPort.findMemberByEmail(request.email());
+        if (!isValidPassword(request.password(), member.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
         }
-        return MemberServiceResponse.of(member);
+        return MemberResponse.of(member);
     }
 
     @Override
-    public List<MemberServiceResponse> getMembers() {
+    public List<MemberResponse> getMembers() {
         List<Member> members = memberPort.findAllMember();
         return members.stream()
-                .map(MemberServiceResponse::of)
+                .map(MemberResponse::of)
                 .collect(toList());
     }
 
     @Override
-    public MemberServiceResponse getMemberById(Long memberId) {
+    public MemberResponse getMemberById(Long memberId) {
         Member member = memberPort.findMemberById(memberId);
-        return MemberServiceResponse.of(member);
+        return MemberResponse.of(member);
     }
 
     @Override
-    public MemberServiceResponse getMemberByEmail(String email) {
+    public MemberResponse getMemberByEmail(String email) {
         Member member = memberPort.findMemberByEmail(email);
-        return MemberServiceResponse.of(member);
+        return MemberResponse.of(member);
     }
 
     private String encryptPassword(String password) {
@@ -71,7 +69,7 @@ public class MemberService implements MemberUseCase {
     private void validateDuplicateMember(String email) {
         if (memberPort.existsMemberByEmail(email)) {
             log.warn("이미 가입한 회원입니다. email={}", email);
-            throw new IllegalArgumentException("이미 가입한 회원입니다.");
+            throw new IllegalArgumentException("이미 가입한 회원입니다. email=" + email);
         }
     }
 

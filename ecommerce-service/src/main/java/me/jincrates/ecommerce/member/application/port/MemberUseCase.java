@@ -1,21 +1,20 @@
 package me.jincrates.ecommerce.member.application.port;
 
-import me.jincrates.ecommerce.member.application.service.request.MemberCreateServiceRequest;
-import me.jincrates.ecommerce.member.application.service.request.MemberLoginServiceRequest;
-import me.jincrates.ecommerce.member.application.service.response.MemberCreateServiceResponse;
-import me.jincrates.ecommerce.member.application.service.response.MemberServiceResponse;
+import me.jincrates.ecommerce.member.application.service.request.MemberCreateRequest;
+import me.jincrates.ecommerce.member.application.service.request.MemberLoginRequest;
+import me.jincrates.ecommerce.member.application.service.response.MemberResponse;
 
 import java.util.List;
 
 public interface MemberUseCase {
 
-    MemberCreateServiceResponse register(MemberCreateServiceRequest request);
+    MemberResponse register(MemberCreateRequest request);
 
-    MemberServiceResponse login(MemberLoginServiceRequest request);
+    MemberResponse login(MemberLoginRequest request);
 
-    List<MemberServiceResponse> getMembers();
+    List<MemberResponse> getMembers();
 
-    MemberServiceResponse getMemberById(Long memberId);
+    MemberResponse getMemberById(Long memberId);
 
-    MemberServiceResponse getMemberByEmail(String email);
+    MemberResponse getMemberByEmail(String email);
 }

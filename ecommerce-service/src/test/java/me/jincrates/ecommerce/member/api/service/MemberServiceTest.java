@@ -3,8 +3,8 @@ package me.jincrates.ecommerce.member.api.service;
 import me.jincrates.ecommerce.IntegrationTestSupport;
 import me.jincrates.ecommerce.member.adapter.persistence.MemberRepository;
 import me.jincrates.ecommerce.member.application.service.MemberService;
-import me.jincrates.ecommerce.member.application.service.request.MemberCreateServiceRequest;
-import me.jincrates.ecommerce.member.application.service.response.MemberCreateServiceResponse;
+import me.jincrates.ecommerce.member.application.service.request.MemberCreateRequest;
+import me.jincrates.ecommerce.member.application.service.response.MemberResponse;
 import me.jincrates.ecommerce.member.domain.Role;
 import me.jincrates.global.common.enumtype.Status;
 import org.junit.jupiter.api.AfterEach;
@@ -37,11 +37,11 @@ class MemberServiceTest extends IntegrationTestSupport {
     @DisplayName("신규 회원을 등록합니다.")
     void createMember() {
         // given
-        MemberCreateServiceRequest request = new MemberCreateServiceRequest("회원명",
+        MemberCreateRequest request = new MemberCreateRequest("회원명",
                 "user@email.com", "password");
 
         // when
-        MemberCreateServiceResponse result = memberService.register(request);
+        MemberResponse result = memberService.register(request);
 
         // then
         assertThat(result).isNotNull()
@@ -53,11 +53,11 @@ class MemberServiceTest extends IntegrationTestSupport {
     @DisplayName("신규 회원을 등록할 때, 이미 가입한 이메일은 가입할 수 없습니다.")
     void createMemberWithDuplicateEmail() {
         // given
-        MemberCreateServiceRequest member = new MemberCreateServiceRequest("회원명2",
+        MemberCreateRequest member = new MemberCreateRequest("회원명2",
                 "user@email.com", "password1");
         memberService.register(member);
 
-        MemberCreateServiceRequest request = new MemberCreateServiceRequest("회원명2",
+        MemberCreateRequest request = new MemberCreateRequest("회원명2",
                 "user@email.com", "password2");
 
         // when // then

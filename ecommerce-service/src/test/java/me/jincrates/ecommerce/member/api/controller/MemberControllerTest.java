@@ -1,8 +1,7 @@
 package me.jincrates.ecommerce.member.api.controller;
 
 import me.jincrates.ecommerce.ControllerTestSupport;
-import me.jincrates.ecommerce.member.adapter.web.request.MemberCreateRequest;
-import me.jincrates.ecommerce.member.application.service.response.MemberCreateServiceResponse;
+import me.jincrates.ecommerce.member.application.service.response.MemberResponse;
 import me.jincrates.ecommerce.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ class MemberControllerTest extends ControllerTestSupport {
                 "asdf1234");
         given(memberService.register(any()))
                 .willReturn(
-                        MemberCreateServiceResponse.of(Member.create("홍길동", "user@email.com", "asdf1234")));
+                        MemberResponse.of(Member.create("홍길동", "user@email.com", "asdf1234")));
 
         // when // then
         mockMvc.perform(
