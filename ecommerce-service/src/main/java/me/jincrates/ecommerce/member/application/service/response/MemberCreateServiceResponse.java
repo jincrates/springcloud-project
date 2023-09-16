@@ -1,14 +1,15 @@
 package me.jincrates.ecommerce.member.application.service.response;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.member.adapter.web.response.MemberCreateResponse;
 import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.ecommerce.member.domain.Role;
 import me.jincrates.global.common.enumtype.Status;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberCreateServiceResponse {
 
     private Long id;  // 회원 ID
@@ -17,9 +18,7 @@ public class MemberCreateServiceResponse {
     private Role role; // 권한
     private Status status;  // 상태
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private MemberCreateServiceResponse(Long id, String name, String email, Role role,
-        Status status) {
+    public MemberCreateServiceResponse(Long id, String name, String email, Role role, Status status) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -27,14 +26,14 @@ public class MemberCreateServiceResponse {
         this.status = status;
     }
 
-    public static MemberCreateServiceResponse of(Member member) {
-        return MemberCreateServiceResponse.builder()
-            .id(member.getId())
-            .name(member.getName())
-            .email(member.getEmail())
-            .role(member.getRole())
-            .status(member.getStatus())
-            .build();
+    public static MemberCreateServiceResponse of(Member entity) {
+        return new MemberCreateServiceResponse(
+                entity.getId(),
+                entity.getName(),
+                entity.getEmail(),
+                entity.getRole(),
+                entity.getStatus()
+        );
     }
 
     public MemberCreateResponse toResponse() {

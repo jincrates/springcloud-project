@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.member.application.service.request.MemberCreateServiceRequest;
@@ -29,19 +28,10 @@ public class MemberCreateRequest {
     @Size(min = 8, message = "비밀번호는 8자 이상이여야합니다.")
     private String password; // 비밀번호
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private MemberCreateRequest(String name, String email, String password) {
+    public MemberCreateRequest(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-    }
-
-    public static MemberCreateRequest create(String name, String email, String password) {
-        return MemberCreateRequest.builder()
-            .name(name)
-            .email(email)
-            .password(password)
-            .build();
     }
 
     public MemberCreateServiceRequest toServiceRequest() {

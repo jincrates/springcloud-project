@@ -1,16 +1,18 @@
 package me.jincrates.ecommerce.product.application.service.response;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.product.adapter.web.response.ProductResponse;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.ecommerce.product.domain.ProductImage;
 import me.jincrates.ecommerce.product.domain.ProductSellingStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductServiceResponse {
 
     private Long id;  // 상품 ID
@@ -21,10 +23,9 @@ public class ProductServiceResponse {
     private List<ProductImageServiceResponse> productImages = new ArrayList<>();
     private List<Long> productImagesIds = new ArrayList<>();
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private ProductServiceResponse(Long id, String productName, int price, String productDetail,
-        ProductSellingStatus status, List<ProductImageServiceResponse> productImages,
-        List<Long> productImagesIds) {
+    public ProductServiceResponse(Long id, String productName, int price, String productDetail,
+                                  ProductSellingStatus status, List<ProductImageServiceResponse> productImages,
+                                  List<Long> productImagesIds) {
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -35,25 +36,27 @@ public class ProductServiceResponse {
     }
 
     public static ProductServiceResponse of(Product product) {
-        return ProductServiceResponse.builder()
-            .id(product.getId())
-            .productName(product.getProductName())
-            .price(product.getPrice())
-            .productDetail(product.getProductDetail())
-            .status(product.getStatus())
-            .build();
+        return new ProductServiceResponse(
+                product.getId(),
+                product.getProductName(),
+                product.getPrice(),
+                product.getProductDetail(),
+                product.getStatus(),
+                null,
+                null
+        );
     }
 
     public static ProductServiceResponse of(Product product, List<ProductImage> productImages) {
-        return ProductServiceResponse.builder()
-            .id(product.getId())
-            .productName(product.getProductName())
-            .price(product.getPrice())
-            .productDetail(product.getProductDetail())
-            .status(product.getStatus())
-            .productImages(productImages.stream().map(ProductImageServiceResponse::of).toList())
-            .productImagesIds(productImages.stream().map(ProductImage::getId).toList())
-            .build();
+        return new ProductServiceResponse(
+                product.getId(),
+                product.getProductName(),
+                product.getPrice(),
+                product.getProductDetail(),
+                product.getStatus(),
+                productImages.stream().map(ProductImageServiceResponse::of).toList(),
+                productImages.stream().map(ProductImage::getId).toList()
+        );
     }
 
     public ProductResponse toResponse() {

@@ -1,10 +1,12 @@
 package me.jincrates.ecommerce.product.application.service.request;
 
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.product.domain.ProductSellingStatus;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductUpdateServiceRequest {
 
     private Long productId;
@@ -13,9 +15,8 @@ public class ProductUpdateServiceRequest {
     private String productDetail;  // 상품 상세설명
     private ProductSellingStatus status;  // 판매상태
 
-    @Builder
-    private ProductUpdateServiceRequest(Long productId, String productName, int price,
-        String productDetail, ProductSellingStatus status) {
+    public ProductUpdateServiceRequest(Long productId, String productName, int price,
+                                       String productDetail, ProductSellingStatus status) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;

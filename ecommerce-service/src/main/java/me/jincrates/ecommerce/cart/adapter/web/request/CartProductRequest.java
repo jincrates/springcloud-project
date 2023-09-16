@@ -17,6 +17,7 @@ public class CartProductRequest {
     @Min(value = 1, message = "장바구니에 담을 상품의 개수를 1개 이상으로 입력해주세요.")
     private int cartQuantity;
 
+    
     public CartProductRequest(Long productId, int cartQuantity) {
         this.productId = productId;
         this.cartQuantity = cartQuantity;

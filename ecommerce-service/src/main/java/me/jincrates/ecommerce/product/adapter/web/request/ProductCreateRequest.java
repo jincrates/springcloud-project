@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.product.application.service.request.ProductCreateServiceRequest;
@@ -33,9 +32,7 @@ public class ProductCreateRequest {
     @NotNull(message = "재고 수량은 필수입니다.")
     private int quantity; // 재고 수량
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private ProductCreateRequest(String productName, int price, String productDetail,
-        int quantity) {
+    public ProductCreateRequest(String productName, int price, String productDetail, int quantity) {
         this.productName = productName;
         this.price = price;
         this.productDetail = productDetail;

@@ -2,14 +2,15 @@ package me.jincrates.ecommerce.member.adapter.web.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.member.application.service.response.MemberCreateServiceResponse;
 import me.jincrates.ecommerce.member.domain.Role;
 import me.jincrates.global.common.enumtype.Status;
 
 @Schema(description = "회원 등록 response")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberCreateResponse {
 
     @Schema(description = "회원 ID", example = "1")
@@ -27,8 +28,7 @@ public class MemberCreateResponse {
     @Schema(description = "상태", example = "ACTIVE")
     private Status status;
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private MemberCreateResponse(Long id, String name, String email, Role role, Status status) {
+    public MemberCreateResponse(Long id, String name, String email, Role role, Status status) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -37,12 +37,12 @@ public class MemberCreateResponse {
     }
 
     public static MemberCreateResponse of(MemberCreateServiceResponse response) {
-        return MemberCreateResponse.builder()
-            .id(response.getId())
-            .name(response.getName())
-            .email(response.getEmail())
-            .role(response.getRole())
-            .status(response.getStatus())
-            .build();
+        return new MemberCreateResponse(
+                response.getId(),
+                response.getName(),
+                response.getEmail(),
+                response.getRole(),
+                response.getStatus()
+        );
     }
 }

@@ -1,16 +1,15 @@
 package me.jincrates.ecommerce.product.adapter.web.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import me.jincrates.ecommerce.product.application.service.response.ProductImageServiceResponse;
 import me.jincrates.ecommerce.product.application.service.response.ProductServiceResponse;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.ecommerce.product.domain.ProductImage;
 import me.jincrates.ecommerce.product.domain.ProductSellingStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Schema(description = "상품 response")
 @Getter
@@ -35,10 +34,9 @@ public class ProductResponse {
 
     private List<Long> productImagesIds = new ArrayList<>();
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private ProductResponse(Long id, String productName, int price, String productDetail,
-        ProductSellingStatus status, List<ProductImageServiceResponse> productImages,
-        List<Long> productImagesIds) {
+    public ProductResponse(Long id, String productName, int price, String productDetail,
+                           ProductSellingStatus status, List<ProductImageServiceResponse> productImages,
+                           List<Long> productImagesIds) {
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -49,24 +47,26 @@ public class ProductResponse {
     }
 
     public static ProductResponse of(Product product, List<ProductImage> productImages) {
-        return ProductResponse.builder()
-            .id(product.getId())
-            .productName(product.getProductName())
-            .price(product.getPrice())
-            .productDetail(product.getProductDetail())
-            .status(product.getStatus())
-            .productImages(productImages.stream().map(ProductImageServiceResponse::of).toList())
-            .productImagesIds(productImages.stream().map(ProductImage::getId).toList())
-            .build();
+        return new ProductResponse(
+                product.getId(),
+                product.getProductName(),
+                product.getPrice(),
+                product.getProductDetail(),
+                product.getStatus(),
+                productImages.stream().map(ProductImageServiceResponse::of).toList(),
+                productImages.stream().map(ProductImage::getId).toList()
+        );
     }
 
     public static ProductResponse of(ProductServiceResponse response) {
-        return ProductResponse.builder()
-            .id(response.getId())
-            .productName(response.getProductName())
-            .price(response.getPrice())
-            .productDetail(response.getProductDetail())
-            .status(response.getStatus())
-            .build();
+        return new ProductResponse(
+                response.getId(),
+                response.getProductName(),
+                response.getPrice(),
+                response.getProductDetail(),
+                response.getStatus(),
+                response.getProductImages(),
+                response.getProductImagesIds()
+        );
     }
 }

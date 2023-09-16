@@ -1,10 +1,14 @@
 package me.jincrates.ecommerce.order.application.service.response;
 
-import java.util.List;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderListPageServiceResponse {
 
     private int pageNo;
@@ -13,7 +17,7 @@ public class OrderListPageServiceResponse {
 
     @Builder
     private OrderListPageServiceResponse(int pageNo, boolean hasNext,
-        List<OrderServiceResponse> contents) {
+                                         List<OrderServiceResponse> contents) {
         this.pageNo = pageNo;
         this.hasNext = hasNext;
         this.contents = contents;

@@ -1,11 +1,12 @@
 package me.jincrates.ecommerce.product.application.service.response;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.product.domain.ProductImage;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductImageServiceResponse {
 
     private Long id;  // 상품 이미지 ID
@@ -14,9 +15,7 @@ public class ProductImageServiceResponse {
     private String imageUrl;  // 이미지 조회 경로
     private boolean represented;  // 대표 이미지 여부
 
-    @Builder(access = AccessLevel.PRIVATE)
-    private ProductImageServiceResponse(Long id, String imageName, String originImageName,
-        String imageUrl, boolean represented) {
+    public ProductImageServiceResponse(Long id, String imageName, String originImageName, String imageUrl, boolean represented) {
         this.id = id;
         this.imageName = imageName;
         this.originImageName = originImageName;
@@ -24,13 +23,13 @@ public class ProductImageServiceResponse {
         this.represented = represented;
     }
 
-    public static ProductImageServiceResponse of(ProductImage image) {
-        return ProductImageServiceResponse.builder()
-            .id(image.getId())
-            .imageName(image.getImageName())
-            .originImageName(image.getOriginImageName())
-            .imageUrl(image.getImageUrl())
-            .represented(image.isRepresented())
-            .build();
+    public static ProductImageServiceResponse of(ProductImage entity) {
+        return new ProductImageServiceResponse(
+                entity.getId(),
+                entity.getImageName(),
+                entity.getOriginImageName(),
+                entity.getImageUrl(),
+                entity.isRepresented()
+        );
     }
 }

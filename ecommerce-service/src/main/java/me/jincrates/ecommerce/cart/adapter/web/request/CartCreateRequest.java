@@ -1,6 +1,7 @@
 package me.jincrates.ecommerce.cart.adapter.web.request;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.cart.application.service.request.CartCreateServiceRequest;
@@ -16,7 +17,8 @@ public class CartCreateRequest {
 
     private Long memberId;
 
-    public CartCreateRequest(List<CartProductRequest> cartProducts) {
+    @Builder(access = AccessLevel.PRIVATE)
+    private CartCreateRequest(List<CartProductRequest> cartProducts) {
         this.cartProducts = cartProducts;
     }
 
