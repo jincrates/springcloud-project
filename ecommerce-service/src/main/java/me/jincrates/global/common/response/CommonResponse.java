@@ -24,15 +24,19 @@ public class CommonResponse<T> {
     }
 
     public static <T> CommonResponse<T> of(HttpStatus httpStatus, T data) {
-        return of(httpStatus, httpStatus.name(), data);
+        return of(httpStatus, null, data);
     }
 
     public static <T> CommonResponse<T> ok(T data) {
         return of(HttpStatus.OK, data);
     }
 
+    public static <T> CommonResponse<T> created(T data) {
+        return of(HttpStatus.CREATED, data);
+    }
+
     public static ResponseEntity<?> toResponseEntity(HttpStatus status, String message) {
         return ResponseEntity.status(status)
-            .body(CommonResponse.of(status, message, null));
+                .body(CommonResponse.of(status, message, null));
     }
 }

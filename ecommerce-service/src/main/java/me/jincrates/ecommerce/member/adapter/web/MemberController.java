@@ -41,7 +41,7 @@ public class MemberController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.AUTHORIZATION, "Bearer " + jwtProvider.generateJwtToken(response.id()));
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .headers(httpHeaders)
                 .body(CommonResponse.ok(response));
     }
@@ -60,7 +60,7 @@ public class MemberController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaders)
-                .body(CommonResponse.ok(response));
+                .body(CommonResponse.created(response));
     }
 
     @Operation(summary = "내 정보 조회")
