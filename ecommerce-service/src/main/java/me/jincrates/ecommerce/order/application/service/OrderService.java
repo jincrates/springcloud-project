@@ -48,7 +48,7 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
                     deductStockQuantity(product, op.quantity());
                     return OrderProduct.create(product, op.quantity());
                 }).toList();
-        
+
         Order order = orderPort.saveOrder(Order.create(member, orderProducts));
 
         // 결제로직
@@ -68,6 +68,7 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
             throw new IllegalArgumentException("주문자 정보와 일치하지 않습니다. order.memberId" + order.getMember().getId());
         }
 
+        // TODO: 부분취소 고려필요
         order.cancel();
 
         return OrderResponse.of(order);

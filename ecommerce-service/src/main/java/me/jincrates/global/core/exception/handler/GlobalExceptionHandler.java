@@ -1,5 +1,7 @@
 package me.jincrates.global.core.exception.handler;
 
+import io.jsonwebtoken.JwtException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.global.common.response.CommonResponse;
 import me.jincrates.global.core.exception.BadRequestException;
@@ -27,6 +29,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handlerIllegalArgumentException(final IllegalArgumentException exception) {
         log.warn("IllegalArgumentException", exception);
         return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handlerEntityNotFoundException(final EntityNotFoundException exception) {
+        log.warn("EntityNotFoundException", exception);
+        return CommonResponse.toResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
     }
 
     @ExceptionHandler(BindException.class)
@@ -107,6 +115,12 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<?> handleHttpServerErrorException(RestClientException exception) {
         log.error("RestClientException", exception);
         return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<?> handlerJwtException(final JwtException exception) {
+        log.warn("JwtException", exception);
+        return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, "올바르지 않은 토큰입니다.");
     }
 
     /**
