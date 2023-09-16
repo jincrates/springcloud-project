@@ -1,6 +1,8 @@
 package me.jincrates.ecommerce.cart.adapter.web;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,6 +27,7 @@ public class CartController {
     private final CartUseCase cartUseCase;
 
     @Operation(summary = "장바구니 등록")
+    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @ApiResponse(responseCode = "200", description = "장바구니 등록 성공",
             content = @Content(schema = @Schema(implementation = CartResponse.class, description = "등록된 장바구니")))
     @PostMapping("/api/v1/carts")
@@ -36,6 +39,6 @@ public class CartController {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
         request.assignMemberId(memberId);
 
-        return CommonResponse.ok(cartUseCase.createCart(request.toServiceRequest()));
+        return CommonResponse.ok(new CartResponse(cartUseCase.createCart(request.toServiceRequest())));
     }
 }

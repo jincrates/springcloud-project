@@ -1,15 +1,8 @@
 package me.jincrates.ecommerce.order.application.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.ecommerce.cart.application.port.CartPort;
-import me.jincrates.ecommerce.cart.domain.Cart;
-import me.jincrates.ecommerce.cart.domain.CartProduct;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.ecommerce.order.application.port.OrderCancelUseCase;
@@ -28,6 +21,8 @@ import me.jincrates.global.common.response.PageResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Slf4j
 @Service
@@ -98,48 +93,48 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
         return OrderServiceResponse.of(order);
     }
 
-    @Transactional
-    public OrderServiceResponse orderFromCart(String email) {
-        Member member = memberPort.findMemberByEmail(email);
-
-        Cart cart = cartPort.findCartByMemberId(member.getId());
-
-        List<OrderProduct> orderProducts = new ArrayList<>();
-
-        for (CartProduct cartProduct : cart.getCartProducts()) {
-            OrderProduct orderProduct = OrderProduct.create(cartProduct.getProduct(),
-                cartProduct.getQuantity());
-            orderProducts.add(orderProduct);
-
-            // 재고감소
-            Stock stock = stockPort.findStockByProduct(cartProduct.getProduct());
-            stock.deductQuantity(cartProduct.getQuantity());
-        }
-
-        Order order = Order.create(member, orderProducts);
-        orderPort.saveOrder(order);
-
-        // 결제로직
-        order.progress();
-        order.success();
-
-        // 장바구니 제거
-        cartPort.deleteAllCartProduct(cart.getCartProducts());
-
-        return OrderServiceResponse.of(order);
-    }
+//    @Transactional
+//    public OrderServiceResponse orderFromCart(String email) {
+//        Member member = memberPort.findMemberByEmail(email);
+//
+//        Cart cart = cartPort.findCartByMemberId(member.getId());
+//
+//        List<OrderProduct> orderProducts = new ArrayList<>();
+//
+//        for (CartProduct cartProduct : cart.getCartProducts()) {
+//            OrderProduct orderProduct = OrderProduct.create(cartProduct.getProduct(),
+//                cartProduct.getQuantity());
+//            orderProducts.add(orderProduct);
+//
+//            // 재고감소
+//            Stock stock = stockPort.findStockByProduct(cartProduct.getProduct());
+//            stock.deductQuantity(cartProduct.getQuantity());
+//        }
+//
+//        Order order = Order.create(member, orderProducts);
+//        orderPort.saveOrder(order);
+//
+//        // 결제로직
+//        order.progress();
+//        order.success();
+//
+//        // 장바구니 제거
+//        cartPort.deleteAllCartProduct(cart.getCartProducts());
+//
+//        return OrderServiceResponse.of(order);
+//    }
 
     public PageResponse<?> getOrders(String email, Pageable pageable) {
         List<Order> orders = orderPort.findOrders(email, pageable);
 
         List<OrderServiceResponse> responses = orders.stream().map(OrderServiceResponse::of)
-            .toList();
+                .toList();
 
         return PageResponse.builder()
-            .pageNo(pageable.getPageNumber())
-            .hasNext(orders.size() > pageable.getPageSize())
-            .contents(Collections.singletonList(responses.subList(0, pageable.getPageSize())))
-            .build();
+                .pageNo(pageable.getPageNumber())
+                .hasNext(orders.size() > pageable.getPageSize())
+                .contents(Collections.singletonList(responses.subList(0, pageable.getPageSize())))
+                .build();
     }
 
     public boolean validateOrder(UUID orderId, String email) {
@@ -164,7 +159,7 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
         // 재고 차감 시도
         if (stock.isQuantityLessThan(quantity)) {
             log.warn("재고가 부족한 상품이 있습니다. productId={}, stock.quantity={}", product.getId(),
-                stock.getQuantity());
+                    stock.getQuantity());
             throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
         }
 

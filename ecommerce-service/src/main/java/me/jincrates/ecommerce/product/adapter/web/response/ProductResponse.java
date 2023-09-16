@@ -18,13 +18,13 @@ public class ProductResponse {
     @Schema(description = "상품 ID", example = "1")
     private Long id;
 
-    @Schema(description = "상품명", example = "소크라테스의 변경")
+    @Schema(description = "상품명", example = "소크라테스의 변명")
     private String productName;
 
     @Schema(description = "상품 가격", example = "10000")
     private int price;
 
-    @Schema(description = "상품 상세 설명", example = "《소크라테스의 변명》은 인류 역사상 가장 위대한 철학자인 소크라테스의 영혼의 책이다. 제자 플라톤이 스승의 위대한 사상과 진실된 인간성을 널리 알리고 영원히 기리기 위해 심혈을 기울여 쓴 〈소크라테스의 변명〉 외에 〈크리톤〉, 〈파이돈〉, 〈향연〉을 함께 엮었다.")
+    @Schema(description = "상품 상세 설명", example = "《소크라테스의 변명》은 인류 역사상 가장 위대한 철학자인 소크라테스의 영혼의 책이다.")
     private String productDetail;  // 상품 상세설명
 
     @Schema(description = "상품 판매상태", example = "SELLING")

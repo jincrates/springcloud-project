@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.auth.JwtProvider;
 import me.jincrates.ecommerce.member.adapter.web.request.MemberCreateRequest;
+import me.jincrates.ecommerce.member.adapter.web.request.MemberLoginRequest;
 import me.jincrates.ecommerce.member.adapter.web.response.MemberCreateResponse;
 import me.jincrates.ecommerce.member.adapter.web.response.MemberResponse;
 import me.jincrates.ecommerce.member.application.port.MemberUseCase;
@@ -31,6 +32,25 @@ public class MemberController {
 
     private final JwtProvider jwtProvider;
     private final MemberUseCase memberUseCase;
+
+    @Operation(summary = "회원 토큰 발급")
+    @ApiResponse(responseCode = "200", description = "회원 토큰 발급 성공",
+            content = @Content(schema = @Schema(implementation = MemberCreateResponse.class, description = "회원 정보")))
+    @PostMapping("/api/v1/login")
+    public ResponseEntity<?> login(
+            @Valid @RequestBody MemberLoginRequest request
+    ) {
+        MemberResponse response = memberUseCase.login(request.toServiceRequest())
+                .toResponse();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.AUTHORIZATION,
+                "Bearer " + jwtProvider.generateJwtToken(response.getId()));
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .headers(httpHeaders)
+                .body(CommonResponse.ok(response));
+    }
 
     @Operation(summary = "회원 등록")
     @ApiResponse(responseCode = "200", description = "회원 등록 성공",

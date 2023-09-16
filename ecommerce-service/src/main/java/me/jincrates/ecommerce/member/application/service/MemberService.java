@@ -1,19 +1,21 @@
 package me.jincrates.ecommerce.member.application.service;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.application.port.MemberUseCase;
 import me.jincrates.ecommerce.member.application.service.request.MemberCreateServiceRequest;
+import me.jincrates.ecommerce.member.application.service.request.MemberLoginServiceRequest;
 import me.jincrates.ecommerce.member.application.service.response.MemberCreateServiceResponse;
 import me.jincrates.ecommerce.member.application.service.response.MemberServiceResponse;
 import me.jincrates.ecommerce.member.domain.Member;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -28,17 +30,26 @@ public class MemberService implements MemberUseCase {
     @Transactional
     public MemberCreateServiceResponse register(MemberCreateServiceRequest request) {
         Member member = Member.create(request.getName(), request.getEmail(),
-            encryptPassword(request.getPassword()));
+                encryptPassword(request.getPassword()));
         validateDuplicateMember(member.getEmail());
         return MemberCreateServiceResponse.of(memberPort.saveMember(member));
+    }
+
+    @Override
+    public MemberServiceResponse login(MemberLoginServiceRequest request) {
+        Member member = memberPort.findMemberByEmail(request.getEmail());
+        if (!isValidPassword(request.getPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
+        }
+        return MemberServiceResponse.of(member);
     }
 
     @Override
     public List<MemberServiceResponse> getMembers() {
         List<Member> members = memberPort.findAllMember();
         return members.stream()
-            .map(MemberServiceResponse::of)
-            .collect(toList());
+                .map(MemberServiceResponse::of)
+                .collect(toList());
     }
 
     @Override
@@ -62,5 +73,9 @@ public class MemberService implements MemberUseCase {
             log.warn("이미 가입한 회원입니다. email={}", email);
             throw new IllegalArgumentException("이미 가입한 회원입니다.");
         }
+    }
+
+    private boolean isValidPassword(String rowPassword, String encodedPassword) {
+        return passwordEncoder.matches(rowPassword, encodedPassword);
     }
 }

@@ -1,13 +1,15 @@
 package me.jincrates.ecommerce.cart.adapter.persistence;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.cart.application.port.CartPort;
 import me.jincrates.ecommerce.cart.application.service.response.CartDetailServiceResponse;
 import me.jincrates.ecommerce.cart.domain.Cart;
 import me.jincrates.ecommerce.cart.domain.CartProduct;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ class CartAdapter implements CartPort {
     }
 
     @Override
-    public Cart findCartByMemberId(Long memberId) {
+    public Optional<Cart> findCartByMemberId(Long memberId) {
         return cartRepository.findByMemberId(memberId);
     }
 
@@ -49,8 +51,8 @@ class CartAdapter implements CartPort {
     @Override
     public CartProduct findCartProductById(Long cartProductId) {
         return cartProductRepository.findById(cartProductId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "장바구님 상품을 찾을 수 없습니다. cartProductId=" + cartProductId));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "장바구님 상품을 찾을 수 없습니다. cartProductId=" + cartProductId));
     }
 
     @Override
