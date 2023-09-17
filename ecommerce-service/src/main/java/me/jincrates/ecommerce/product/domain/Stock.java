@@ -24,6 +24,9 @@ public class Stock extends BaseEntity {
 
     private Integer quantity;
 
+    @Version
+    private int version;
+
     @Builder(access = AccessLevel.PRIVATE)
     private Stock(Product product, Integer quantity) {
         this.product = product;

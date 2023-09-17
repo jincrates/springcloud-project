@@ -17,6 +17,7 @@ import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.application.port.StockPort;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.ecommerce.product.domain.Stock;
+import me.jincrates.ecommerce.retry.application.RetryPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,7 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
     private final OrderPort orderPort;
     private final StockPort stockPort;
     private final CartPort cartPort;
+    private final RetryPort retryPort;
 
     @Override
     @Transactional
@@ -44,16 +46,20 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
         List<OrderProduct> orderProducts = request.orderProducts().stream()
                 .map(op -> {
                     Product product = productPort.findProductById(op.productId());
-                    // 재고 차감
-                    deductStockQuantity(product, op.quantity());
+                    // 재고 차감 - 재시도 3번
+                    retryPort.executeWithRetry(() -> {
+                        deductStockQuantity(product, op.quantity());
+                        return Void.TYPE;
+                    });
+
                     return OrderProduct.create(product, op.quantity());
                 }).toList();
 
         Order order = orderPort.saveOrder(Order.create(member, orderProducts));
 
         // 결제로직
-        order.progress();
-        order.success();
+//        order.progress();
+//        order.success();
 
         return OrderResponse.of(order);
     }

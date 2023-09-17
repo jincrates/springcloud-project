@@ -15,4 +15,8 @@ public interface MemberUseCase {
     List<MemberResponse> getMembers();
 
     MemberResponse getMemberById(Long memberId);
+
+    //회원 탈퇴(비활성화)
+
+    //회원 완전 삭제
 }

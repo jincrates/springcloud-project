@@ -1,9 +1,9 @@
 package me.jincrates.ecommerce.product.application.service;
 
 import lombok.RequiredArgsConstructor;
+import me.jincrates.ecommerce.file.application.FilePort;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.domain.ProductImage;
-import me.jincrates.global.common.service.FileService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductImageService {
 
     private final ProductPort productPort;
-    private final FileService fileService;
+    private final FilePort filePort;
 
     public void saveProductImage(ProductImage productImage, MultipartFile image) {
         // 247
