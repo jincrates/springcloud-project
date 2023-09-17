@@ -8,12 +8,12 @@ import me.jincrates.ecommerce.payment.adapter.client.strategy.settlepay.SettlePa
 import me.jincrates.ecommerce.payment.adapter.client.strategy.tosspay.TossPay;
 import me.jincrates.ecommerce.payment.domain.PaymentType;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Configuration
 public class PayClientConfig {
     @Bean
     public Map<PaymentType, PayClient> payClientMap() {
