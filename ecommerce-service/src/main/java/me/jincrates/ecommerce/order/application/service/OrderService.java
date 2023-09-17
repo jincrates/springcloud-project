@@ -17,7 +17,7 @@ import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.application.port.StockPort;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.ecommerce.product.domain.Stock;
-import me.jincrates.ecommerce.retry.application.RetryPort;
+import me.jincrates.infra.retry.application.RetryPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

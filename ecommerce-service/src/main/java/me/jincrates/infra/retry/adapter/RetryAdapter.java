@@ -1,8 +1,8 @@
-package me.jincrates.ecommerce.retry.adapter;
+package me.jincrates.infra.retry.adapter;
 
 import lombok.extern.slf4j.Slf4j;
-import me.jincrates.ecommerce.retry.application.RetryPort;
 import me.jincrates.global.core.exception.RetryException;
+import me.jincrates.infra.retry.application.RetryPort;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Supplier;

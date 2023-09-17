@@ -1,4 +1,4 @@
-package me.jincrates.ecommerce.retry.application;
+package me.jincrates.infra.retry.application;
 
 import java.util.function.Supplier;
 
