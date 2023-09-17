@@ -91,4 +91,12 @@ public class Product extends BaseEntity {
     public void stopSelling() {
         this.status = ProductSellingStatus.STOP_SELLING;
     }
+
+    public Integer getDiscountPrice() {
+        if (discount == null) {
+            return 0;
+        }
+
+        return discount.applyDiscount();
+    }
 }

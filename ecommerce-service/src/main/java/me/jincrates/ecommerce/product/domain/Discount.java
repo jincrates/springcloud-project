@@ -34,4 +34,11 @@ public class Discount extends BaseEntity {
     public static Discount create(Product product, DiscountType discountType, Double discountValue) {
         return new Discount(product, discountType, discountValue);
     }
+
+    public int applyDiscount() {
+        return switch (this.discountType) {
+            case FIXED -> (int) (product.getPrice() - discountValue);
+            case RATE -> (int) (product.getPrice() * (1 - discountValue / 100));
+        };
+    }
 }

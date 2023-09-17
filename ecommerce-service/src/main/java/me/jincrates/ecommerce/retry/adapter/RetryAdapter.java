@@ -20,6 +20,7 @@ class RetryAdapter implements RetryPort {
         while (attempt < MAX_RETRY) {
             try {
                 return action.get();
+                //TODO: 커스텀 에러로 변경할 필요가 있어보임
             } catch (OptimisticLockException lockException) {
                 attempt++;
                 if (attempt == MAX_RETRY) {
