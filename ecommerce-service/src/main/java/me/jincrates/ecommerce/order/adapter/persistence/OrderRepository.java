@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, UUID>, OrderQueryRepository {
+interface OrderRepository extends JpaRepository<Order, UUID>, OrderQueryRepository {
 
     Optional<Order> findByIdAndMember(UUID orderId, Member member);
 }

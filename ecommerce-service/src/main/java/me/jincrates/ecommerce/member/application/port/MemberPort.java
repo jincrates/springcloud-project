@@ -1,7 +1,8 @@
 package me.jincrates.ecommerce.member.application.port;
 
-import java.util.List;
 import me.jincrates.ecommerce.member.domain.Member;
+
+import java.util.List;
 
 public interface MemberPort {
 
@@ -14,4 +15,8 @@ public interface MemberPort {
     Member findMemberByEmail(String email);
 
     boolean existsMemberByEmail(String email);
+
+    void deleteAllMemberInBatch();
+
+    void saveAllMember(List<Member> members);
 }

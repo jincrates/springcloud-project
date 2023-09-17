@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class OrderAdapter implements OrderPort {
+class OrderAdapter implements OrderPort {
 
     private final OrderRepository orderRepository;
 

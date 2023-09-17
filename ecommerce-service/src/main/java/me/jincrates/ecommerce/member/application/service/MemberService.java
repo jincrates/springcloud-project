@@ -63,7 +63,7 @@ public class MemberService implements MemberUseCase {
     private void validateDuplicateMember(String email) {
         if (memberPort.existsMemberByEmail(email)) {
             log.warn("이미 가입한 회원입니다. email={}", email);
-            throw new IllegalArgumentException("이미 가입한 회원입니다. email=" + email);
+            throw new IllegalArgumentException("이미 가입한 회원입니다.");
         }
     }
 
