@@ -26,8 +26,7 @@ public class ProductService implements ProductUseCase {
     @Transactional
     public ProductResponse createProduct(ProductCreateRequest request) {
         // 상품 등록
-        Product product = Product.create(request.productName(), request.price(),
-                request.productDetail());
+        Product product = Product.create(request.productName(), request.price(), request.productDetail());
         productPort.saveProduct(product);
 
         // 재고 등록

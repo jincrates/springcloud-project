@@ -32,9 +32,9 @@ public record ProductResponse(
     public static ProductResponse of(Product product) {
         return new ProductResponse(
                 product.getId(),
-                product.getProductName(),
+                product.getName(),
                 product.getPrice(),
-                product.getProductDetail(),
+                product.getDescription(),
                 product.getStatus(),
                 null,
                 null

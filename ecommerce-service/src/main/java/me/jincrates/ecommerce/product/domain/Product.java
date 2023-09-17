@@ -20,23 +20,28 @@ public class Product extends BaseEntity {
     private Long id;  // 상품 ID
 
     @Column(nullable = false, length = 50)
-    private String productName;  // 상품명
+    private String name;  // 상품명
 
     @Column(nullable = false)  // 가격
     private Integer price;
 
     @Lob
     @Column(nullable = false)
-    private String productDetail;  // 상품 상세설명
+    private String description;  // 상품 상세설명
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductSellingStatus status;  // 상품 판매상태
 
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
+    private Discount discount;
+
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
+    private Stock stock;
+
     @Builder(access = AccessLevel.PRIVATE)
-    private Product(String productName, Integer price, String productDetail,
-                    ProductSellingStatus status) {
-        if (productName == null) {
+    private Product(String name, Integer price, String description, ProductSellingStatus status) {
+        if (name == null) {
             throw new IllegalArgumentException("상품명은 필수입니다.");
         }
 
@@ -44,7 +49,7 @@ public class Product extends BaseEntity {
             throw new IllegalArgumentException("상품 가격은 0원 이상이여야 합니다.");
         }
 
-        if (productDetail == null) {
+        if (description == null) {
             throw new IllegalArgumentException("상품 상세설명은 필수입니다.");
         }
 
@@ -52,26 +57,26 @@ public class Product extends BaseEntity {
             throw new IllegalArgumentException("상품 판매상태는 필수입니다.");
         }
 
-        this.productName = productName;
+        this.name = name;
         this.price = price;
-        this.productDetail = productDetail;
+        this.description = description;
         this.status = status;
     }
 
-    public static Product create(String productName, Integer price, String productDetail) {
+    public static Product create(String name, Integer price, String description) {
         return Product.builder()
-                .productName(productName)
+                .name(name)
                 .price(price)
-                .productDetail(productDetail)
+                .description(description)
                 .status(ProductSellingStatus.HOLD)
                 .build();
     }
 
     public void update(ProductUpdateRequest request) {
         this.id = request.productId();
-        this.productName = request.productName();
+        this.name = request.productName();
         this.price = request.price();
-        this.productDetail = request.productDetail();
+        this.description = request.productDetail();
         this.status = request.status();
     }
 

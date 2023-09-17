@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "상품 등록 request")
 public record ProductCreateRequest(
-        @Schema(description = "상품명", example = "소크라테스의 변경")
+        @Schema(description = "상품명", example = "소크라테스의 변명")
         @NotBlank(message = "상품명은 필수입니다.")
         String productName,
         @Schema(description = "상품 가격", example = "10000")
