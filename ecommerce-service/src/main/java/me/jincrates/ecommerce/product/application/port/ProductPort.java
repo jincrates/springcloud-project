@@ -16,4 +16,8 @@ public interface ProductPort {
     List<Product> findAllProduct(ProductSearchRequest request, Pageable pageable);
 
     List<ProductImage> findProductImageByProductIdOrderByIdAsc(Long productId);
+
+    void deleteAllProductImageInBatch();
+
+    void deleteAllProductInBatch();
 }

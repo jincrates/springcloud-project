@@ -44,6 +44,16 @@ class ProductAdapter implements ProductPort, StockPort {
     }
 
     @Override
+    public void deleteAllProductImageInBatch() {
+        productImageRepository.deleteAllInBatch();
+    }
+
+    @Override
+    public void deleteAllProductInBatch() {
+        productRepository.deleteAllInBatch();
+    }
+
+    @Override
     public Stock saveStock(Stock stock) {
         return stockRepository.save(stock);
     }
@@ -53,5 +63,10 @@ class ProductAdapter implements ProductPort, StockPort {
         return stockRepository.findByProduct(product)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "상품 재고를 찾을 수 없습니다. productId=" + product.getId()));
+    }
+
+    @Override
+    public void deleteAllStockInBatch() {
+        stockRepository.deleteAllInBatch();
     }
 }

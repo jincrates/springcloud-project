@@ -8,4 +8,6 @@ public interface StockPort {
     Stock saveStock(Stock stock);
 
     Stock findStockByProduct(Product product);
+
+    void deleteAllStockInBatch();
 }

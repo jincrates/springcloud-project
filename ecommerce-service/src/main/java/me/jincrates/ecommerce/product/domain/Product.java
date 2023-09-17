@@ -74,4 +74,16 @@ public class Product extends BaseEntity {
         this.productDetail = request.productDetail();
         this.status = request.status();
     }
+
+    public void holding() {
+        this.status = ProductSellingStatus.HOLD;
+    }
+
+    public void selling() {
+        this.status = ProductSellingStatus.SELLING;
+    }
+
+    public void stopSelling() {
+        this.status = ProductSellingStatus.STOP_SELLING;
+    }
 }
