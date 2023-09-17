@@ -43,7 +43,7 @@ class ProductServiceTest extends IntegrationTestSupport {
 
         // then
         assertThat(response).isNotNull()
-                .extracting("name", "price", "description", "status")
+                .extracting("productName", "price", "productDetail", "status")
                 .contains("상품명", 10000, "상품 설명입니다.", ProductSellingStatus.SELLING);
     }
 }

@@ -16,7 +16,7 @@ plugins {
     id 'io.spring.dependency-management' version "${dependencyManagementVersion}"
     id "org.asciidoctor.jvm.convert" version "${asciidoctorJvmConvertVersion}"
     //querydsl 추가
-    id "com.ewerk.gradle.plugins.querydsl" version "${queryDslVersion}"
+    //id "com.ewerk.gradle.plugins.querydsl" version "${queryDslVersion}"
 }
 
 group = 'me.jincrates.api'
@@ -121,18 +121,18 @@ bootJar {
 }
 
 // Querydsl 설정부
-def generated = "$buildDir/generated/querydsl"
-
-querydsl {
-    jpa = true
-    querydslSourcesDir = generated
-}
-sourceSets {
-    main.java.srcDir generated
-}
-configurations {
-    querydsl.extendsFrom compileClasspath
-}
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl
-}
+//def generated = "$buildDir/generated/querydsl"
+//
+//querydsl {
+//    jpa = true
+//    querydslSourcesDir = generated
+//}
+//sourceSets {
+//    main.java.srcDir generated
+//}
+//configurations {
+//    querydsl.extendsFrom compileClasspath
+//}
+//compileQuerydsl {
+//    options.annotationProcessorPath = configurations.querydsl
+//}
