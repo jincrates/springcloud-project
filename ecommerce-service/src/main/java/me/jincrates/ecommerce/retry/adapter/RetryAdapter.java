@@ -1,8 +1,8 @@
 package me.jincrates.ecommerce.retry.adapter;
 
-import jakarta.persistence.OptimisticLockException;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.ecommerce.retry.application.RetryPort;
+import me.jincrates.global.core.exception.RetryException;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Supplier;
@@ -20,15 +20,15 @@ class RetryAdapter implements RetryPort {
         while (attempt < MAX_RETRY) {
             try {
                 return action.get();
-                //TODO: 커스텀 에러로 변경할 필요가 있어보임
-            } catch (OptimisticLockException lockException) {
+            } catch (Exception ex) {
                 attempt++;
+                log.warn("Retry From exception: {}", ex.getMessage());
                 if (attempt == MAX_RETRY) {
-                    throw new OptimisticLockException("최대 재시도 후 작업을 싱행하지 못하였습니다.");
+                    throw new RetryException("최대 재시도 후 작업을 싱행하지 못하였습니다.");
                 }
             }
         }
 
-        throw new RuntimeException("작업을 재시도 하지 못하였습니다.");
+        throw new RetryException("작업을 재시도 하지 못하였습니다.");
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.global.common.response.CommonResponse;
 import me.jincrates.global.core.exception.BadRequestException;
+import me.jincrates.global.core.exception.RetryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -88,6 +89,12 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<?> handleBadRequestException(BadRequestException exception) {
         log.warn("BadRequestException: {}", exception.getMessage());
         return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(RetryException.class)
+    protected ResponseEntity<?> handleBadRequestException(RetryException exception) {
+        log.warn("RetryException: {}", exception.getMessage());
+        return CommonResponse.toResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
     }
 
     /**
