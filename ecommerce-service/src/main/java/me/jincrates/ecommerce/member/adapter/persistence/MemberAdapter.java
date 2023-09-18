@@ -53,6 +53,11 @@ class MemberAdapter implements MemberPort {
             throw new EntityNotFoundException("회원을 찾을 수 없습니다.");
         }
 
+        if (!isActive(member.get().getStatus())) {
+            log.warn("비활성화된 회원입니다. email={}", email);
+            throw new IllegalArgumentException("비활성화된 회원입니다.");
+        }
+
         return member.get();
     }
 
