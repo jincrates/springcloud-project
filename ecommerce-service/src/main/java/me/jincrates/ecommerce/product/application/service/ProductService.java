@@ -49,6 +49,12 @@ public class ProductService implements ProductUseCase {
             .toList();
     }
 
+    @Override
+    public ProductResponse getProduct(Long productId) {
+        Product product = productPort.findProductById(productId);
+        return ProductResponse.of(product);
+    }
+
 //    @Transactional
 //    public Long createProduct(ProductCreateRequest request, List<MultipartFile> images) {
 //        // 상품 등록

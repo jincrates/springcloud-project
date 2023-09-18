@@ -11,4 +11,6 @@ public interface ProductUseCase {
     ProductResponse createProduct(ProductCreateRequest request);
 
     List<ProductResponse> getAllProduct(ProductSearchRequest request, Pageable pageable);
+
+    ProductResponse getProduct(Long productId);
 }
