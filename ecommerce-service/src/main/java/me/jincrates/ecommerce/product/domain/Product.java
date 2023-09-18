@@ -1,6 +1,15 @@
 package me.jincrates.ecommerce.product.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,10 +42,10 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductSellingStatus status;  // 상품 판매상태
 
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "product")
     private Discount discount;
 
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "product")
     private Stock stock;
 
     @Builder(access = AccessLevel.PRIVATE)
@@ -65,11 +74,11 @@ public class Product extends BaseEntity {
 
     public static Product create(String name, Integer price, String description) {
         return Product.builder()
-                .name(name)
-                .price(price)
-                .description(description)
-                .status(ProductSellingStatus.HOLD)
-                .build();
+            .name(name)
+            .price(price)
+            .description(description)
+            .status(ProductSellingStatus.HOLD)
+            .build();
     }
 
     public void update(ProductUpdateRequest request) {
