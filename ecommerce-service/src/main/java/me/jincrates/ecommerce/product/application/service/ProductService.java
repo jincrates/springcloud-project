@@ -1,13 +1,16 @@
 package me.jincrates.ecommerce.product.application.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.application.port.ProductUseCase;
 import me.jincrates.ecommerce.product.application.port.StockPort;
 import me.jincrates.ecommerce.product.application.service.request.ProductCreateRequest;
+import me.jincrates.ecommerce.product.application.service.request.ProductSearchRequest;
 import me.jincrates.ecommerce.product.application.service.response.ProductResponse;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.ecommerce.product.domain.Stock;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +29,8 @@ public class ProductService implements ProductUseCase {
     @Transactional
     public ProductResponse createProduct(ProductCreateRequest request) {
         // 상품 등록
-        Product product = Product.create(request.productName(), request.price(), request.productDetail());
+        Product product = Product.create(request.productName(), request.price(),
+            request.productDetail());
         productPort.saveProduct(product);
 
         // 재고 등록
@@ -36,6 +40,13 @@ public class ProductService implements ProductUseCase {
         product.selling();
 
         return ProductResponse.of(product);
+    }
+
+    @Override
+    public List<ProductResponse> getAllProduct(ProductSearchRequest request, Pageable pageable) {
+        return productPort.findAllProduct(request, pageable).stream()
+            .map(ProductResponse::of)
+            .toList();
     }
 
 //    @Transactional

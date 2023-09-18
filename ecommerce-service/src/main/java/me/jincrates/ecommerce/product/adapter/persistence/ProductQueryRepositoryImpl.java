@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.product.application.service.request.ProductSearchRequest;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.ecommerce.product.domain.ProductSellingStatus;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ class ProductQueryRepositoryImpl implements ProductQueryRepository {
     private BooleanExpression createdAtAfter(String searchDateType) {
         LocalDateTime dateTime = LocalDateTime.now();
 
-        if ("all".equals(searchDateType) || searchDateType == null) {
+        if ("all".equals(searchDateType) || ObjectUtils.isEmpty(searchDateType)) {
             return null;
         }
         if ("1d".equals(searchDateType)) {
@@ -54,7 +55,7 @@ class ProductQueryRepositoryImpl implements ProductQueryRepository {
     }
 
     private BooleanExpression searchStatusEq(ProductSellingStatus searchStatus) {
-        return searchStatus == null ? null : product.status.eq(searchStatus);
+        return ObjectUtils.isEmpty(searchStatus) ? null : product.status.eq(searchStatus);
     }
 
     private Predicate searchByLike(String searchBy, String searchQuery) {
