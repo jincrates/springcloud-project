@@ -1,14 +1,14 @@
 package me.jincrates.ecommerce.member.adapter.persistence;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
+import me.jincrates.global.common.enumtype.Status;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -34,6 +34,11 @@ class MemberAdapter implements MemberPort {
         if (member.isEmpty()) {
             log.warn("회원을 찾을 수 없습니다. memberId={}", memberId);
             throw new EntityNotFoundException("회원을 찾을 수 없습니다.");
+        }
+
+        if (!isActive(member.get().getStatus())) {
+            log.warn("비활성화된 회원입니다. memberId={}", memberId);
+            throw new IllegalArgumentException("비활성화된 회원입니다.");
         }
 
         return member.get();
@@ -64,5 +69,9 @@ class MemberAdapter implements MemberPort {
     @Override
     public void saveAllMember(List<Member> members) {
         memberRepository.saveAll(members);
+    }
+
+    private boolean isActive(Status memberStatus) {
+        return Status.ACTIVE.equals(memberStatus);
     }
 }
