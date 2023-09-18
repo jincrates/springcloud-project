@@ -3,7 +3,7 @@ package me.jincrates.docs.boiler;
 import static org.mockito.Mockito.mock;
 
 import me.jincrates.docs.RestDocsSupport;
-import me.jincrates.ecommerce.product.adapter.web.ProductController;
+import me.jincrates.ecommerce.product.adapter.web.ProductWebAdapter;
 import me.jincrates.ecommerce.product.application.service.ProductService;
 
 public class ProductControllerDocsTest extends RestDocsSupport {
@@ -12,6 +12,6 @@ public class ProductControllerDocsTest extends RestDocsSupport {
 
     @Override
     protected Object initController() {
-        return new ProductController(productService);
+        return new ProductWebAdapter(productService);
     }
 }

@@ -22,7 +22,7 @@ class CartProductQueryRepositoryImpl implements CartProductQueryRepository {
             .select(
                 new QCartDetailServiceResponse(
                     cartProduct.id,
-                    cartProduct.product.productName,
+                    cartProduct.product.name,
                     cartProduct.product.price,
                     cartProduct.quantity,
                     productImage.imageUrl

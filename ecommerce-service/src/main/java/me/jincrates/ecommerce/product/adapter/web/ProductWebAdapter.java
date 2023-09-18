@@ -20,17 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "상품 서비스", description = "상품 등록/수정/조회 API")
 @RestController
 @RequiredArgsConstructor
-public class ProductController {
+public class ProductWebAdapter {
 
     private final ProductUseCase productUseCase;
 
     @Operation(summary = "상품 등록")
     @ApiResponse(responseCode = "200", description = "상품 등록 성공",
-            content = @Content(schema = @Schema(implementation = ProductResponse.class, description = "등록된 상품")))
+        content = @Content(schema = @Schema(implementation = ProductResponse.class, description = "등록된 상품")))
     @PostMapping("/api/v1/products")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<?> createProduct(
-            @Valid @RequestBody ProductCreateRequest request
+        @Valid @RequestBody ProductCreateRequest request
     ) {
         return CommonResponse.ok(productUseCase.createProduct(request));
     }
