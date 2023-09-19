@@ -1,9 +1,6 @@
 package me.jincrates.ecommerce.product.adapter.web;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -32,22 +29,18 @@ public class ProductWebAdapter {
     private final ProductUseCase productUseCase;
 
     @Operation(summary = "상품 등록")
-    @ApiResponse(responseCode = "200", description = "상품 등록 성공",
-        content = @Content(schema = @Schema(implementation = ProductResponse.class, description = "등록된 상품")))
     @PostMapping("/api/v1/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<?> createProduct(
+    public CommonResponse<ProductResponse> createProduct(
         @Valid @RequestBody ProductCreateRequest request
     ) {
         return CommonResponse.ok(productUseCase.createProduct(request));
     }
 
     @Operation(summary = "전체 상품 조회")
-    @ApiResponse(responseCode = "200", description = "전체 상품 조회 성공",
-        content = @Content(schema = @Schema(implementation = ProductResponse.class, description = "상품 목록")))
     @GetMapping("/api/v1/products")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<?> getAllProduct(
+    public CommonResponse<PageResponse<ProductResponse>> getAllProduct(
         ProductSearchRequest request,
         @RequestParam(name = "page_no", defaultValue = "0", required = false) int pageNo,
         @RequestParam(name = "page_size", defaultValue = "10", required = false) int pageSize
@@ -55,6 +48,7 @@ public class ProductWebAdapter {
     ) {
         List<ProductResponse> products = productUseCase.getAllProduct(request,
             PageRequest.of(pageNo, pageSize));
+
         PageResponse response = PageResponse.create(pageNo, pageSize, products);
 
         return CommonResponse.ok(response);
@@ -62,11 +56,9 @@ public class ProductWebAdapter {
 
 
     @Operation(summary = "상품 조회")
-    @ApiResponse(responseCode = "200", description = "상품 조회 성공",
-        content = @Content(schema = @Schema(implementation = ProductResponse.class, description = "조회된 상품")))
     @GetMapping("/api/v1/products/{product_id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<?> getProduct(
+    public CommonResponse<ProductResponse> getProduct(
         @PathVariable("product_id") Long productId
     ) {
         return CommonResponse.ok(productUseCase.getProduct(productId));

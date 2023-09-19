@@ -3,9 +3,6 @@ package me.jincrates.ecommerce.order.adapter.web;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +33,9 @@ public class OrderWebAdapter {
 
     @Operation(summary = "주문 등록")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @ApiResponse(responseCode = "200", description = "주문 등록 성공",
-        content = @Content(schema = @Schema(implementation = OrderResponse.class, description = "등록된 주문")))
     @PostMapping("/api/v1/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<?> createOrder(
+    public CommonResponse<OrderResponse> createOrder(
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
         @Valid @RequestBody OrderCreateRequest request
     ) {
@@ -51,11 +46,9 @@ public class OrderWebAdapter {
 
     @Operation(summary = "주문 취소")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @ApiResponse(responseCode = "200", description = "주문 취소 성공",
-        content = @Content(schema = @Schema(implementation = OrderResponse.class, description = "등록된 주문")))
     @PatchMapping("/api/v1/orders")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<?> cancelOrder(
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResponse<OrderResponse> cancelOrder(
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
         @Valid @RequestBody OrderCancelRequest request
     ) {
