@@ -1,4 +1,4 @@
-package me.jincrates.community.follower.domain;
+package me.jincrates.community.follow.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,23 +10,23 @@ import org.hibernate.annotations.Comment;
 
 @Getter
 @Entity
-@Comment("팔로워")
-@Table(name = "followers")
+@Comment("팔로우")
+@Table(name = "follow")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Follower extends BaseTimeEntity {
+public class Follow extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "follower_id")
-    @Comment("팔로워 ID")
+    @Column(name = "follow_id")
+    @Comment("팔로우 ID")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_member_id", nullable = false)
+    @JoinColumn(name = "follower_id", nullable = false)
     @Comment("팔로우 하는 사용자")
-    private Member fromMember;
+    private Member follower;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_member_id", nullable = false)
+    @JoinColumn(name = "following_id", nullable = false)
     @Comment("팔로우 받는 사용자")
-    private Member toMember;
+    private Member following;
 }
