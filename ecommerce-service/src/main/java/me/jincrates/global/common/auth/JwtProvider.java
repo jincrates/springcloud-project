@@ -1,13 +1,14 @@
-package me.jincrates.ecommerce.auth;
+package me.jincrates.global.common.auth;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
+
 import java.security.Key;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
-import org.springframework.stereotype.Component;
 
 @Component
 public class JwtProvider {
@@ -20,20 +21,20 @@ public class JwtProvider {
 
     public String generateJwtToken(Long memberId) {
         return Jwts.builder()
-            .setIssuer(issuer)
-            .setSubject(subject)
-            .setAudience(audience)
-            .setIssuedAt(new Date())
-            .setExpiration(Timestamp.valueOf(LocalDateTime.now().plusHours(1)))  // 1시간 만료
-            .claim(claimName, memberId)
-            .signWith(key)
-            .compact();
+                .setIssuer(issuer)
+                .setSubject(subject)
+                .setAudience(audience)
+                .setIssuedAt(new Date())
+                .setExpiration(Timestamp.valueOf(LocalDateTime.now().plusHours(1)))  // 1시간 만료
+                .claim(claimName, memberId)
+                .signWith(key)
+                .compact();
     }
 
     public Long parseToken(String jwtToken) {
         return Jwts.parserBuilder()
-            .setSigningKey(key).build()
-            .parseClaimsJws(jwtToken)
-            .getBody().get(claimName, Long.class);
+                .setSigningKey(key).build()
+                .parseClaimsJws(jwtToken)
+                .getBody().get(claimName, Long.class);
     }
 }

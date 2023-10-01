@@ -75,7 +75,7 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
         }
 
         // TODO: 부분취소 고려필요
-        order.cancel();
+        order.cancel("취소 사유입니다.");
 
         return OrderResponse.of(order);
     }

@@ -1,6 +1,5 @@
 package me.jincrates.ecommerce.product.application.service;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.application.port.ProductUseCase;
@@ -9,11 +8,12 @@ import me.jincrates.ecommerce.product.application.service.request.ProductCreateR
 import me.jincrates.ecommerce.product.application.service.request.ProductSearchRequest;
 import me.jincrates.ecommerce.product.application.service.response.ProductResponse;
 import me.jincrates.ecommerce.product.domain.Product;
-import me.jincrates.ecommerce.product.domain.Stock;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Service
 @RestController
@@ -28,25 +28,26 @@ public class ProductService implements ProductUseCase {
     @Override
     @Transactional
     public ProductResponse createProduct(ProductCreateRequest request) {
-        // 상품 등록
-        Product product = Product.create(request.productName(), request.price(),
-            request.productDetail());
-        productPort.saveProduct(product);
-
-        // 재고 등록
-        stockPort.saveStock(Stock.create(product, request.quantity()));
-
-        // TODO: 판매 상태를 전달받아서 처리하도록 수정 필요
-        product.selling();
-
-        return ProductResponse.of(product);
+//        // 상품 등록
+//        Product product = Product.create(request.productName(), request.price(),
+//            request.productDetail());
+//        productPort.saveProduct(product);
+//
+//        // 재고 등록
+//        stockPort.saveStock(Stock.create(product, request.quantity()));
+//
+//        // TODO: 판매 상태를 전달받아서 처리하도록 수정 필요
+//        product.selling();
+//
+//        return ProductResponse.of(product);
+        return null;
     }
 
     @Override
     public List<ProductResponse> getAllProduct(ProductSearchRequest request, Pageable pageable) {
         return productPort.findAllProduct(request, pageable).stream()
-            .map(ProductResponse::of)
-            .toList();
+                .map(ProductResponse::of)
+                .toList();
     }
 
     @Override

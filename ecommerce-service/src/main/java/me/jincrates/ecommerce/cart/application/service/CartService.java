@@ -38,7 +38,7 @@ public class CartService implements CartUseCase {
         // TODO: 벌크로 변경 필요
         for (CartProductRequest each : request.cartProducts()) {
             Product product = productPort.findProductById(each.productId());
-            cart.addCartProduct(product, each.quantity());
+            cart.addCartItem(product, each.quantity());
         }
 
         Cart savedCart = cartPort.saveCart(cart);

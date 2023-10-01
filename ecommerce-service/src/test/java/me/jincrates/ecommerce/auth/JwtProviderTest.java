@@ -1,8 +1,9 @@
 package me.jincrates.ecommerce.auth;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import me.jincrates.global.common.auth.JwtProvider;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class JwtProviderTest {
 
