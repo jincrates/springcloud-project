@@ -1,13 +1,14 @@
 package me.jincrates.ecommerce.cart.adapter.persistence;
 
-import static me.jincrates.ecommerce.cart.domain.QCartProduct.cartProduct;
-import static me.jincrates.ecommerce.product.domain.QProductImage.productImage;
-
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.cart.application.service.response.CartDetailServiceResponse;
 import me.jincrates.ecommerce.cart.application.service.response.QCartDetailServiceResponse;
+
+import java.util.List;
+
+import static me.jincrates.ecommerce.cart.domain.QCartItem.cartItem;
+import static me.jincrates.ecommerce.product.domain.QProductImage.productImage;
 
 
 @RequiredArgsConstructor
@@ -19,19 +20,19 @@ class CartProductQueryRepositoryImpl implements CartProductQueryRepository {
     public List<CartDetailServiceResponse> findCartDetails(Long cartId) {
         // 342
         return queryFactory
-            .select(
-                new QCartDetailServiceResponse(
-                    cartProduct.id,
-                    cartProduct.product.name,
-                    cartProduct.product.price,
-                    cartProduct.quantity,
-                    productImage.imageUrl
-                ))
-            .from(cartProduct)
-            .innerJoin(productImage).on(productImage.product.id.eq(cartProduct.product.id))
-            .where(cartProduct.cart.id.eq(cartId),
-                productImage.represented.eq(true))
-            .orderBy(cartProduct.createdAt.desc())
-            .fetch();
+                .select(
+                        new QCartDetailServiceResponse(
+                                cartItem.id,
+                                cartItem.product.name,
+                                cartItem.product.price,
+                                cartItem.quantity,
+                                productImage.imageUrl
+                        ))
+                .from(cartItem)
+                .innerJoin(productImage).on(productImage.product.id.eq(cartItem.product.id))
+                .where(cartItem.cart.id.eq(cartId),
+                        productImage.represented.eq(true))
+                .orderBy(cartItem.createdAt.desc())
+                .fetch();
     }
 }

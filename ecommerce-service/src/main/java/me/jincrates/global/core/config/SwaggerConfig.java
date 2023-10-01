@@ -26,8 +26,8 @@ public class SwaggerConfig {
 
     private Info info() {
         return new Info()
-                .title("Ecommerce-Project")
-                .description("이커머스 API")
+                .title("Jincrates-Project")
+                .description("이커머스 + 커뮤니티 API")
                 .version("1.0");
     }
 

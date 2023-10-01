@@ -24,7 +24,7 @@ public record CartResponse(
         return new CartResponse(
                 entity.getId(),
                 entity.getMember().getId(),
-                entity.getCartProducts().stream()
+                entity.getCartItems().stream()
                         .map(CartProductResponse::of)
                         .toList()
         );

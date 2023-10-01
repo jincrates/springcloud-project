@@ -35,7 +35,7 @@ public record ProductResponse(
                 product.getName(),
                 product.getPrice(),
                 product.getDescription(),
-                product.getStatus(),
+                product.getSellingStatus(),
                 null,
                 null
                 //productImages.stream().map(ProductImageResponse::of).toList(),
