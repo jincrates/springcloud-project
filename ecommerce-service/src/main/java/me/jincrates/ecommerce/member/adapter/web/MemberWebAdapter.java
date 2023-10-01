@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.member.application.port.MemberUseCase;
 import me.jincrates.ecommerce.member.application.service.request.MemberCreateRequest;
-import me.jincrates.ecommerce.member.application.service.request.MemberLoginRequest;
 import me.jincrates.ecommerce.member.application.service.response.MemberResponse;
 import me.jincrates.global.common.auth.JwtProvider;
 import me.jincrates.global.common.response.CommonResponse;
@@ -26,22 +25,6 @@ public class MemberWebAdapter {
 
     private final JwtProvider jwtProvider;
     private final MemberUseCase memberUseCase;
-
-    @Operation(summary = "회원 토큰 발급")
-    @PostMapping("/api/v1/login")
-    public ResponseEntity<CommonResponse<MemberResponse>> login(
-            @Valid @RequestBody MemberLoginRequest request
-    ) {
-        MemberResponse response = memberUseCase.login(request);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.AUTHORIZATION,
-                "Bearer " + jwtProvider.generateJwtToken(response.id()));
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .headers(httpHeaders)
-                .body(CommonResponse.ok(response));
-    }
 
     @Operation(summary = "회원 등록")
     @PostMapping("/api/v1/members")

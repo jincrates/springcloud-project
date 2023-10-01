@@ -26,7 +26,7 @@ public class FollowWebAdapter {
 
     @Operation(summary = "팔로우 신청")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping("/aoi/v1/follows/{member_id}")
+    @PostMapping("/api/v1/follows/{member_id}")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<Long> followMember(
             @PathVariable("member_id") Long followingId,
@@ -39,7 +39,7 @@ public class FollowWebAdapter {
 
     @Operation(summary = "팔로우 취소")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/aoi/v1/follows/{member_id}")
+    @DeleteMapping("/api/v1/follows/{member_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unfollowMember(
             @PathVariable("member_id") Long followingId,

@@ -37,7 +37,6 @@ public class SwaggerConfig {
                 .group("community-api")
                 .pathsToMatch(
                         "/api/v1/login",
-                        "/api/v1/members/**",
                         "/api/v1/follows/**"
                 )
                 .build();
