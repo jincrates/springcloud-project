@@ -31,7 +31,7 @@ public record OrderResponse(
                 entity.getId(),
                 entity.getCreatedAt(),
                 entity.getOrderStatus(),
-                entity.getOrderProducts().stream()
+                entity.getOrderItems().stream()
                         .map(OrderProductResponse::of)
                         .toList()
         );

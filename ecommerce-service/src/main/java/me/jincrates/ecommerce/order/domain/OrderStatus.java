@@ -4,12 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
-    REQUEST("접수"),
-    PROGRESS("진행"),
-    SUCCESS("완료"),
-    REJECT("불가"),
-    CANCEL("철회"),
-    ;
+    PENDING("대기중"),
+    PAID("결제완료"),
+    APPROVED("승인완료"),
+    CANCELLING("취소중"),
+    CANCELLED("취소완료");;
 
     private final String description;
 

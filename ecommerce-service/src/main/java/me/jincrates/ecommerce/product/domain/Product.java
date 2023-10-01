@@ -1,111 +1,92 @@
 package me.jincrates.ecommerce.product.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.ecommerce.product.application.service.request.ProductUpdateRequest;
-import me.jincrates.global.common.BaseEntity;
+import me.jincrates.ecommerce.store.domain.Store;
+import me.jincrates.global.common.BaseTimeEntity;
+import org.hibernate.annotations.Comment;
+import org.springframework.util.Assert;
 
 @Getter
 @Entity
-@Table(name = "PRODUCT")
+@Comment("상품")
+@Table(name = "products")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product extends BaseEntity {
+public class Product extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private Long id;  // 상품 ID
+    @Comment("상품 ID")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    @Comment("상점 ID")
+    private Store store;
 
     @Column(nullable = false, length = 50)
-    private String name;  // 상품명
-
-    @Column(nullable = false)  // 가격
-    private Integer price;
+    @Comment("상품명")
+    private String name;
 
     @Lob
     @Column(nullable = false)
-    private String description;  // 상품 상세설명
+    @Comment("상품 설명")
+    private String description;
+
+    @Column(nullable = false)
+    @Comment("상품 가격")
+    private Integer price;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProductSellingStatus status;  // 상품 판매상태
+    @Comment("판매 상태")
+    private ProductSellingStatus sellingStatus;
 
-    @OneToOne(mappedBy = "product")
-    private Discount discount;
-
-    @OneToOne(mappedBy = "product")
-    private Stock stock;
+    @Column(nullable = false)
+    @Comment("재고 수량")
+    private Integer stockQuantity;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Product(String name, Integer price, String description, ProductSellingStatus status) {
-        if (name == null) {
-            throw new IllegalArgumentException("상품명은 필수입니다.");
-        }
+    private Product(Store store, String name, String description, Integer price, ProductSellingStatus sellingStatus, Integer stockQuantity) {
+        Assert.notNull(name, "상품명은 필수입니다.");
+        Assert.notNull(description, "상품 설명은 필수입니다.");
+        Assert.notNull(price, "상품 가격은 필수입니다.");
+        Assert.isTrue(price < 0, "상품 가격은 0원 이상이여야 합니다.");
+        Assert.notNull(sellingStatus, "판매 상태는 필수입니다.");
+        Assert.notNull(stockQuantity, "재고 수량은 필수입니다.");
 
-        if (price < 0) {
-            throw new IllegalArgumentException("상품 가격은 0원 이상이여야 합니다.");
-        }
-
-        if (description == null) {
-            throw new IllegalArgumentException("상품 상세설명은 필수입니다.");
-        }
-
-        if (status == null) {
-            throw new IllegalArgumentException("상품 판매상태는 필수입니다.");
-        }
-
+        this.store = store;
         this.name = name;
-        this.price = price;
         this.description = description;
-        this.status = status;
+        this.price = price;
+        this.sellingStatus = sellingStatus;
+        this.stockQuantity = stockQuantity;
     }
 
-    public static Product create(String name, Integer price, String description) {
+    public static Product create(Store store, String name, String description, Integer price, ProductSellingStatus sellingStatus, Integer stockQuantity) {
         return Product.builder()
-            .name(name)
-            .price(price)
-            .description(description)
-            .status(ProductSellingStatus.HOLD)
-            .build();
-    }
-
-    public void update(ProductUpdateRequest request) {
-        this.id = request.productId();
-        this.name = request.productName();
-        this.price = request.price();
-        this.description = request.productDetail();
-        this.status = request.status();
+                .store(store)
+                .name(name)
+                .description(description)
+                .price(price)
+                .sellingStatus(sellingStatus)
+                .stockQuantity(stockQuantity)
+                .build();
     }
 
     public void holding() {
-        this.status = ProductSellingStatus.HOLD;
+        this.sellingStatus = ProductSellingStatus.HOLD;
     }
 
     public void selling() {
-        this.status = ProductSellingStatus.SELLING;
+        this.sellingStatus = ProductSellingStatus.SELLING;
     }
 
     public void stopSelling() {
-        this.status = ProductSellingStatus.STOP_SELLING;
-    }
-
-    public Integer getDiscountPrice() {
-        if (discount == null) {
-            return 0;
-        }
-
-        return discount.applyDiscount();
+        this.sellingStatus = ProductSellingStatus.STOP_SELLING;
     }
 }

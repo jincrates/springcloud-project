@@ -1,7 +1,7 @@
 package me.jincrates.ecommerce.order.application.service.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import me.jincrates.ecommerce.order.domain.OrderProduct;
+import me.jincrates.ecommerce.order.domain.OrderItem;
 
 import java.util.UUID;
 
@@ -19,12 +19,12 @@ public record OrderProductResponse(
         Integer quantity
 ) {
 
-    public static OrderProductResponse of(OrderProduct entity) {
+    public static OrderProductResponse of(OrderItem entity) {
         return new OrderProductResponse(
                 entity.getId(),
                 entity.getOrder().getId(),
                 entity.getProduct().getId(),
                 entity.getOrderPrice(),
-                entity.getQuantity());
+                entity.getOrderQuantity());
     }
 }

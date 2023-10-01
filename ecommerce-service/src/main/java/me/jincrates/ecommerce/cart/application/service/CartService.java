@@ -10,7 +10,7 @@ import me.jincrates.ecommerce.cart.application.service.request.CartProductReques
 import me.jincrates.ecommerce.cart.application.service.request.CartProductUpdateRequest;
 import me.jincrates.ecommerce.cart.application.service.response.CartResponse;
 import me.jincrates.ecommerce.cart.domain.Cart;
-import me.jincrates.ecommerce.cart.domain.CartProduct;
+import me.jincrates.ecommerce.cart.domain.CartItem;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
@@ -33,7 +33,7 @@ public class CartService implements CartUseCase {
     public CartResponse createCart(CartCreateRequest request, Long memberId) {
         Member member = memberPort.findMemberById(memberId);
         Cart cart = cartPort.findCartByMember(member)
-            .orElse(new Cart(member));
+                .orElse(new Cart(member));
 
         // TODO: 벌크로 변경 필요
         for (CartProductRequest each : request.cartProducts()) {
@@ -50,7 +50,7 @@ public class CartService implements CartUseCase {
     public CartResponse getMyCart(Long memberId) {
         Member member = memberPort.findMemberById(memberId);
         Cart cart = cartPort.findCartByMember(member)
-            .orElse(new Cart(member));
+                .orElse(new Cart(member));
 
         return CartResponse.of(cart);
     }
@@ -58,25 +58,25 @@ public class CartService implements CartUseCase {
     @Override
     @Transactional
     public Long updateCartProductQuantity(CartProductUpdateRequest request, Long memberId) {
-        CartProduct cartProduct = cartPort.findCartProductById(request.cartProductId());
+        CartItem cartItem = cartPort.findCartProductById(request.cartProductId());
 
-        if (!memberId.equals(cartProduct.getCart().getMember().getId())) {
+        if (!memberId.equals(cartItem.getCart().getMember().getId())) {
             log.warn("invalid access cart, cartId={}, memberId={}",
-                cartProduct.getCart().getId(),
-                memberId);
+                    cartItem.getCart().getId(),
+                    memberId);
             throw new IllegalArgumentException("잘못된 접근입니다.");
         }
 
-        cartProduct.updateQuantity(request.quantity());
-        return cartProduct.getId();
+        cartItem.updateQuantity(request.quantity());
+        return cartItem.getId();
     }
 
     @Override
     @Transactional
     public void deleteCartProduct(CartProductDeleteRequest request, Long memberId) {
         Cart cart = cartPort.findCartByMemberId(memberId);
-        CartProduct cartProduct = cartPort.findCartProductByIdAndCartId(request.cartProductId(),
-            cart.getId());
-        cartPort.deleteCartProduct(cartProduct);
+        CartItem cartItem = cartPort.findCartProductByIdAndCartId(request.cartProductId(),
+                cart.getId());
+        cartPort.deleteCartProduct(cartItem);
     }
 }

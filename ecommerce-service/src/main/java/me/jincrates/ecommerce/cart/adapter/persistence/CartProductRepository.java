@@ -1,15 +1,16 @@
 package me.jincrates.ecommerce.cart.adapter.persistence;
 
-import java.util.Optional;
-import me.jincrates.ecommerce.cart.domain.CartProduct;
+import me.jincrates.ecommerce.cart.domain.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-interface CartProductRepository extends JpaRepository<CartProduct, Long>,
-    CartProductQueryRepository {
+interface CartProductRepository extends JpaRepository<CartItem, Long>,
+        CartProductQueryRepository {
 
-    Optional<CartProduct> findByCartIdAndProductId(Long cartId, Long productId);
+    Optional<CartItem> findByCartIdAndProductId(Long cartId, Long productId);
 
-    Optional<CartProduct> findByIdAndCartId(Long cartProductId, Long cartId);
+    Optional<CartItem> findByIdAndCartId(Long cartProductId, Long cartId);
 }

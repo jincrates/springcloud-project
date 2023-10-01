@@ -12,7 +12,7 @@ import me.jincrates.ecommerce.order.application.service.request.OrderCancelReque
 import me.jincrates.ecommerce.order.application.service.request.OrderCreateRequest;
 import me.jincrates.ecommerce.order.application.service.response.OrderResponse;
 import me.jincrates.ecommerce.order.domain.Order;
-import me.jincrates.ecommerce.order.domain.OrderProduct;
+import me.jincrates.ecommerce.order.domain.OrderItem;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.application.port.StockPort;
 import me.jincrates.ecommerce.product.domain.Product;
@@ -43,7 +43,7 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
     public OrderResponse createOrder(OrderCreateRequest request, Long memberId) {
         Member member = memberPort.findMemberById(memberId);
 
-        List<OrderProduct> orderProducts = request.orderProducts().stream()
+        List<OrderItem> orderItems = request.orderProducts().stream()
                 .map(op -> {
                     Product product = productPort.findProductById(op.productId());
                     // 재고 차감 - 재시도 3번
@@ -52,10 +52,10 @@ public class OrderService implements OrderCreateUseCase, OrderCancelUseCase {
                         return Void.TYPE;
                     });
 
-                    return OrderProduct.create(product, op.quantity());
+                    return OrderItem.create(product, op.quantity());
                 }).toList();
 
-        Order order = orderPort.saveOrder(Order.create(member, orderProducts));
+        Order order = orderPort.saveOrder(Order.create(member, orderItems));
 
         // 결제로직
 //        order.progress();

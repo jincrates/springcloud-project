@@ -3,7 +3,7 @@ package me.jincrates.ecommerce.cart.application.service.response;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.ecommerce.cart.domain.CartProduct;
+import me.jincrates.ecommerce.cart.domain.CartItem;
 import me.jincrates.ecommerce.product.application.service.response.ProductResponse;
 import me.jincrates.ecommerce.product.domain.Product;
 
@@ -22,7 +22,7 @@ public class CartProductServiceResponse {
         this.quantity = quantity;
     }
 
-    public CartProductServiceResponse(CartProduct entity) {
+    public CartProductServiceResponse(CartItem entity) {
         this.id = entity.getId();
         this.cartId = entity.getCart().getId();
         this.product = ProductResponse.of(entity.getProduct());

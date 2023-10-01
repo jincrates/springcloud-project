@@ -1,11 +1,12 @@
 package me.jincrates.ecommerce.cart.application.port;
 
-import java.util.List;
-import java.util.Optional;
 import me.jincrates.ecommerce.cart.application.service.response.CartDetailServiceResponse;
 import me.jincrates.ecommerce.cart.domain.Cart;
-import me.jincrates.ecommerce.cart.domain.CartProduct;
+import me.jincrates.ecommerce.cart.domain.CartItem;
 import me.jincrates.ecommerce.member.domain.Member;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface CartPort {
 
@@ -17,15 +18,15 @@ public interface CartPort {
 
     List<CartDetailServiceResponse> findCartDetailsById(Long cartId);
 
-    CartProduct saveCartProduct(CartProduct cartProduct);
+    CartItem saveCartProduct(CartItem cartItem);
 
-    void deleteCartProduct(CartProduct cartProduct);
+    void deleteCartProduct(CartItem cartItem);
 
-    void deleteAllCartProduct(List<CartProduct> cartProducts);
+    void deleteAllCartProduct(List<CartItem> cartItems);
 
-    CartProduct findCartProductById(Long cartProductId);
+    CartItem findCartProductById(Long cartProductId);
 
-    CartProduct findCartProductByIdAndCartId(Long cartProductId, Long cartId);
+    CartItem findCartProductByIdAndCartId(Long cartProductId, Long cartId);
 
-    CartProduct findCartProductByCartIdAndProductId(Long cartId, Long productId);
+    CartItem findCartProductByCartIdAndProductId(Long cartId, Long productId);
 }

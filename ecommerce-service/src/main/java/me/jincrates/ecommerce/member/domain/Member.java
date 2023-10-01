@@ -1,77 +1,83 @@
 package me.jincrates.ecommerce.member.domain;
 
 
-import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.global.common.BaseEntity;
+import me.jincrates.global.common.BaseTimeEntity;
 import me.jincrates.global.common.enumtype.Status;
+import org.hibernate.annotations.Comment;
+import org.springframework.util.Assert;
 
 @Getter
 @Entity
-@Table(name = "MEMBER")
+@Comment("회원")
+@Table(name = "members")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseEntity {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long id;  // 회원 ID
+    @Comment("회원 ID")
+    private Long id;
 
     @Column(nullable = false, length = 50)
-    private String name;  // 회원명
+    @Comment("이름")
+    private String name;
 
     @Column(unique = true, nullable = false)
-    private String email;  // 이메일
+    @Comment("이메일")
+    private String email;
 
     @Column(nullable = false)
-    private String password; // 비밀번호
+    @Comment("비밀번호")
+    private String password;
+
+    @Column(length = 100)
+    @Comment("회원 소개")
+    private String bio;
+
+    @Column()
+    @Comment("이미지 url")
+    private String imageUrl;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;  // 권한
+    @Comment("권한")
+    private Role role;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;  // 상태
+    @Comment("상태")
+    private Status status;
 
-    @QueryProjection
     @Builder(access = AccessLevel.PRIVATE)
-    private Member(String name, String email, String password, Role role, Status status) {
-        if (name == null) {
-            throw new IllegalArgumentException("이름은 필수입니다.");
-        }
-        if (email == null) {
-            throw new IllegalArgumentException("이메일은 필수입니다.");
-        }
-        if (password == null) {
-            throw new IllegalArgumentException("비밀번호는 필수입니다.");
-        }
+    private Member(String name, String email, String password, String bio, String imageUrl, Role role, Status status) {
+        Assert.notNull(name, "이름은 필수입니다.");
+        Assert.notNull(email, "이메일은 필수입니다.");
+        Assert.notNull(password, "비밀번호는 필수입니다.");
+        Assert.notNull(role, "권한은 필수입니다.");
+        Assert.notNull(status, "상태는 필수입니다.");
 
         this.name = name;
         this.email = email;
         this.password = password;
+        this.bio = bio;
+        this.imageUrl = imageUrl;
         this.role = role;
         this.status = status;
     }
 
     public static Member create(String name, String email, String password) {
         return Member.builder()
-            .name(name)
-            .email(email)
-            .password(password)
-            .role(Role.USER)
-            .status(Status.ACTIVE)
-            .build();
+                .name(name)
+                .email(email)
+                .password(password)
+                .role(Role.USER)
+                .status(Status.ACTIVE)
+                .build();
     }
 }
