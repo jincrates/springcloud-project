@@ -2,6 +2,7 @@ package me.jincrates.community.post.application.port;
 
 import java.util.List;
 import me.jincrates.community.post.application.service.request.PostCreateRequest;
+import me.jincrates.community.post.application.service.request.PostUpdateRequest;
 import me.jincrates.community.post.application.service.response.PostResponse;
 
 public interface PostUseCase {
@@ -16,7 +17,7 @@ public interface PostUseCase {
     PostResponse getPost(Long postId);
 
     // 게시글 수정
-    void updatePost(Long postId, Long memberId);
+    void updatePost(PostUpdateRequest request, Long memberId);
 
     // 게시글 삭제
     void deletePost(Long postId, Long memberId);
