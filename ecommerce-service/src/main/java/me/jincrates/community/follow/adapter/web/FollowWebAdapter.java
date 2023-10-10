@@ -33,10 +33,10 @@ public class FollowWebAdapter {
 
     @Operation(summary = "팔로우 신청")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping("/{member_id}")
+    @PostMapping("/{memberId}")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<Long> followMember(
-        @PathVariable("member_id") Long followingId,
+        @PathVariable("memberId") Long followingId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long loginMemberId = jwtProvider.parseToken(authorization.substring(7));
@@ -46,10 +46,10 @@ public class FollowWebAdapter {
 
     @Operation(summary = "팔로우 취소")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{member_id}")
+    @DeleteMapping("/{memberId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unfollowMember(
-        @PathVariable("member_id") Long followingId,
+        @PathVariable("memberId") Long followingId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long loginMemberId = jwtProvider.parseToken(authorization.substring(7));
@@ -58,10 +58,10 @@ public class FollowWebAdapter {
     }
 
     @Operation(summary = "특정 사용자의 팔로워 목록 조회")
-    @GetMapping("/{member_id}/followers")
+    @GetMapping("/{memberId}/followers")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<List<FollowerResponse>> getFollowers(
-        @PathVariable("member_id") Long memberId
+        @PathVariable Long memberId
     ) {
         List<FollowerResponse> response = followUseCase.getFollowers(memberId);
 
@@ -69,10 +69,10 @@ public class FollowWebAdapter {
     }
 
     @Operation(summary = "특정 사용자가 팔로우하는 사람 조회")
-    @GetMapping("/{member_id}/following")
+    @GetMapping("/{memberId}/following")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<List<FollowingResponse>> getFollowing(
-        @PathVariable("member_id") Long memberId
+        @PathVariable Long memberId
     ) {
         List<FollowingResponse> response = followUseCase.getFollowing(memberId);
 
