@@ -57,20 +57,20 @@ public class PostWebAdapter {
     }
 
     @Operation(summary = "게시글 조회")
-    @GetMapping("/{post_id}")
+    @GetMapping("/{postId}")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<PostResponse> getPost(
-        @PathVariable("post_id") Long postId
+        @PathVariable Long postId
     ) {
         return CommonResponse.ok(postUseCase.getPost(postId));
     }
 
     @Operation(summary = "게시글 수정")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PutMapping("/{post_id}")
+    @PutMapping("/{postId}")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<PostResponse> updatePost(
-        @PathVariable("post_id") Long postId,
+        @PathVariable Long postId,
         @Valid @RequestBody PostUpdateRequest request,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
@@ -81,10 +81,10 @@ public class PostWebAdapter {
 
     @Operation(summary = "게시글 삭제")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{post_id}")
+    @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommonResponse<Void> deletePost(
-        @PathVariable("post_id") Long postId,
+        @PathVariable Long postId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));

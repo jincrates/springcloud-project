@@ -35,7 +35,7 @@ public class PostAttachmentWebAdapter {
 
     @Operation(summary = "게시글 첨부 파일 추가")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping("/{post_id}/attachments")
+    @PostMapping("/{postId}/attachments")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<PostResponse> createPostAttachment(
         @Valid @RequestBody PostCreateRequest request,
@@ -47,27 +47,27 @@ public class PostAttachmentWebAdapter {
     }
 
     @Operation(summary = "게시글 첨부 파일 목록 조회")
-    @GetMapping("/{post_id}/attachments")
+    @GetMapping("/{postId}/attachments")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<List<PostResponse>> getPostAttachments() {
         return CommonResponse.ok(postUseCase.getPosts());
     }
 
     @Operation(summary = "게시글 첨부 파일 조회")
-    @GetMapping("/{post_id}/attachments/{attachment_id}")
+    @GetMapping("/{postId}/attachments/{attachment_id}")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<PostResponse> getPostAttachment(
-        @PathVariable("post_id") Long postId
+        @PathVariable Long postId
     ) {
         return CommonResponse.ok(postUseCase.getPost(postId));
     }
 
     @Operation(summary = "게시글 첨부 파일 삭제")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{post_id}/attachments/{attachment_id}")
+    @DeleteMapping("/{postId}/attachments/{attachment_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommonResponse<Void> deletePostAttachment(
-        @PathVariable("post_id") Long postId,
+        @PathVariable Long postId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));

@@ -29,10 +29,10 @@ public class LikeWebAdapter {
 
     @Operation(summary = "게시글 좋아요")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping("/{post_id}/likes")
+    @PostMapping("/{postId}/likes")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<Long> likePost(
-        @PathVariable("post_id") Long postId,
+        @PathVariable Long postId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
@@ -41,10 +41,10 @@ public class LikeWebAdapter {
 
     @Operation(summary = "게시글 좋아요 취소")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{post_id}/likes")
+    @DeleteMapping("/{postId}/likes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommonResponse<Long> cancelLikePost(
-        @PathVariable("post_id") Long postId,
+        @PathVariable Long postId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
@@ -53,11 +53,11 @@ public class LikeWebAdapter {
 
     @Operation(summary = "댓글 좋아요")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping("/{post_id}/comments/{comment_id}/likes")
+    @PostMapping("/{postId}/comments/{commentId}/likes")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<Long> likeComment(
-        @PathVariable("post_id") Long postId,
-        @PathVariable("comment_id") Long commendId,
+        @PathVariable Long postId,
+        @PathVariable Long commentId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
@@ -66,11 +66,11 @@ public class LikeWebAdapter {
 
     @Operation(summary = "댓글 좋아요 취소")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{post_id}/comments/{comment_id}/likes")
+    @DeleteMapping("/{postId}/comments/{commentId}/likes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommonResponse<Long> cancelLikeComment(
-        @PathVariable("post_id") Long postId,
-        @PathVariable("comment_id") Long commendId,
+        @PathVariable Long postId,
+        @PathVariable Long commentId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));

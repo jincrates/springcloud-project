@@ -37,10 +37,10 @@ public class CommentWebAdapter {
 
     @Operation(summary = "댓글 작성")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping("/{post_id}/comments")
+    @PostMapping("/{postId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<CommentResponse> createComment(
-        @PathVariable("post_id") Long postId,
+        @PathVariable Long postId,
         @Valid @RequestBody CommentCreateRequest request,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
@@ -50,21 +50,21 @@ public class CommentWebAdapter {
     }
 
     @Operation(summary = "댓글 목록 조회")
-    @GetMapping("/{post_id}/comments")
+    @GetMapping("/{postId}/comments")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<List<CommentResponse>> getComments(
-        @PathVariable("post_id") Long postId
+        @PathVariable Long postId
     ) {
         return CommonResponse.ok(commentUseCase.getComments());
     }
 
     @Operation(summary = "댓글 수정")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PutMapping("/{post_id}/comments/{comment_id}")
+    @PutMapping("/{postId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<CommentResponse> updateComment(
-        @PathVariable("post_id") Long postId,
-        @PathVariable("comment_id") Long commentId,
+        @PathVariable Long postId,
+        @PathVariable Long commentId,
         @Valid @RequestBody CommentUpdateRequest request,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
@@ -75,11 +75,11 @@ public class CommentWebAdapter {
 
     @Operation(summary = "댓글 삭제")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{post_id}/comments/{comment_id}")
+    @DeleteMapping("/{postId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommonResponse<Void> deletePost(
-        @PathVariable("post_id") Long postId,
-        @PathVariable("comment_id") Long commentId,
+        @PathVariable Long postId,
+        @PathVariable Long commentId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
