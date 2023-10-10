@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.jincrates.community.tag.domain.Tag;
 import org.hibernate.annotations.Comment;
 
 @Getter
