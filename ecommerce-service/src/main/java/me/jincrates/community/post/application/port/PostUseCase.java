@@ -8,7 +8,7 @@ import me.jincrates.community.post.application.service.response.PostResponse;
 public interface PostUseCase {
 
     // 게시글 작성
-    Long createPost(PostCreateRequest request, Long memberId);
+    PostResponse createPost(PostCreateRequest request, Long memberId);
 
     // 게시글 목록 조회
     List<PostResponse> getPosts();
@@ -17,7 +17,7 @@ public interface PostUseCase {
     PostResponse getPost(Long postId);
 
     // 게시글 수정
-    void updatePost(PostUpdateRequest request, Long memberId);
+    PostResponse updatePost(PostUpdateRequest request, Long memberId);
 
     // 게시글 삭제
     void deletePost(Long postId, Long memberId);

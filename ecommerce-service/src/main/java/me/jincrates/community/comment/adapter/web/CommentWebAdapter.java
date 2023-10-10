@@ -39,7 +39,7 @@ public class CommentWebAdapter {
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PostMapping("/{post_id}/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<Long> createComment(
+    public CommonResponse<CommentResponse> createComment(
         @PathVariable("post_id") Long postId,
         @Valid @RequestBody CommentCreateRequest request,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
@@ -62,7 +62,7 @@ public class CommentWebAdapter {
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PutMapping("/{post_id}/comments/{comment_id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<Void> updateComment(
+    public CommonResponse<CommentResponse> updateComment(
         @PathVariable("post_id") Long postId,
         @PathVariable("comment_id") Long commentId,
         @Valid @RequestBody CommentUpdateRequest request,
@@ -70,9 +70,7 @@ public class CommentWebAdapter {
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
 
-        commentUseCase.updateComment(request, memberId);
-
-        return CommonResponse.ok(null);
+        return CommonResponse.ok(commentUseCase.updateComment(request, memberId));
     }
 
     @Operation(summary = "댓글 삭제")
@@ -85,7 +83,6 @@ public class CommentWebAdapter {
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
-
         commentUseCase.deleteComment(commentId, memberId);
 
         return CommonResponse.ok(null);

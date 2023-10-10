@@ -18,7 +18,7 @@ public class PostService implements PostUseCase {
     private final PostPort postPort;
 
     @Override
-    public Long createPost(PostCreateRequest request, Long memberId) {
+    public PostResponse createPost(PostCreateRequest request, Long memberId) {
         return null;
     }
 
@@ -33,8 +33,8 @@ public class PostService implements PostUseCase {
     }
 
     @Override
-    public void updatePost(PostUpdateRequest request, Long memberId) {
-
+    public PostResponse updatePost(PostUpdateRequest request, Long memberId) {
+        return null;
     }
 
     @Override

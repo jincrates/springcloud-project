@@ -18,7 +18,7 @@ public class CommentService implements CommentUseCase {
     private final CommentPort commentPort;
 
     @Override
-    public Long createComment(CommentCreateRequest request, Long memberId) {
+    public CommentResponse createComment(CommentCreateRequest request, Long memberId) {
         return null;
     }
 
@@ -28,8 +28,8 @@ public class CommentService implements CommentUseCase {
     }
 
     @Override
-    public void updateComment(CommentUpdateRequest request, Long memberId) {
-
+    public CommentResponse updateComment(CommentUpdateRequest request, Long memberId) {
+        return null;
     }
 
     @Override

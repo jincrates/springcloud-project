@@ -9,7 +9,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.post.application.port.PostUseCase;
 import me.jincrates.community.post.application.service.request.PostCreateRequest;
-import me.jincrates.community.post.application.service.request.PostUpdateRequest;
 import me.jincrates.community.post.application.service.response.PostResponse;
 import me.jincrates.global.common.auth.JwtProvider;
 import me.jincrates.global.common.response.CommonResponse;
@@ -19,27 +18,26 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "게시글 서비스", description = "게시글 관련 API")
+@Tag(name = "게시글 첨부파일 서비스", description = "게시글 첨부파일  API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
-public class PostWebAdapter {
+public class PostAttachmentWebAdapter {
 
     private final JwtProvider jwtProvider;
     private final PostUseCase postUseCase;
 
-    @Operation(summary = "게시글 작성")
+    @Operation(summary = "게시글 첨부 파일 추가")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping()
+    @PostMapping("/{post_id}/attachments")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<PostResponse> createPost(
+    public CommonResponse<PostResponse> createPostAttachment(
         @Valid @RequestBody PostCreateRequest request,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
@@ -48,42 +46,27 @@ public class PostWebAdapter {
         return CommonResponse.ok(postUseCase.createPost(request, memberId));
     }
 
-    @Operation(summary = "게시글 목록 조회")
-    @GetMapping()
+    @Operation(summary = "게시글 첨부 파일 목록 조회")
+    @GetMapping("/{post_id}/attachments")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<List<PostResponse>> getPosts() {
-        //TODO: 페이징 처리
+    public CommonResponse<List<PostResponse>> getPostAttachments() {
         return CommonResponse.ok(postUseCase.getPosts());
     }
 
-    @Operation(summary = "게시글 조회")
-    @GetMapping("/{post_id}")
+    @Operation(summary = "게시글 첨부 파일 조회")
+    @GetMapping("/{post_id}/attachments/{attachment_id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<PostResponse> getPost(
+    public CommonResponse<PostResponse> getPostAttachment(
         @PathVariable("post_id") Long postId
     ) {
         return CommonResponse.ok(postUseCase.getPost(postId));
     }
 
-    @Operation(summary = "게시글 수정")
+    @Operation(summary = "게시글 첨부 파일 삭제")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PutMapping("/{post_id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<PostResponse> updatePost(
-        @PathVariable("post_id") Long postId,
-        @Valid @RequestBody PostUpdateRequest request,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
-    ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
-
-        return CommonResponse.ok(postUseCase.updatePost(request, memberId));
-    }
-
-    @Operation(summary = "게시글 삭제")
-    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{post_id}")
+    @DeleteMapping("/{post_id}/attachments/{attachment_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public CommonResponse<Void> deletePost(
+    public CommonResponse<Void> deletePostAttachment(
         @PathVariable("post_id") Long postId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
