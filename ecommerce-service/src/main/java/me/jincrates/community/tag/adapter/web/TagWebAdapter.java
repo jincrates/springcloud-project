@@ -9,11 +9,9 @@ import me.jincrates.community.tag.application.service.request.TagCreateRequest;
 import me.jincrates.community.tag.application.service.response.TagResponse;
 import me.jincrates.global.common.auth.JwtProvider;
 import me.jincrates.global.common.response.CommonResponse;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,10 +35,10 @@ public class TagWebAdapter {
     @PostMapping("/tags")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<TagResponse> addTag(
-        @Valid @RequestBody TagCreateRequest request,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+        @Valid @RequestBody TagCreateRequest request
+        //@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        //Long memberId = jwtProvider.parseToken(authorization.substring(7));
         return CommonResponse.ok(tagUseCase.addTag(request));
     }
 

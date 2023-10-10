@@ -2,6 +2,8 @@ package me.jincrates.community.post.application.service.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Schema(description = "게시글 작성 request")
 public record PostCreateRequest(
@@ -11,7 +13,13 @@ public record PostCreateRequest(
 
     @Schema(description = "내용")
     @NotBlank(message = "내용은 필수입니다.")
-    String content
+    String content,
+
+    @Schema(description = "태그 ID 목록")
+    List<Long> tagIds
 ) {
 
+    public PostCreateRequest {
+        tagIds = tagIds == null ? new ArrayList<>() : tagIds;
+    }
 }
