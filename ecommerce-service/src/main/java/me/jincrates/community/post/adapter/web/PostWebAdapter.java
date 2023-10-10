@@ -22,20 +22,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "게시글 서비스", description = "게시글 등록/조회/삭제 API")
+@Tag(name = "게시글 서비스", description = "게시글 관련 API")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/posts")
 public class PostWebAdapter {
 
     private final JwtProvider jwtProvider;
     private final PostUseCase postUseCase;
 
-    @Operation(summary = "게시글 작성")
+    @Operation(summary = "게시글 생성")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping("/api/v1/posts")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<Long> createPost(
         @Valid @RequestBody PostCreateRequest request,
@@ -47,7 +49,7 @@ public class PostWebAdapter {
     }
 
     @Operation(summary = "게시글 목록 조회")
-    @GetMapping("/api/v1/posts")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<List<PostResponse>> getPosts() {
         //TODO: 페이징 처리
@@ -55,7 +57,7 @@ public class PostWebAdapter {
     }
 
     @Operation(summary = "게시글 상세 조회")
-    @GetMapping("/api/v1/posts/{post_id}")
+    @GetMapping("/{post_id}")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<PostResponse> getPost(
         @PathVariable("post_id") Long postId
@@ -65,7 +67,7 @@ public class PostWebAdapter {
 
     @Operation(summary = "게시글 수정")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PutMapping("/api/v1/posts/{post_id}")
+    @PutMapping("/{post_id}")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<Void> updatePost(
         @PathVariable("post_id") Long postId,
@@ -81,7 +83,7 @@ public class PostWebAdapter {
 
     @Operation(summary = "게시글 삭제")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/api/v1/posts/{post_id}")
+    @DeleteMapping("/{post_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommonResponse<Void> deletePost(
         @PathVariable("post_id") Long postId,
