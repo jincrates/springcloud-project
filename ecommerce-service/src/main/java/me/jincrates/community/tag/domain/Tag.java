@@ -35,4 +35,12 @@ public class Tag extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostTag> postTags = new ArrayList<>();
+
+    private Tag(String name) {
+        this.name = name;
+    }
+
+    public static Tag createTag(String name) {
+        return new Tag(name);
+    }
 }

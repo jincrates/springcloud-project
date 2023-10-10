@@ -3,17 +3,14 @@ package me.jincrates.community.tag.adapter.web;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.tag.application.port.TagUseCase;
 import me.jincrates.community.tag.application.service.request.TagCreateRequest;
-import me.jincrates.community.tag.application.service.request.TagDeleteRequest;
 import me.jincrates.community.tag.application.service.response.TagResponse;
 import me.jincrates.global.common.auth.JwtProvider;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,24 +36,23 @@ public class TagWebAdapter {
     @Operation(summary = "태그 추가")
     @PostMapping("/tags")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<List<TagResponse>> addTag(
+    public CommonResponse<TagResponse> addTag(
         @Valid @RequestBody TagCreateRequest request,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
-
-        return CommonResponse.ok(null);
+        return CommonResponse.ok(tagUseCase.addTag(request));
     }
 
-    @Operation(summary = "태그 제거")
-    @DeleteMapping("/tags")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<List<TagResponse>> removeTag(
-        @Valid @RequestBody TagDeleteRequest request,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
-    ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
-
-        return CommonResponse.ok(null);
-    }
+//    @Operation(summary = "태그 제거")
+//    @DeleteMapping("/tags")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public CommonResponse<Void> removeTag(
+//        @Valid @RequestBody TagDeleteRequest request,
+//        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+//    ) {
+//        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+//        tagUseCase.removeTag(request);
+//        return CommonResponse.ok(null);
+//    }
 }
