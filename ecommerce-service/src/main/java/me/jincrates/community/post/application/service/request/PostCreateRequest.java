@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @Schema(description = "게시글 작성 request")
 public record PostCreateRequest(
@@ -16,10 +17,14 @@ public record PostCreateRequest(
     String content,
 
     @Schema(description = "태그 ID 목록")
-    List<Long> tagIds
+    List<Long> tagIds,
+
+    @Schema(description = "업로드 이미지 목록")
+    List<MultipartFile> uploadFiles
 ) {
 
     public PostCreateRequest {
         tagIds = tagIds == null ? new ArrayList<>() : tagIds;
+        uploadFiles = uploadFiles == null ? new ArrayList<>() : uploadFiles;
     }
 }

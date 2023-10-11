@@ -17,6 +17,7 @@ import me.jincrates.global.common.response.PageResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,15 +40,15 @@ public class PostWebAdapter {
     private final PostUseCase postUseCase;
 
     @Operation(summary = "게시글 작성")
-    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping()
+    //@Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<PostResponse> createPost(
-        @Valid @RequestBody PostCreateRequest request,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+        @Valid PostCreateRequest request
+        //@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
-
+        //Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = 1L;
         return CommonResponse.ok(postUseCase.createPost(request, memberId));
     }
 

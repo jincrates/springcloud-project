@@ -43,7 +43,7 @@ public class PostAttachmentWebAdapter {
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
 
-        return CommonResponse.ok(postUseCase.createPost(request, memberId));
+        return CommonResponse.ok(null);
     }
 
     @Operation(summary = "게시글 첨부 파일 목록 조회")

@@ -11,6 +11,7 @@ import me.jincrates.community.post.application.service.response.PostResponse;
 import me.jincrates.community.post.domain.Post;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
+import me.jincrates.infra.file.application.FilePort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class PostService implements PostUseCase {
 
-    private final PostPort postPort;
     private final MemberPort memberPort;
+    private final PostPort postPort;
+    private final FilePort filePort;
 
     @Override
     @Transactional
@@ -30,8 +32,11 @@ public class PostService implements PostUseCase {
         Member member = memberPort.findMemberById(memberId);
 
         Post post = Post.create(member, request.title(), request.content(), null);
-
         postPort.savePost(post);
+
+        // $path/{memberId}/posts/{postId}
+        String uploadPath = memberId + "/posts/" + post.getId() + "/";
+        request.uploadFiles().forEach(file -> filePort.uploadFile(file, uploadPath));
 
         return new PostResponse(
             post.getId(),
