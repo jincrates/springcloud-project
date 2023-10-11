@@ -37,7 +37,7 @@ public class Member extends BaseTimeEntity {
     private String password;
 
     @Column(length = 100)
-    @Comment("회원 소개")
+    @Comment("한줄소개")
     private String bio;
 
     @Column()
