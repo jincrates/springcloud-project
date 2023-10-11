@@ -1,5 +1,6 @@
 package me.jincrates.community.post.application.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +35,11 @@ public class PostService implements PostUseCase {
         Post post = Post.create(member, request.title(), request.content(), null);
         postPort.savePost(post);
 
-        // $path/{memberId}/posts/{postId}
-        String uploadPath = memberId + "/posts/" + post.getId() + "/";
-        request.uploadFiles().forEach(file -> filePort.uploadFile(file, uploadPath));
+        List<String> uploadFileUrls = new ArrayList<>();
+        request.uploadFiles()
+            .forEach(file -> uploadFileUrls.add(filePort.tempUploadFile(file, memberId, "posts")));
+
+        filePort.uploadFiles(uploadFileUrls, memberId, "posts");
 
         return new PostResponse(
             post.getId(),
