@@ -8,4 +8,6 @@ public interface PostPort {
     Post savePost(Post post);
 
     List<Post> findAllPost();
+
+    Post findPostById(Long postId);
 }

@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.community.post.domain.Post;
@@ -42,4 +43,19 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false, length = 200)
     @org.hibernate.annotations.Comment("댓글 내용")
     private String content;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private Comment(Member member, Post post, String content) {
+        this.member = member;
+        this.post = post;
+        this.content = content;
+    }
+
+    public static Comment create(Member member, Post post, String content) {
+        return Comment.builder()
+            .member(member)
+            .post(post)
+            .content(content)
+            .build();
+    }
 }

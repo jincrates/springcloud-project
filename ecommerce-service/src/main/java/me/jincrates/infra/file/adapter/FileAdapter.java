@@ -16,6 +16,7 @@ public class FileAdapter implements FilePort {
 
     @Override
     public String uploadFile(MultipartFile file, String path) {
+        // TODO: resize, db 저장
         if (ObjectUtils.isEmpty(file)) {
             return null;
         }

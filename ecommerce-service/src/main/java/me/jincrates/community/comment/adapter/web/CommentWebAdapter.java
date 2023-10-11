@@ -40,22 +40,22 @@ public class CommentWebAdapter {
     @PostMapping("/{postId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<CommentResponse> createComment(
-        @PathVariable Long postId,
-        @Valid @RequestBody CommentCreateRequest request,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+        @PathVariable(name = "postId") Long postId,
+        @Valid @RequestBody CommentCreateRequest request
+        //@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
-
-        return CommonResponse.ok(commentUseCase.createComment(request, memberId));
+        //Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = 1L;
+        return CommonResponse.ok(commentUseCase.createComment(request, memberId, postId));
     }
 
     @Operation(summary = "댓글 목록 조회")
     @GetMapping("/{postId}/comments")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<List<CommentResponse>> getComments(
-        @PathVariable Long postId
+        @PathVariable(name = "postId") Long postId
     ) {
-        return CommonResponse.ok(commentUseCase.getComments());
+        return CommonResponse.ok(commentUseCase.getComments(postId));
     }
 
     @Operation(summary = "댓글 수정")

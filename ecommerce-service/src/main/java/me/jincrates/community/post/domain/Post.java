@@ -92,4 +92,8 @@ public class Post extends BaseTimeEntity {
             .imageUrl(imageUrl)
             .build();
     }
+
+    public void addComment(me.jincrates.community.comment.domain.Comment comment) {
+        this.comments.add(comment);
+    }
 }

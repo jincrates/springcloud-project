@@ -7,9 +7,9 @@ import me.jincrates.community.comment.application.service.response.CommentRespon
 
 public interface CommentUseCase {
 
-    CommentResponse createComment(CommentCreateRequest request, Long memberId);
+    CommentResponse createComment(CommentCreateRequest request, Long memberId, Long postId);
 
-    List<CommentResponse> getComments();
+    List<CommentResponse> getComments(Long postId);
 
     CommentResponse updateComment(CommentUpdateRequest request, Long memberId);
 

@@ -1,5 +1,6 @@
 package me.jincrates.community.post.adapter.persistence;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.post.application.port.PostPort;
@@ -20,5 +21,11 @@ public class PostAdapter implements PostPort {
     @Override
     public List<Post> findAllPost() {
         return postRepository.findAll();
+    }
+
+    @Override
+    public Post findPostById(Long postId) {
+        return postRepository.findById(postId)
+            .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다. postId=" + postId));
     }
 }
