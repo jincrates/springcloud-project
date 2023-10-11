@@ -49,7 +49,7 @@ public class ProductWebAdapter {
         List<ProductResponse> products = productUseCase.getAllProduct(request,
             PageRequest.of(pageNo, pageSize));
 
-        PageResponse response = PageResponse.create(pageNo, pageSize, products);
+        PageResponse response = PageResponse.of(pageNo, pageSize, products);
 
         return CommonResponse.ok(response);
     }

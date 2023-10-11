@@ -16,7 +16,7 @@ public class PageResponse<T> {
         this.contents = contents;
     }
 
-    public static <T> PageResponse<T> create(int pageNo, int pageSize, List<T> contents) {
+    public static <T> PageResponse<T> of(int pageNo, int pageSize, List<T> contents) {
         return new PageResponse<>(
             pageNo,
             contents.size() > pageSize,

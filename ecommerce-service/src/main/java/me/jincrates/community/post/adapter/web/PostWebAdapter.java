@@ -13,6 +13,8 @@ import me.jincrates.community.post.application.service.request.PostUpdateRequest
 import me.jincrates.community.post.application.service.response.PostResponse;
 import me.jincrates.global.common.auth.JwtProvider;
 import me.jincrates.global.common.response.CommonResponse;
+import me.jincrates.global.common.response.PageResponse;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,9 +54,12 @@ public class PostWebAdapter {
     @Operation(summary = "게시글 목록 조회")
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<List<PostResponse>> getPosts() {
-        //TODO: 페이징 처리
-        return CommonResponse.ok(postUseCase.getPosts());
+    public PageResponse<PostResponse> getPosts(
+        @RequestParam(name = "pageNo", defaultValue = "0", required = false) int pageNo,
+        @RequestParam(name = "pageSize", defaultValue = "5", required = false) int pageSize
+    ) {
+        List<PostResponse> contents = postUseCase.getPosts(PageRequest.of(pageNo, pageSize));
+        return PageResponse.of(pageNo, pageSize, contents);
     }
 
     @Operation(summary = "게시글 조회")

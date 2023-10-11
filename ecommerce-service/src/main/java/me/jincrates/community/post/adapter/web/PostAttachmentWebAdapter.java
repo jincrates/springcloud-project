@@ -50,7 +50,7 @@ public class PostAttachmentWebAdapter {
     @GetMapping("/{postId}/attachments")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<List<PostResponse>> getPostAttachments() {
-        return CommonResponse.ok(postUseCase.getPosts());
+        return CommonResponse.ok(null);
     }
 
     @Operation(summary = "게시글 첨부 파일 조회")

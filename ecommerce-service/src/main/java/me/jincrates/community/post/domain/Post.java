@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.community.like.domain.Like;
@@ -72,4 +73,23 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Comment("게시글 좋아요")
     private List<Like> likes = new ArrayList<>();
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private Post(Member member, String title, String content, Status status,
+        List<String> imageUrl) {
+        this.member = member;
+        this.title = title;
+        this.content = content;
+        this.status = status;
+    }
+
+    public static Post create(Member member, String title, String content, List<String> imageUrl) {
+        return Post.builder()
+            .member(member)
+            .title(title)
+            .content(content)
+            .status(Status.ACTIVE)
+            .imageUrl(imageUrl)
+            .build();
+    }
 }
