@@ -1,5 +1,6 @@
 package me.jincrates.community.tag.application.service;
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.tag.application.port.TagPort;
@@ -25,6 +26,14 @@ public class TagService implements TagUseCase {
         }
 
         return new TagResponse(tag.get().getId(), tag.get().getName());
+    }
+
+    @Override
+    public List<TagResponse> getTags() {
+        List<Tag> tags = tagPort.findAllTag();
+        return tags.stream()
+            .map(t -> new TagResponse(t.getId(), t.getName()))
+            .toList();
     }
 
 //    @Override

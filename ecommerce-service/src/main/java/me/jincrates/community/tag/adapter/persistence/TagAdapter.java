@@ -1,5 +1,6 @@
 package me.jincrates.community.tag.adapter.persistence;
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.tag.application.port.TagPort;
@@ -26,6 +27,11 @@ public class TagAdapter implements TagPort {
     @Override
     public Tag saveTag(Tag tag) {
         return tagRepository.save(tag);
+    }
+
+    @Override
+    public List<Tag> findAllTag() {
+        return tagRepository.findAll();
     }
 
 //    @Override
