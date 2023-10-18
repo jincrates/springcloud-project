@@ -14,6 +14,7 @@ import me.jincrates.community.post.domain.Post;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -25,6 +26,7 @@ public class CommentService implements CommentUseCase {
     private final CommentPort commentPort;
 
     @Override
+    @Transactional
     public CommentResponse createComment(CommentCreateRequest request, Long memberId, Long postId) {
         Member member = memberPort.findMemberById(memberId);
         Post post = postPort.findPostById(postId);
@@ -46,6 +48,7 @@ public class CommentService implements CommentUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CommentResponse> getComments(Long postId) {
         List<Comment> comments = commentPort.findAllCommentByPostId(postId);
 
@@ -63,12 +66,28 @@ public class CommentService implements CommentUseCase {
     }
 
     @Override
-    public CommentResponse updateComment(CommentUpdateRequest request, Long memberId) {
-        return null;
+    @Transactional
+    public CommentResponse updateComment(CommentUpdateRequest request, Long memberId, Long postId,
+        Long commentId) {
+        Comment comment = commentPort.findCommentByIdAndMemberIdAndPostId(commentId, memberId,
+            postId);
+        comment.updateContent(request.content());
+
+        return new CommentResponse(
+            comment.getPost().getId(),
+            comment.getId(),
+            comment.getContent(),
+            comment.getCreatedAt(),
+            comment.getUpdatedAt(),
+            comment.getMember().getId(),
+            comment.getMember().getName()
+        );
     }
 
     @Override
-    public void deleteComment(Long commentId, Long memberId) {
-
+    public void deleteComment(Long memberId, Long postId, Long commentId) {
+        Comment comment = commentPort.findCommentByIdAndMemberIdAndPostId(commentId, memberId,
+            postId);
+        commentPort.deleteComment(comment);
     }
 }

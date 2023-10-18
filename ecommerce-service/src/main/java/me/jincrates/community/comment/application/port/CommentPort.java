@@ -8,4 +8,8 @@ public interface CommentPort {
     Comment saveComment(Comment comment);
 
     List<Comment> findAllCommentByPostId(Long postId);
+
+    Comment findCommentByIdAndMemberIdAndPostId(Long commentId, Long memberId, Long postId);
+
+    void deleteComment(Comment comment);
 }

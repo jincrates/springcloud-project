@@ -66,10 +66,6 @@ public class Post extends BaseTimeEntity {
     private List<String> imageUrls = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Comment("게시글 태그")
-    private List<PostTag> postTags = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Comment("게시글 댓글")
     private List<me.jincrates.community.comment.domain.Comment> comments = new ArrayList<>();
 

@@ -1,5 +1,6 @@
 package me.jincrates.community.comment.adapter.persistnece;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.comment.application.port.CommentPort;
@@ -20,5 +21,18 @@ public class CommentAdapter implements CommentPort {
     @Override
     public List<Comment> findAllCommentByPostId(Long postId) {
         return commentRepository.findAllByPostId(postId);
+    }
+
+    @Override
+    public Comment findCommentByIdAndMemberIdAndPostId(Long commentId, Long memberId, Long postId) {
+        return commentRepository.findByIdAndMemberIdAndPostId(commentId, memberId, postId)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "댓글 정보를 찾을 수 없습니다. commentId=" + commentId + ", memberId=" + memberId + ", postId="
+                    + postId));
+    }
+
+    @Override
+    public void deleteComment(Comment comment) {
+        commentRepository.delete(comment);
     }
 }

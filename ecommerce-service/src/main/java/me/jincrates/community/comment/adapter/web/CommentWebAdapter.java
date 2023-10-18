@@ -41,11 +41,10 @@ public class CommentWebAdapter {
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<CommentResponse> createComment(
         @PathVariable(name = "postId") Long postId,
-        @Valid @RequestBody CommentCreateRequest request
-        //@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+        @Valid @RequestBody CommentCreateRequest request,
+        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        //Long memberId = jwtProvider.parseToken(authorization.substring(7));
-        Long memberId = 1L;
+        Long memberId = jwtProvider.parseToken(authorization.substring(7));
         return CommonResponse.ok(commentUseCase.createComment(request, memberId, postId));
     }
 
@@ -63,14 +62,15 @@ public class CommentWebAdapter {
     @PutMapping("/{postId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<CommentResponse> updateComment(
-        @PathVariable Long postId,
-        @PathVariable Long commentId,
+        @PathVariable(name = "postId") Long postId,
+        @PathVariable(name = "commentId") Long commentId,
         @Valid @RequestBody CommentUpdateRequest request,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
 
-        return CommonResponse.ok(commentUseCase.updateComment(request, memberId));
+        return CommonResponse.ok(
+            commentUseCase.updateComment(request, memberId, postId, commentId));
     }
 
     @Operation(summary = "댓글 삭제")
@@ -78,12 +78,12 @@ public class CommentWebAdapter {
     @DeleteMapping("/{postId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CommonResponse<Void> deletePost(
-        @PathVariable Long postId,
-        @PathVariable Long commentId,
+        @PathVariable(name = "postId") Long postId,
+        @PathVariable(name = "commentId") Long commentId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
-        commentUseCase.deleteComment(commentId, memberId);
+        commentUseCase.deleteComment(memberId, postId, commentId);
 
         return CommonResponse.ok(null);
     }

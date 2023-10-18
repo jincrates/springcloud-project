@@ -16,15 +16,11 @@ public record PostCreateRequest(
     @NotBlank(message = "내용은 필수입니다.")
     String content,
 
-    @Schema(description = "태그 ID 목록")
-    List<Long> tagIds,
-
     @Schema(description = "업로드 이미지 목록")
     List<MultipartFile> uploadFiles
 ) {
 
     public PostCreateRequest {
-        tagIds = tagIds == null ? new ArrayList<>() : tagIds;
         uploadFiles = uploadFiles == null ? new ArrayList<>() : uploadFiles;
     }
 }
