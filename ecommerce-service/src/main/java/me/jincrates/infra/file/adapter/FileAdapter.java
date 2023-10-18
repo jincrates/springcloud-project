@@ -32,10 +32,7 @@ public class FileAdapter implements FilePort {
         }
 
         String directory = getTempDirectory(memberId, domainName);
-        File uploadFile = upload(file, directory);
-
-        assert uploadFile != null;
-        return uploadFile.getAbsolutePath();
+        return upload(file, directory);
     }
 
     @Override
@@ -82,7 +79,12 @@ public class FileAdapter implements FilePort {
         return directory.toString();
     }
 
-    private File upload(MultipartFile file, String directory) {
+    /**
+     * @param file
+     * @param directory
+     * @return 업로드된 파일 절대경로
+     */
+    private String upload(MultipartFile file, String directory) {
         try {
             makeDirectory(directory);
 
@@ -90,7 +92,7 @@ public class FileAdapter implements FilePort {
             File localFile = new File(directory + generateFileName(file));
             java.nio.file.Files.write(localFile.toPath(), bytes);
 
-            return localFile;
+            return localFile.getAbsolutePath();
         } catch (IOException e) {
             log.warn("file upload error :: ", e);
             return null;

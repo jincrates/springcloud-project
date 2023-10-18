@@ -32,10 +32,11 @@ public class LikeWebAdapter {
     @PostMapping("/{postId}/likes")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<Long> likePost(
-        @PathVariable Long postId,
+        @PathVariable(name = "postId") Long postId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        likeUseCase.likePost(postId, memberId);
         return null;
     }
 

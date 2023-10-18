@@ -14,6 +14,9 @@ public record PostResponse(
     @Schema(description = "내용")
     String content,
 
+    @Schema(description = "좋아요 수")
+    int likeCount,
+
     @Schema(description = "댓글 수")
     int commentCount,
 

@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.community.post.domain.Post;
@@ -38,4 +39,18 @@ public class Like extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private Like(Member member, Post post) {
+        this.member = member;
+        this.post = post;
+    }
+
+    public static Like create(Member member, Post post) {
+        return Like.builder()
+            .member(member)
+            .post(post)
+            .build();
+    }
+
 }
