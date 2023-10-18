@@ -31,50 +31,49 @@ public class LikeWebAdapter {
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PostMapping("/{postId}/likes")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<Long> likePost(
+    public CommonResponse<Boolean> likePost(
         @PathVariable(name = "postId") Long postId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
-        likeUseCase.likePost(postId, memberId);
-        return null;
+        return CommonResponse.ok(likeUseCase.likePost(memberId, postId));
     }
 
     @Operation(summary = "게시글 좋아요 취소")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @DeleteMapping("/{postId}/likes")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public CommonResponse<Long> cancelLikePost(
-        @PathVariable Long postId,
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResponse<Boolean> cancelLikePost(
+        @PathVariable(name = "postId") Long postId,
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
-        return null;
+        return CommonResponse.ok(likeUseCase.cancelLikePost(memberId, postId));
     }
 
-    @Operation(summary = "댓글 좋아요")
-    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @PostMapping("/{postId}/comments/{commentId}/likes")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<Long> likeComment(
-        @PathVariable Long postId,
-        @PathVariable Long commentId,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
-    ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
-        return null;
-    }
-
-    @Operation(summary = "댓글 좋아요 취소")
-    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{postId}/comments/{commentId}/likes")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public CommonResponse<Long> cancelLikeComment(
-        @PathVariable Long postId,
-        @PathVariable Long commentId,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
-    ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
-        return null;
-    }
+//    @Operation(summary = "댓글 좋아요")
+//    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
+//    @PostMapping("/{postId}/comments/{commentId}/likes")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public CommonResponse<Long> likeComment(
+//        @PathVariable(name = "postId") Long postId,
+//        @PathVariable(name = "commentId") Long commentId,
+//        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+//    ) {
+//        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+//        return null;
+//    }
+//
+//    @Operation(summary = "댓글 좋아요 취소")
+//    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
+//    @DeleteMapping("/{postId}/comments/{commentId}/likes")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public CommonResponse<Long> cancelLikeComment(
+//        @PathVariable(name = "postId") Long postId,
+//        @PathVariable(name = "commentId") Long commentId,
+//        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+//    ) {
+//        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+//        return null;
+//    }
 }

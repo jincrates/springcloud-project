@@ -19,13 +19,19 @@ public class LikeService implements LikeUseCase {
     private final LikePort likePort;
 
     @Override
-    public boolean likePost(Long postId, Long memberId) {
+    public boolean likePost(Long memberId, Long postId) {
         Member member = memberPort.findMemberById(memberId);
         Post post = postPort.findPostById(postId);
-
         Like like = Like.create(member, post);
         likePort.saveLike(like);
 
         return true;
+    }
+
+    @Override
+    public boolean cancelLikePost(Long memberId, Long postId) {
+        Like like = likePort.findLikeByMemberIdAndPostId(memberId, postId);
+        likePort.deleteLike(like);
+        return false;
     }
 }
