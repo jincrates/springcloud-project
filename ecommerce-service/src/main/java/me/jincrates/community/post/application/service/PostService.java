@@ -1,7 +1,5 @@
 package me.jincrates.community.post.application.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.community.post.application.port.PostPort;
@@ -12,10 +10,12 @@ import me.jincrates.community.post.application.service.response.PostResponse;
 import me.jincrates.community.post.domain.Post;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
-import me.jincrates.infra.file.application.FilePort;
+import me.jincrates.global.common.file.application.FilePort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -35,30 +35,13 @@ public class PostService implements PostUseCase {
         Post post = Post.create(member, request.title(), request.content(), null);
         postPort.savePost(post);
 
-        List<String> uploadFileUrls = new ArrayList<>();
-        request.uploadFiles()
-            .forEach(file -> uploadFileUrls.add(filePort.tempUploadFile(file, memberId, "posts")));
-
-        filePort.uploadFiles(uploadFileUrls, memberId, "posts");
+//        List<String> uploadFileUrls = new ArrayList<>();
+//        request.uploadFiles()
+//                .forEach(file -> uploadFileUrls.add(filePort.uploadTempFile(file, memberId, "posts")));
+//
+//        filePort.uploadFiles(uploadFileUrls, memberId, "posts");
 
         return new PostResponse(
-            post.getId(),
-            post.getTitle(),
-            post.getContent(),
-            post.getLikes().size(),
-            post.getComments().size(),
-            post.getCreatedAt(),
-            post.getUpdatedAt(),
-            post.getMember().getId(),
-            post.getMember().getName()
-        );
-    }
-
-    @Override
-    public List<PostResponse> getPosts(Pageable pageable) {
-        List<Post> posts = postPort.findAllPost();
-        return posts.stream()
-            .map(post -> new PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
@@ -68,8 +51,25 @@ public class PostService implements PostUseCase {
                 post.getUpdatedAt(),
                 post.getMember().getId(),
                 post.getMember().getName()
-            ))
-            .toList();
+        );
+    }
+
+    @Override
+    public List<PostResponse> getPosts(Pageable pageable) {
+        List<Post> posts = postPort.findAllPost();
+        return posts.stream()
+                .map(post -> new PostResponse(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getLikes().size(),
+                        post.getComments().size(),
+                        post.getCreatedAt(),
+                        post.getUpdatedAt(),
+                        post.getMember().getId(),
+                        post.getMember().getName()
+                ))
+                .toList();
     }
 
     @Override

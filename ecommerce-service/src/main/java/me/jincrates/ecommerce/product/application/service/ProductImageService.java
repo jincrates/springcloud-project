@@ -3,7 +3,7 @@ package me.jincrates.ecommerce.product.application.service;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.domain.ProductImage;
-import me.jincrates.infra.file.application.FilePort;
+import me.jincrates.global.common.file.application.FilePort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
