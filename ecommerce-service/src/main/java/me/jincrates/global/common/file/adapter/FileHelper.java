@@ -82,6 +82,23 @@ public class FileHelper {
         }
     }
 
+    /**
+     * @param file
+     * @param directory
+     * @return 업로드된 이미지 원본/썸네일 경로
+     */
+    public String uploadVideo(MultipartFile file, String directory) {
+        String fileName = generateFileName(file);
+
+        try {
+            String originUrl = uploadOrigin(file, directory, fileName);
+            return originUrl;
+        } catch (IOException e) {
+            log.warn("file upload error :: ", e);
+            return null;
+        }
+    }
+
     public List<String> moveFile(List<String> fileUrls, String targetDirectory) {
         List<String> movedFileUrls = new ArrayList<>();
         try {

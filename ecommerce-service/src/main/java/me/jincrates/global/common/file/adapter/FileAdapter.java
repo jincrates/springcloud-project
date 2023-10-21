@@ -52,6 +52,9 @@ class FileAdapter implements FilePort {
         if (ObjectUtils.isEmpty(video)) {
             return;
         }
+
+        String directory = fileHelper.getTempDirectory(memberId, domainName);
+        fileHelper.uploadVideo(video, directory);
     }
 
     private void saveAttachments(List<String> fileUrls, String directory, String domainName) {
