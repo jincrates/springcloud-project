@@ -1,4 +1,4 @@
-package me.jincrates.global.common.file.application;
+package me.jincrates.global.common.file.application.service.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

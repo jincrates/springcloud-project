@@ -1,7 +1,7 @@
 package me.jincrates.global.common.file.adapter;
 
 import lombok.extern.slf4j.Slf4j;
-import me.jincrates.global.common.file.application.ImageResponse;
+import me.jincrates.global.common.file.application.service.response.ImageResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,7 +73,7 @@ public class FileHelper {
 
         try {
             String originUrl = uploadOrigin(file, directory, fileName);
-            String thumbUrl = uploadThumb(file, directory + "/thumb/", fileName);
+            String thumbUrl = uploadThumb(file, directory + "thumb/", fileName);
 
             return new ImageResponse(originUrl, thumbUrl);
         } catch (IOException e) {

@@ -2,8 +2,8 @@ package me.jincrates.global.common.file.adapter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.jincrates.global.common.file.application.FilePort;
-import me.jincrates.global.common.file.application.ImageResponse;
+import me.jincrates.global.common.file.application.port.FilePort;
+import me.jincrates.global.common.file.application.service.response.ImageResponse;
 import me.jincrates.global.common.file.domain.Attachment;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
@@ -47,6 +47,13 @@ class FileAdapter implements FilePort {
         return fileHelper.moveFile(imageUrls, directory);
     }
 
+    @Override
+    public void uploadTempVideo(MultipartFile video, Long memberId, String domainName) {
+        if (ObjectUtils.isEmpty(video)) {
+            return;
+        }
+    }
+
     private void saveAttachments(List<String> fileUrls, String directory, String domainName) {
         List<Attachment> attachments = new ArrayList<>();
 
@@ -67,11 +74,10 @@ class FileAdapter implements FilePort {
         File file = new UrlResource((path.toUri())).getFile();
 
         String fileName = file.getName();
-        String filePath = directory + fileName;
-        String originFileName = fileHelper.getOriginFileName(filePath);
+        String originFileName = fileHelper.getOriginFileName(fileName);
         long fileSize = file.length();
         String contentType = Files.probeContentType(path);
 
-        return Attachment.create(filePath, fileName, originFileName, fileSize, contentType, domainName);
+        return Attachment.create(directory, fileName, originFileName, fileSize, contentType, domainName);
     }
 }

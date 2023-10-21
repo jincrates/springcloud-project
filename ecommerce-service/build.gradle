@@ -36,7 +36,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework:spring-test'
-    
+
     // Spring boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -84,6 +84,9 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
+
+    // video upload
+    implementation "commons-fileupload:commons-fileupload:1.5"
 }
 
 tasks.named('test') {

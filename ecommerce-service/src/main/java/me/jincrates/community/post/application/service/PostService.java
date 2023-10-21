@@ -10,7 +10,7 @@ import me.jincrates.community.post.application.service.response.PostResponse;
 import me.jincrates.community.post.domain.Post;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
-import me.jincrates.global.common.file.application.FilePort;
+import me.jincrates.global.common.file.application.port.FilePort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
