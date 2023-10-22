@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.jincrates.global.common.response.CommonResponse;
 import me.jincrates.global.core.exception.BadRequestException;
 import me.jincrates.global.core.exception.RetryException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
@@ -124,10 +126,24 @@ public class GlobalExceptionHandler {
         return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
+    /**
+     * 토큰 유효성 검사
+     */
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<?> handlerJwtException(final JwtException exception) {
         log.warn("JwtException", exception);
-        return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, "올바르지 않은 토큰입니다.");
+        return CommonResponse.toResponseEntity(HttpStatus.UNAUTHORIZED, "올바르지 않은 토큰입니다.");
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<?> handlerMissingRequestHeaderException(final MissingRequestHeaderException exception) {
+        log.warn("MissingRequestHeaderException", exception);
+
+        if (HttpHeaders.AUTHORIZATION.equals(exception.getHeaderName())) {
+            return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, "헤더에 인증정보가 없습니다.");
+        }
+
+        return CommonResponse.toResponseEntity(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     /**
