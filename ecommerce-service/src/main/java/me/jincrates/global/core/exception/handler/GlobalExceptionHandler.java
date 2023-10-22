@@ -1,5 +1,6 @@
 package me.jincrates.global.core.exception.handler;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -132,7 +133,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<?> handlerJwtException(final JwtException exception) {
         log.warn("JwtException", exception);
-        return CommonResponse.toResponseEntity(HttpStatus.UNAUTHORIZED, "올바르지 않은 토큰입니다.");
+
+        if (exception instanceof ExpiredJwtException) {
+            return CommonResponse.toResponseEntity(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.");
+        }
+
+        return CommonResponse.toResponseEntity(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.");
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)

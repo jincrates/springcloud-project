@@ -10,7 +10,7 @@ import me.jincrates.community.comment.application.port.CommentUseCase;
 import me.jincrates.community.comment.application.service.request.CommentCreateRequest;
 import me.jincrates.community.comment.application.service.request.CommentUpdateRequest;
 import me.jincrates.community.comment.application.service.response.CommentResponse;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/api/v1/posts")
 public class CommentWebAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final CommentUseCase commentUseCase;
 
     @Operation(summary = "댓글 작성")
@@ -34,7 +34,7 @@ public class CommentWebAdapter {
             @Valid @RequestBody CommentCreateRequest request,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         return CommonResponse.created(commentUseCase.createComment(request, memberId, postId));
     }
 
@@ -55,7 +55,7 @@ public class CommentWebAdapter {
             @Valid @RequestBody CommentUpdateRequest request,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
 
         return CommonResponse.ok(
                 commentUseCase.updateComment(request, memberId, postId, commentId));
@@ -69,7 +69,7 @@ public class CommentWebAdapter {
             @PathVariable(name = "commentId") Long commentId,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         commentUseCase.deleteComment(memberId, postId, commentId);
 
         return CommonResponse.noContent();

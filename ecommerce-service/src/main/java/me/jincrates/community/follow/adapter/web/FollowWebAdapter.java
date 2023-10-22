@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import me.jincrates.community.follow.application.port.FollowUseCase;
 import me.jincrates.community.follow.application.service.response.FollowerResponse;
 import me.jincrates.community.follow.application.service.response.FollowingResponse;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/v1/follows")
 public class FollowWebAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final FollowUseCase followUseCase;
 
     @Operation(summary = "팔로우 신청")
@@ -31,7 +31,7 @@ public class FollowWebAdapter {
             @PathVariable("memberId") Long followingId,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long loginMemberId = jwtProvider.parseToken(authorization.substring(7));
+        Long loginMemberId = authPort.parseToken(authorization.substring(7));
 
         return CommonResponse.created(followUseCase.followMember(loginMemberId, followingId));
     }
@@ -43,7 +43,7 @@ public class FollowWebAdapter {
             @PathVariable("memberId") Long followingId,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long loginMemberId = jwtProvider.parseToken(authorization.substring(7));
+        Long loginMemberId = authPort.parseToken(authorization.substring(7));
         followUseCase.unfollowMember(loginMemberId, followingId);
 
         return CommonResponse.noContent();

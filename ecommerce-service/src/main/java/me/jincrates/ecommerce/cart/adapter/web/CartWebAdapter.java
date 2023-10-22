@@ -11,7 +11,7 @@ import me.jincrates.ecommerce.cart.application.service.request.CartCreateRequest
 import me.jincrates.ecommerce.cart.application.service.request.CartProductDeleteRequest;
 import me.jincrates.ecommerce.cart.application.service.request.CartProductUpdateRequest;
 import me.jincrates.ecommerce.cart.application.service.response.CartResponse;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CartWebAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final CartUseCase cartUseCase;
 
     @Operation(summary = "장바구니 등록")
@@ -33,7 +33,7 @@ public class CartWebAdapter {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
             @Valid @RequestBody CartCreateRequest request
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
 
         return CommonResponse.ok(cartUseCase.createCart(request, memberId));
     }
@@ -45,7 +45,7 @@ public class CartWebAdapter {
     public CommonResponse<CartResponse> getMyCart(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
 
         return CommonResponse.ok(cartUseCase.getMyCart(memberId));
     }
@@ -58,7 +58,7 @@ public class CartWebAdapter {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
             @Valid @RequestBody CartProductUpdateRequest request
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
 
         return CommonResponse.ok(cartUseCase.updateCartProductQuantity(request, memberId));
     }
@@ -71,7 +71,7 @@ public class CartWebAdapter {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
             @Valid @RequestBody CartProductDeleteRequest request
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
 
         cartUseCase.deleteCartProduct(request, memberId);
 

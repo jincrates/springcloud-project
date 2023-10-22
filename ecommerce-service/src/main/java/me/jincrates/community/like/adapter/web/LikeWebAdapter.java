@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.like.application.port.LikeUseCase;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/posts")
 public class LikeWebAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final LikeUseCase likeUseCase;
 
     @Operation(summary = "게시글 좋아요")
@@ -28,7 +28,7 @@ public class LikeWebAdapter {
             @PathVariable(name = "postId") Long postId,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         return CommonResponse.created(likeUseCase.likePost(memberId, postId));
     }
 
@@ -40,7 +40,7 @@ public class LikeWebAdapter {
             @PathVariable(name = "postId") Long postId,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         return CommonResponse.ok(likeUseCase.cancelLikePost(memberId, postId));
     }
 

@@ -3,7 +3,7 @@ package me.jincrates.community.post.adapter.web;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.post.application.port.PostUseCase;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/posts")
 public class PostAttachmentWebAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final PostUseCase postUseCase;
 
 //    @Operation(summary = "게시글 첨부 파일 추가")

@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.file.application.port.FilePort;
 import me.jincrates.global.common.file.application.service.request.FileRequest;
 import me.jincrates.global.common.file.application.service.response.ImageResponse;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/community")
 public class CommunityFileWebAdapter {
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final FilePort filePort;
 
     @Operation(summary = "이미지 임시 업로드")
@@ -33,7 +33,7 @@ public class CommunityFileWebAdapter {
             @Valid FileRequest request,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         ImageResponse response = filePort.uploadTempImage(request.file(), memberId, "community");
 
         return CommonResponse.created(response);

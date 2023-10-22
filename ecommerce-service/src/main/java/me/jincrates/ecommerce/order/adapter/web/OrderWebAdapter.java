@@ -11,7 +11,7 @@ import me.jincrates.ecommerce.order.application.port.OrderCreateUseCase;
 import me.jincrates.ecommerce.order.application.service.request.OrderCancelRequest;
 import me.jincrates.ecommerce.order.application.service.request.OrderCreateRequest;
 import me.jincrates.ecommerce.order.application.service.response.OrderResponse;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class OrderWebAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final OrderCreateUseCase orderCreateUseCase;
     private final OrderCancelUseCase orderCancelUseCase;
 
@@ -34,7 +34,7 @@ public class OrderWebAdapter {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
             @Valid @RequestBody OrderCreateRequest request
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
 
         return CommonResponse.ok(orderCreateUseCase.createOrder(request, memberId));
     }
@@ -47,7 +47,7 @@ public class OrderWebAdapter {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
             @Valid @RequestBody OrderCancelRequest request
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
 
         return CommonResponse.ok(orderCancelUseCase.cancelOrder(request, memberId));
     }

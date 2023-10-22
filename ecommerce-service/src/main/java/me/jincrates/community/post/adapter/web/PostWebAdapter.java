@@ -10,7 +10,7 @@ import me.jincrates.community.post.application.port.PostUseCase;
 import me.jincrates.community.post.application.service.request.PostCreateRequest;
 import me.jincrates.community.post.application.service.request.PostUpdateRequest;
 import me.jincrates.community.post.application.service.response.PostResponse;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.response.CommonResponse;
 import me.jincrates.global.common.response.PageResponse;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/api/v1/posts")
 public class PostWebAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final PostUseCase postUseCase;
 
     @Operation(summary = "게시글 작성")
@@ -36,7 +36,7 @@ public class PostWebAdapter {
             @Valid PostCreateRequest request,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         return CommonResponse.created(postUseCase.createPost(request, memberId));
     }
 
@@ -67,7 +67,7 @@ public class PostWebAdapter {
             @Valid @RequestBody PostUpdateRequest request,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         return CommonResponse.ok(postUseCase.updatePost(request, memberId));
     }
 
@@ -78,7 +78,7 @@ public class PostWebAdapter {
             @PathVariable Long postId,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         postUseCase.deletePost(postId, memberId);
 
         return CommonResponse.noContent();

@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import me.jincrates.ecommerce.member.application.port.MemberUseCase;
 import me.jincrates.ecommerce.member.application.service.request.MemberCreateRequest;
 import me.jincrates.ecommerce.member.application.service.response.MemberResponse;
-import me.jincrates.global.common.auth.JwtProvider;
+import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberWebAdapter {
 
-    private final JwtProvider jwtProvider;
+    private final AuthPort authPort;
     private final MemberUseCase memberUseCase;
 
     @Operation(summary = "회원 등록")
@@ -35,7 +35,7 @@ public class MemberWebAdapter {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.AUTHORIZATION,
-                "Bearer " + jwtProvider.generateJwtToken(response.id()));
+                "Bearer " + authPort.generateAccessToken(response.id()));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .headers(httpHeaders)
@@ -48,7 +48,7 @@ public class MemberWebAdapter {
     public CommonResponse<MemberResponse> getMember(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
-        Long memberId = jwtProvider.parseToken(authorization.substring(7));
+        Long memberId = authPort.parseToken(authorization.substring(7));
         return CommonResponse.ok(memberUseCase.getMemberById(memberId));
     }
 
