@@ -1,6 +1,6 @@
 package me.jincrates.ecommerce.product.domain.product;
 
-import me.jincrates.ecommerce.IntegrationTestSupport;
+import me.jincrates.IntegrationTestSupport;
 
 class ProductRepositoryTest extends IntegrationTestSupport {
 //

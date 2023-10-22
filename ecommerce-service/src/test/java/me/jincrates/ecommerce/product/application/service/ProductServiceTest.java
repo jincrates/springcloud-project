@@ -1,6 +1,6 @@
 package me.jincrates.ecommerce.product.application.service;
 
-import me.jincrates.ecommerce.IntegrationTestSupport;
+import me.jincrates.IntegrationTestSupport;
 import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.application.port.ProductUseCase;
 import me.jincrates.ecommerce.product.application.port.StockPort;

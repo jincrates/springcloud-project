@@ -1,4 +1,4 @@
-package me.jincrates.ecommerce;
+package me.jincrates;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jincrates.ecommerce.member.adapter.web.MemberWebAdapter;

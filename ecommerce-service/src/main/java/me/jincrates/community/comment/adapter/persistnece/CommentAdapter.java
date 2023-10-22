@@ -1,15 +1,16 @@
 package me.jincrates.community.comment.adapter.persistnece;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.community.comment.application.port.CommentPort;
 import me.jincrates.community.comment.domain.Comment;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
-public class CommentAdapter implements CommentPort {
+class CommentAdapter implements CommentPort {
 
     private final CommentRepository commentRepository;
 
@@ -26,9 +27,9 @@ public class CommentAdapter implements CommentPort {
     @Override
     public Comment findCommentByIdAndMemberIdAndPostId(Long commentId, Long memberId, Long postId) {
         return commentRepository.findByIdAndMemberIdAndPostId(commentId, memberId, postId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "댓글 정보를 찾을 수 없습니다. commentId=" + commentId + ", memberId=" + memberId + ", postId="
-                    + postId));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "댓글 정보를 찾을 수 없습니다. commentId=" + commentId + ", memberId=" + memberId + ", postId="
+                                + postId));
     }
 
     @Override

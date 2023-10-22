@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FollowAdapter implements FollowPort {
+class FollowAdapter implements FollowPort {
 
     private final FollowRepository followRepository;
 }

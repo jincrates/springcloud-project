@@ -1,6 +1,6 @@
 package me.jincrates.ecommerce.order.api.service;
 
-import me.jincrates.ecommerce.IntegrationTestSupport;
+import me.jincrates.IntegrationTestSupport;
 
 class OrderServiceTest extends IntegrationTestSupport {
 

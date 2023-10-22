@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class LikeAdapter implements LikePort {
+class LikeAdapter implements LikePort {
 
     private final LikeRepository likeRepository;
 
@@ -20,8 +20,8 @@ public class LikeAdapter implements LikePort {
     @Override
     public Like findLikeByMemberIdAndPostId(Long memberId, Long postId) {
         return likeRepository.findByMemberIdAndPostId(memberId, postId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "좋아요 정보를 찾을 수 없습니다. memberId=" + memberId + ", postId=" + postId));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "좋아요 정보를 찾을 수 없습니다. memberId=" + memberId + ", postId=" + postId));
     }
 
     @Override

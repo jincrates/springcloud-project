@@ -1,7 +1,7 @@
 package me.jincrates.ecommerce.member.application.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import me.jincrates.ecommerce.IntegrationTestSupport;
+import me.jincrates.IntegrationTestSupport;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.application.port.MemberUseCase;
 import me.jincrates.ecommerce.member.application.service.request.MemberCreateRequest;

@@ -1,4 +1,4 @@
-package me.jincrates.ecommerce;
+package me.jincrates;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

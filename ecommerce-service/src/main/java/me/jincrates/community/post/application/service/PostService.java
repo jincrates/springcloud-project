@@ -31,8 +31,8 @@ public class PostService implements PostUseCase {
     @Transactional
     public PostResponse createPost(PostCreateRequest request, Long memberId) {
         Member member = memberPort.findMemberById(memberId);
-        Post post = Post.create(member, request.title(), request.content(), null);
-        
+        Post post = Post.create(member, request.title(), request.content(), request.imageUrls());
+
         postPort.savePost(post);
 
 //        List<String> uploadFileUrls = new ArrayList<>();
@@ -47,6 +47,7 @@ public class PostService implements PostUseCase {
                 post.getContent(),
                 post.getLikes().size(),
                 post.getComments().size(),
+                post.getImageUrls(),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
                 post.getMember().getId(),
@@ -64,6 +65,7 @@ public class PostService implements PostUseCase {
                         post.getContent(),
                         post.getLikes().size(),
                         post.getComments().size(),
+                        post.getImageUrls(),
                         post.getCreatedAt(),
                         post.getUpdatedAt(),
                         post.getMember().getId(),
@@ -81,6 +83,7 @@ public class PostService implements PostUseCase {
                 post.getContent(),
                 post.getLikes().size(),
                 post.getComments().size(),
+                post.getImageUrls(),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
                 post.getMember().getId(),
