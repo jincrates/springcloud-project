@@ -151,17 +151,10 @@ class MemberServiceTest extends IntegrationTestSupport {
     @DisplayName("회원 조회시,회원 ID를 통해 회원 정보를 조회합니다.")
     void getMemberById() {
         // given
-        memberPort.saveAllMember(List.of(
-                Member.create("사용자1", "user1@email.com", "password1"),
-                Member.create("사용자2", "user2@email.com", "password2"),
-                Member.create("사용자3", "user3@email.com", "password3"),
-                Member.create("사용자4", "user4@email.com", "password4"),
-                Member.create("사용자5", "user5@email.com", "password5")
-        ));
-        Long memberId = 5L;
+        Member member = memberPort.saveMember(Member.create("사용자5", "user5@email.com", "password5"));
 
         // when
-        MemberResponse response = memberUseCase.getMemberById(memberId);
+        MemberResponse response = memberUseCase.getMemberById(member.getId());
 
         // then
         assertThat(response).isNotNull()

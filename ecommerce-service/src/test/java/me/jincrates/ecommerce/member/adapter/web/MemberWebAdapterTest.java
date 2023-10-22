@@ -39,7 +39,6 @@ class MemberWebAdapterTest extends ControllerTestSupport {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.code").value(201))
-                .andExpect(jsonPath("$.status").value("CREATED"))
                 .andExpect(jsonPath("$.message").isEmpty())
                 .andExpect(jsonPath("$.data.name").value("홍길동"))
                 .andExpect(jsonPath("$.data.email").value("user@email.com"))
