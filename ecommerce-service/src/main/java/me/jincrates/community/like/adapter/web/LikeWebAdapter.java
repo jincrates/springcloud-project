@@ -10,13 +10,7 @@ import me.jincrates.global.common.auth.JwtProvider;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "좋아요 서비스", description = "좋아요 API")
 @RestController
@@ -30,13 +24,12 @@ public class LikeWebAdapter {
     @Operation(summary = "게시글 좋아요")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PostMapping("/{postId}/likes")
-    @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<Boolean> likePost(
-        @PathVariable(name = "postId") Long postId,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+            @PathVariable(name = "postId") Long postId,
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
-        return CommonResponse.ok(likeUseCase.likePost(memberId, postId));
+        return CommonResponse.created(likeUseCase.likePost(memberId, postId));
     }
 
     @Operation(summary = "게시글 좋아요 취소")
@@ -44,8 +37,8 @@ public class LikeWebAdapter {
     @DeleteMapping("/{postId}/likes")
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<Boolean> cancelLikePost(
-        @PathVariable(name = "postId") Long postId,
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+            @PathVariable(name = "postId") Long postId,
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
         return CommonResponse.ok(likeUseCase.cancelLikePost(memberId, postId));

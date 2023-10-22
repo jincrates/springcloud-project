@@ -8,19 +8,21 @@ import org.springframework.http.ResponseEntity;
 public class CommonResponse<T> {
 
     private int code;
-    private HttpStatus status;
     private String message;
     private T data;
 
     private CommonResponse(HttpStatus status, String message, T data) {
         this.code = status.value();
-        this.status = status;
         this.message = message;
         this.data = data;
     }
 
     public static <T> CommonResponse<T> of(HttpStatus httpStatus, String message, T data) {
         return new CommonResponse<>(httpStatus, message, data);
+    }
+
+    public static <T> CommonResponse<T> of(HttpStatus httpStatus) {
+        return of(httpStatus, null, null);
     }
 
     public static <T> CommonResponse<T> of(HttpStatus httpStatus, T data) {
@@ -33,6 +35,10 @@ public class CommonResponse<T> {
 
     public static <T> CommonResponse<T> created(T data) {
         return of(HttpStatus.CREATED, data);
+    }
+
+    public static <T> CommonResponse<T> noContent() {
+        return of(HttpStatus.NO_CONTENT);
     }
 
     public static ResponseEntity<?> toResponseEntity(HttpStatus status, String message) {

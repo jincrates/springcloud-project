@@ -12,9 +12,11 @@ import me.jincrates.global.common.file.application.service.request.FileRequest;
 import me.jincrates.global.common.file.application.service.response.ImageResponse;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "커뮤니티 파일 서비스", description = "파일 API")
 @RestController
@@ -27,7 +29,6 @@ public class CommunityFileWebAdapter {
     @Operation(summary = "이미지 임시 업로드")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PostMapping(path = "/files/image/temp", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<ImageResponse> uploadTempImage(
             @Valid FileRequest request,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
@@ -35,7 +36,7 @@ public class CommunityFileWebAdapter {
         Long memberId = jwtProvider.parseToken(authorization.substring(7));
         ImageResponse response = filePort.uploadTempImage(request.file(), memberId, "community");
 
-        return CommonResponse.ok(response);
+        return CommonResponse.created(response);
     }
 
 //    @Operation(summary = "이미지 파일 저장")
