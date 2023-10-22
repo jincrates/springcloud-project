@@ -18,7 +18,7 @@ class JwtProvider {
     private final String audience = "Member";  // 토큰 대상자
     private final String issuer = "jincrates";  // 토큰 발급자
     private final String claimName = "memberId";
-    private final Timestamp accessTokenExpiration = Timestamp.valueOf(LocalDateTime.now().plusSeconds(1)); // 1시간 만료
+    private final Timestamp accessTokenExpiration = Timestamp.valueOf(LocalDateTime.now().plusDays(1)); // 1일 만료
     private final Timestamp refreshTokenExpiration = Timestamp.valueOf(LocalDateTime.now().plusDays(7)); // 7일 만료
 
     public String generateAccessToken(Long memberId) {
