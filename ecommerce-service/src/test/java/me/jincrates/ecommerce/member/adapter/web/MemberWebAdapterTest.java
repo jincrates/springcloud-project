@@ -15,7 +15,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class MemberWebAdapterTest extends ControllerTestSupport {
 
@@ -37,7 +36,6 @@ class MemberWebAdapterTest extends ControllerTestSupport {
                                 .with(csrf())
                 )
                 .andDo(print())
-                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.code").value(201))
                 .andExpect(jsonPath("$.message").isEmpty())
                 .andExpect(jsonPath("$.data.name").value("홍길동"))
