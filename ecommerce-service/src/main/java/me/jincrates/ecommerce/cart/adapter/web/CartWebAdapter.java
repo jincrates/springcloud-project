@@ -15,7 +15,13 @@ import me.jincrates.global.common.auth.application.AuthPort;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "장바구니 서비스", description = "장바구니 등록/조회 API")
 @RestController
@@ -28,22 +34,20 @@ public class CartWebAdapter {
     @Operation(summary = "장바구니 등록")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PostMapping("/api/v1/carts")
-    @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<CartResponse> createCart(
-            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
-            @Valid @RequestBody CartCreateRequest request
+        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
+        @Valid @RequestBody CartCreateRequest request
     ) {
         Long memberId = authPort.parseToken(authorization.substring(7));
 
-        return CommonResponse.ok(cartUseCase.createCart(request, memberId));
+        return CommonResponse.created(cartUseCase.createCart(request, memberId));
     }
 
     @Operation(summary = "내 장바구니 조회")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PostMapping("/api/v1/carts/my")
-    @ResponseStatus(HttpStatus.OK)
     public CommonResponse<CartResponse> getMyCart(
-            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = authPort.parseToken(authorization.substring(7));
 
@@ -53,10 +57,9 @@ public class CartWebAdapter {
     @Operation(summary = "장바구니 상품 수량 변경")
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PutMapping("/api/v1/carts")
-    @ResponseStatus(HttpStatus.OK)
     public CommonResponse<Long> updateCartProduct(
-            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
-            @Valid @RequestBody CartProductUpdateRequest request
+        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
+        @Valid @RequestBody CartProductUpdateRequest request
     ) {
         Long memberId = authPort.parseToken(authorization.substring(7));
 
@@ -67,14 +70,14 @@ public class CartWebAdapter {
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @DeleteMapping("/api/v1/carts")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public CommonResponse<Class<Void>> deleteCartProduct(
-            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
-            @Valid @RequestBody CartProductDeleteRequest request
+    public CommonResponse<Void> deleteCartProduct(
+        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
+        @Valid @RequestBody CartProductDeleteRequest request
     ) {
         Long memberId = authPort.parseToken(authorization.substring(7));
 
         cartUseCase.deleteCartProduct(request, memberId);
 
-        return CommonResponse.ok(Void.TYPE);
+        return CommonResponse.noContent();
     }
 }
