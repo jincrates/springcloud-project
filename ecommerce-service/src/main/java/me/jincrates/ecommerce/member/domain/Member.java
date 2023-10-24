@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.global.common.BaseTimeEntity;
 import me.jincrates.global.common.enumtype.Status;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Comment;
 import org.springframework.util.Assert;
 
@@ -79,5 +80,40 @@ public class Member extends BaseTimeEntity {
                 .role(Role.USER)
                 .status(Status.ACTIVE)
                 .build();
+    }
+
+    public void update(String name, String password, String bio, String imageUrl) {
+        if (!StringUtils.isBlank(name)) {
+            setName(name);
+        }
+        if (!StringUtils.isBlank(password)) {
+            setPassword(password);
+        }
+        if (!StringUtils.isBlank(bio)) {
+            setBio(bio);
+        }
+        if (!StringUtils.isBlank(imageUrl)) {
+            setImageUrl(imageUrl);
+        }
+    }
+
+    public void setInactive() {
+        this.status = Status.INACTIVE;
+    }
+
+    private void setName(String name) {
+        this.name = name;
+    }
+
+    private void setPassword(String password) {
+        this.password = password;
+    }
+
+    private void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    private void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

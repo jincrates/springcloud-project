@@ -5,11 +5,12 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import java.util.Collections;
-import java.util.List;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -19,45 +20,45 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi ecommerceApi() {
         return GroupedOpenApi.builder()
-            .group("ecommerce-api")
-            .packagesToScan(
-                "me.jincrates.global.common.auth",
-                "me.jincrates.ecommerce"
-            )
-            .build();
+                .group("1. ecommerce-api")
+                .packagesToScan(
+                        "me.jincrates.global.common.auth",
+                        "me.jincrates.ecommerce"
+                )
+                .build();
     }
 
     @Bean
     public GroupedOpenApi communityApi() {
         return GroupedOpenApi.builder()
-            .group("community-api")
-            .packagesToScan(
-                "me.jincrates.global.common.auth",
-                "me.jincrates.community"
-            )
-            .build();
+                .group("2. community-api")
+                .packagesToScan(
+                        "me.jincrates.global.common.auth",
+                        "me.jincrates.community"
+                )
+                .build();
     }
 
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-            .info(info())
-            .components(securityScheme())
-            .security(securityList());
+                .info(info())
+                .components(securityScheme())
+                .security(securityList());
     }
 
     private Info info() {
         return new Info()
-            .title("Jincrates-Project")
-            .description("이커머스 + 커뮤니티 API")
-            .version("1.0");
+                .title("Jincrates-Project")
+                .description("이커머스 + 커뮤니티 API")
+                .version("1.0");
     }
 
     private Components securityScheme() {
         SecurityScheme securityScheme = new SecurityScheme()
-            .type(SecurityScheme.Type.HTTP)
-            .scheme("bearer").bearerFormat("JWT")
-            .in(SecurityScheme.In.HEADER).name("Authorization");
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer").bearerFormat("JWT")
+                .in(SecurityScheme.In.HEADER).name("Authorization");
 
         return new Components().addSecuritySchemes(SECURITY_SCHEME_KET, securityScheme);
     }

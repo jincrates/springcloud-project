@@ -1,14 +1,16 @@
 package me.jincrates.ecommerce.member.adapter.persistence;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.global.common.enumtype.Status;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -23,8 +25,8 @@ class MemberAdapter implements MemberPort {
     }
 
     @Override
-    public List<Member> findAllMember() {
-        return memberRepository.findAll();
+    public List<Member> findAllMember(Pageable pageable) {
+        return memberRepository.findAll(pageable).getContent();
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -133,7 +134,7 @@ class MemberServiceTest extends IntegrationTestSupport {
         ));
 
         // when
-        List<MemberResponse> response = memberUseCase.getMembers();
+        List<MemberResponse> response = memberUseCase.getMembers(PageRequest.of(0, 5));
 
         // then
         assertThat(response).hasSize(5)

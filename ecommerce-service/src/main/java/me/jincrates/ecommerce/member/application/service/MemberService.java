@@ -6,8 +6,10 @@ import me.jincrates.ecommerce.member.application.port.MemberPort;
 import me.jincrates.ecommerce.member.application.port.MemberUseCase;
 import me.jincrates.ecommerce.member.application.service.request.MemberCreateRequest;
 import me.jincrates.ecommerce.member.application.service.request.MemberLoginRequest;
+import me.jincrates.ecommerce.member.application.service.request.MemberUpdateRequest;
 import me.jincrates.ecommerce.member.application.service.response.MemberResponse;
 import me.jincrates.ecommerce.member.domain.Member;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,8 +45,8 @@ public class MemberService implements MemberUseCase {
     }
 
     @Override
-    public List<MemberResponse> getMembers() {
-        List<Member> members = memberPort.findAllMember();
+    public List<MemberResponse> getMembers(Pageable pageable) {
+        List<Member> members = memberPort.findAllMember(pageable);
         return members.stream()
                 .map(MemberResponse::of)
                 .collect(toList());
@@ -54,6 +56,26 @@ public class MemberService implements MemberUseCase {
     public MemberResponse getMemberById(Long memberId) {
         Member member = memberPort.findMemberById(memberId);
         return MemberResponse.of(member);
+    }
+
+    @Override
+    @Transactional
+    public MemberResponse updateMember(MemberUpdateRequest request, Long memberId) {
+        Member member = memberPort.findMemberById(memberId);
+        member.update(request.name(), encryptPassword(request.password()), request.bio(), request.imageUrl());
+
+        Member updatedMember = memberPort.saveMember(member);
+        return MemberResponse.of(updatedMember);
+    }
+
+    @Override
+    @Transactional
+    public MemberResponse makeMemberInactive(Long memberId) {
+        Member member = memberPort.findMemberById(memberId);
+        member.setInactive();
+
+        Member updatedMember = memberPort.saveMember(member);
+        return MemberResponse.of(updatedMember);
     }
 
     private String encryptPassword(String password) {

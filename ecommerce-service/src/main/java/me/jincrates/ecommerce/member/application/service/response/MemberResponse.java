@@ -19,13 +19,13 @@ public record MemberResponse(
         Status status
 ) {
 
-    public static MemberResponse of(Member entity) {
+    public static MemberResponse of(Member member) {
         return new MemberResponse(
-                entity.getId(),
-                entity.getName(),
-                entity.getEmail(),
-                entity.getRole(),
-                entity.getStatus()
+                member.getId(),
+                member.getName(),
+                member.getEmail(),
+                member.getRole(),
+                member.getStatus()
         );
     }
 }
