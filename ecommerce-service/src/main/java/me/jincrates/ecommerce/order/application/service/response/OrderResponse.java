@@ -7,13 +7,12 @@ import me.jincrates.ecommerce.order.domain.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Schema(description = "주문 response")
 public record OrderResponse(
 
         @Schema(description = "주문 ID", example = "1")
-        UUID id,
+        Long id,
         @Schema(description = "주문일자")
         LocalDateTime orderedAt,
         @Schema(description = "주문 상태", example = "REQUEST")

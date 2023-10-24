@@ -10,8 +10,6 @@ import me.jincrates.global.common.BaseTimeEntity;
 import org.hibernate.annotations.Comment;
 import org.springframework.util.Assert;
 
-import java.util.UUID;
-
 @Getter
 @Entity
 @Comment("결제")
@@ -26,7 +24,7 @@ public class Payment extends BaseTimeEntity {
 
     @Column(nullable = false)
     @Comment("주문 ID")
-    private UUID orderId;
+    private Long orderId;
 
     @Column(nullable = false)
     @Comment("결제자 ID")
@@ -47,7 +45,7 @@ public class Payment extends BaseTimeEntity {
     private Integer paymentPrice;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Payment(UUID orderId, Long memberId, PaymentMethod paymentMethod, PaymentStatus status, Integer paymentPrice) {
+    private Payment(Long orderId, Long memberId, PaymentMethod paymentMethod, PaymentStatus status, Integer paymentPrice) {
         Assert.notNull(orderId, "주문 ID는 필수입니다.");
         Assert.notNull(memberId, "주문자 ID는 필수입니다.");
         Assert.notNull(paymentMethod, "결제 수단은 필수입니다.");

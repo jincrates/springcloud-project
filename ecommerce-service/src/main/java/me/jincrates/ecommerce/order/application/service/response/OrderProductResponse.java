@@ -3,14 +3,12 @@ package me.jincrates.ecommerce.order.application.service.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import me.jincrates.ecommerce.order.domain.OrderItem;
 
-import java.util.UUID;
-
 @Schema(description = "주문 상품 response")
 public record OrderProductResponse(
         @Schema(description = "주문 상품 ID", example = "1")
         Long id,
         @Schema(description = "주문 ID")
-        UUID orderId,
+        Long orderId,
         @Schema(description = "상품 ID", example = "1")
         Long productId,
         @Schema(description = "주문 가격", example = "10000")
