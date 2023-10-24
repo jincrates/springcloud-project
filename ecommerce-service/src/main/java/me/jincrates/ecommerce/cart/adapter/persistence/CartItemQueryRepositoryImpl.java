@@ -12,7 +12,7 @@ import static me.jincrates.ecommerce.product.domain.QProductImage.productImage;
 
 
 @RequiredArgsConstructor
-class CartProductQueryRepositoryImpl implements CartProductQueryRepository {
+class CartItemQueryRepositoryImpl implements CartItemQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 

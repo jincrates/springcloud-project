@@ -17,7 +17,7 @@ import java.util.Optional;
 class CartAdapter implements CartPort {
 
     private final CartRepository cartRepository;
-    private final CartProductRepository cartProductRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Override
     public Cart saveCart(Cart cart) {
@@ -38,42 +38,48 @@ class CartAdapter implements CartPort {
 
     @Override
     public List<CartDetailServiceResponse> findCartDetailsById(Long cartId) {
-        return cartProductRepository.findCartDetails(cartId);
+        return cartItemRepository.findCartDetails(cartId);
     }
 
     @Override
-    public CartItem saveCartProduct(CartItem cartItem) {
-        return cartProductRepository.save(cartItem);
+    public CartItem saveCartItem(CartItem cartItem) {
+        return cartItemRepository.save(cartItem);
     }
 
     @Override
-    public void deleteCartProduct(CartItem cartItem) {
-        cartProductRepository.delete(cartItem);
+    public void deleteCartItem(CartItem cartItem) {
+        cartItemRepository.delete(cartItem);
     }
 
     @Override
-    public void deleteAllCartProduct(List<CartItem> cartItems) {
-        cartProductRepository.deleteAll(cartItems);
+    public void deleteAllCartItem(List<CartItem> cartItems) {
+        cartItemRepository.deleteAll(cartItems);
     }
 
     @Override
-    public CartItem findCartProductById(Long cartProductId) {
-        return cartProductRepository.findById(cartProductId)
+    public CartItem findCartItemById(Long cartItemId) {
+        return cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "장바구니 상품을 찾을 수 없습니다. cartProductId=" + cartProductId));
+                        "장바구니 상품을 찾을 수 없습니다. cartItemId=" + cartItemId));
     }
 
     @Override
-    public CartItem findCartProductByIdAndCartId(Long cartProductId, Long cartId) {
-        return cartProductRepository.findByIdAndCartId(cartProductId, cartId)
+    public CartItem findCartItemByIdAndCartId(Long cartItemId, Long cartId) {
+        return cartItemRepository.findByIdAndCartId(cartItemId, cartId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "장바구니 상품을 찾을 수 없습니다. cartProductId=" + cartProductId));
+                        "장바구니 상품을 찾을 수 없습니다. cartItemId=" + cartItemId));
     }
 
     @Override
-    public CartItem findCartProductByCartIdAndProductId(Long cartId, Long productId) {
-        return cartProductRepository.findByCartIdAndProductId(cartId, productId)
+    public CartItem findCartItemByCartIdAndProductId(Long cartId, Long productId) {
+        return cartItemRepository.findByCartIdAndProductId(cartId, productId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "장바구니 상품을 찾을 수 없습니다. productId=" + productId));
+    }
+
+    @Override
+    public void deleteCartItemByMemberIdAndProductIdIn(Long memberId, List<Long> productIds) {
+        Cart cart = findCartByMemberId(memberId);
+        cartItemRepository.deleteByCartIdAndProductIdIn(cart.getId(), productIds);
     }
 }

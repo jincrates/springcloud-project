@@ -12,7 +12,6 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Entity
@@ -24,7 +23,7 @@ public class Order extends BaseTimeEntity {
     @Id
     @Column(name = "order_id")
     @Comment("주문 ID")
-    private UUID id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -47,7 +46,7 @@ public class Order extends BaseTimeEntity {
     private List<OrderItem> orderItems = new ArrayList<>();  // 주문 상품 list
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Order(UUID id, Member member, OrderStatus orderStatus, Integer amount, List<OrderItem> orderItems) {
+    private Order(Long id, Member member, OrderStatus orderStatus, Integer amount, List<OrderItem> orderItems) {
         Assert.notNull(id, "주문 ID는 필수입니다.");
         Assert.notNull(member, "주문자 정보는 필수입니다.");
         Assert.notNull(orderStatus, "주문 상태는 필수입니다.");
@@ -63,7 +62,6 @@ public class Order extends BaseTimeEntity {
 
     public static Order create(Member member, List<OrderItem> orderItems) {
         Order order = Order.builder()
-                .id(UUID.randomUUID())  // 주문번호 채번
                 .member(member)
                 .orderStatus(OrderStatus.PENDING)
                 .orderItems(orderItems)

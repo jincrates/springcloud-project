@@ -18,15 +18,17 @@ public interface CartPort {
 
     List<CartDetailServiceResponse> findCartDetailsById(Long cartId);
 
-    CartItem saveCartProduct(CartItem cartItem);
+    CartItem saveCartItem(CartItem cartItem);
 
-    void deleteCartProduct(CartItem cartItem);
+    void deleteCartItem(CartItem cartItem);
 
-    void deleteAllCartProduct(List<CartItem> cartItems);
+    void deleteAllCartItem(List<CartItem> cartItems);
 
-    CartItem findCartProductById(Long cartProductId);
+    CartItem findCartItemById(Long cartItemId);
 
-    CartItem findCartProductByIdAndCartId(Long cartProductId, Long cartId);
+    CartItem findCartItemByIdAndCartId(Long cartItemId, Long cartId);
 
-    CartItem findCartProductByCartIdAndProductId(Long cartId, Long productId);
+    CartItem findCartItemByCartIdAndProductId(Long cartId, Long productId);
+
+    void deleteCartItemByMemberIdAndProductIdIn(Long memberId, List<Long> productIds);
 }

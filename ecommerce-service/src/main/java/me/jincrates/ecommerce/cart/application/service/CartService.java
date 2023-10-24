@@ -59,7 +59,7 @@ public class CartService implements CartUseCase {
     @Override
     @Transactional
     public CartProductResponse updateCartProductQuantity(CartProductUpdateRequest request, Long memberId) {
-        CartItem cartItem = cartPort.findCartProductById(request.cartProductId());
+        CartItem cartItem = cartPort.findCartItemById(request.cartProductId());
 
         if (!memberId.equals(cartItem.getCart().getMember().getId())) {
             log.warn("invalid access cart, cartId={}, memberId={}",
@@ -77,8 +77,8 @@ public class CartService implements CartUseCase {
     @Transactional
     public void deleteCartProduct(CartProductDeleteRequest request, Long memberId) {
         Cart cart = cartPort.findCartByMemberId(memberId);
-        CartItem cartItem = cartPort.findCartProductByIdAndCartId(request.cartProductId(),
+        CartItem cartItem = cartPort.findCartItemByIdAndCartId(request.cartProductId(),
                 cart.getId());
-        cartPort.deleteCartProduct(cartItem);
+        cartPort.deleteCartItem(cartItem);
     }
 }

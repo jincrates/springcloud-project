@@ -1,11 +1,13 @@
 package me.jincrates.ecommerce.order.application.port;
 
+import me.jincrates.ecommerce.order.application.service.request.OrderCreateRequest;
 import me.jincrates.ecommerce.order.application.service.response.OrderResponse;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface OrderCancelUseCase {
+public interface OrderUseCase {
+    OrderResponse createOrder(OrderCreateRequest request, Long memberId);
 
     OrderResponse cancelOrder(Long orderId, Long memberId);
 
