@@ -20,4 +20,6 @@ public interface MemberPort {
     void deleteAllMemberInBatch();
 
     void saveAllMember(List<Member> members);
+
+    void deleteMember(Member member);
 }

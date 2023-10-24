@@ -21,4 +21,6 @@ public interface MemberUseCase {
     MemberResponse updateMember(MemberUpdateRequest request, Long memberId);
 
     MemberResponse makeMemberInactive(Long memberId);
+
+    void deleteMemberById(Long memberId);
 }

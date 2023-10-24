@@ -78,6 +78,13 @@ public class MemberService implements MemberUseCase {
         return MemberResponse.of(updatedMember);
     }
 
+    @Override
+    @Transactional
+    public void deleteMemberById(Long memberId) {
+        Member member = memberPort.findMemberById(memberId);
+        memberPort.deleteMember(member);
+    }
+
     private String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }

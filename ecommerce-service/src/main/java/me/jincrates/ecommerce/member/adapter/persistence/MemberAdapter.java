@@ -78,6 +78,11 @@ class MemberAdapter implements MemberPort {
         memberRepository.saveAll(members);
     }
 
+    @Override
+    public void deleteMember(Member member) {
+        memberRepository.delete(member);
+    }
+
     private boolean isActive(Status memberStatus) {
         return Status.ACTIVE.equals(memberStatus);
     }

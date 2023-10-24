@@ -94,4 +94,13 @@ public class MemberWebAdapter {
         PageResponse<MemberResponse> response = PageResponse.of(pageNo, pageSize, contents);
         return CommonResponse.ok(response);
     }
+
+    @Operation(summary = "회원 삭제")
+    @DeleteMapping("/api/v1/members/{memberId}")
+    public CommonResponse<Void> deleteMemberById(
+            @PathVariable("memberId") Long memberId
+    ) {
+        memberUseCase.deleteMemberById(memberId);
+        return CommonResponse.noContent();
+    }
 }
