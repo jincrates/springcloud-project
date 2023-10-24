@@ -8,6 +8,7 @@ import me.jincrates.ecommerce.cart.application.service.request.CartCreateRequest
 import me.jincrates.ecommerce.cart.application.service.request.CartProductDeleteRequest;
 import me.jincrates.ecommerce.cart.application.service.request.CartProductRequest;
 import me.jincrates.ecommerce.cart.application.service.request.CartProductUpdateRequest;
+import me.jincrates.ecommerce.cart.application.service.response.CartProductResponse;
 import me.jincrates.ecommerce.cart.application.service.response.CartResponse;
 import me.jincrates.ecommerce.cart.domain.Cart;
 import me.jincrates.ecommerce.cart.domain.CartItem;
@@ -47,7 +48,7 @@ public class CartService implements CartUseCase {
     }
 
     @Override
-    public CartResponse getMyCart(Long memberId) {
+    public CartResponse getCart(Long memberId) {
         Member member = memberPort.findMemberById(memberId);
         Cart cart = cartPort.findCartByMember(member)
                 .orElse(new Cart(member));
@@ -57,7 +58,7 @@ public class CartService implements CartUseCase {
 
     @Override
     @Transactional
-    public Long updateCartProductQuantity(CartProductUpdateRequest request, Long memberId) {
+    public CartProductResponse updateCartProductQuantity(CartProductUpdateRequest request, Long memberId) {
         CartItem cartItem = cartPort.findCartProductById(request.cartProductId());
 
         if (!memberId.equals(cartItem.getCart().getMember().getId())) {
@@ -68,7 +69,8 @@ public class CartService implements CartUseCase {
         }
 
         cartItem.updateQuantity(request.quantity());
-        return cartItem.getId();
+
+        return CartProductResponse.of(cartItem);
     }
 
     @Override

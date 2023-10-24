@@ -15,12 +15,12 @@ public record CartProductResponse(
         @Schema(description = "장바구니에 담은 상품 수량", example = "1")
         Integer quantity
 ) {
-    public static CartProductResponse of(CartItem entity) {
+    public static CartProductResponse of(CartItem cartItem) {
         return new CartProductResponse(
-                entity.getId(),
-                entity.getCart().getId(),
-                ProductResponse.of(entity.getProduct()),
-                entity.getQuantity()
+                cartItem.getId(),
+                cartItem.getCart().getId(),
+                ProductResponse.of(cartItem.getProduct()),
+                cartItem.getQuantity()
         );
     }
 }
