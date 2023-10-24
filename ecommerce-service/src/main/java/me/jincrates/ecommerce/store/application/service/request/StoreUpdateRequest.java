@@ -2,12 +2,10 @@ package me.jincrates.ecommerce.store.application.service.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
-@Schema(description = "상점 등록 request")
-public record StoreCreateRequest(
+public record StoreUpdateRequest(
     @Schema(description = "상점 이름", example = "커피와 삶")
     @Length(max = 50, message = "상점 이름은 50자까지만 입력 가능합니다.")
     @NotBlank(message = "상점 이름은 필수입니다.")
@@ -26,7 +24,4 @@ public record StoreCreateRequest(
     List<String> imageUrls
 ) {
 
-    public StoreCreateRequest {
-        imageUrls = imageUrls == null ? new ArrayList<>() : imageUrls;
-    }
 }
