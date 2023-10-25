@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.ecommerce.product.domain.Product;
-import me.jincrates.global.common.BaseTimeEntity;
+import me.jincrates.global.common.BaseEntity;
 import me.jincrates.global.common.StringListConverter;
 import me.jincrates.global.common.enumtype.Status;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +23,7 @@ import java.util.List;
 @Comment("상점")
 @Table(name = "stores")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Store extends BaseTimeEntity {
+public class Store extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.jincrates.global.common.BaseTimeEntity;
+import me.jincrates.global.common.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Comment;
 import org.springframework.util.Assert;
@@ -16,7 +16,7 @@ import org.springframework.util.Assert;
 @Comment("회원")
 @Table(name = "members")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseTimeEntity {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

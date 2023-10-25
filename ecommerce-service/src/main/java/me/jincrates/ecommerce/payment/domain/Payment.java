@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.order.domain.Order;
-import me.jincrates.global.common.BaseTimeEntity;
+import me.jincrates.global.common.BaseEntity;
 import org.hibernate.annotations.Comment;
 import org.springframework.util.Assert;
 
@@ -15,7 +15,7 @@ import org.springframework.util.Assert;
 @Comment("결제")
 @Table(name = "payments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Payment extends BaseTimeEntity {
+public class Payment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")

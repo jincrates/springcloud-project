@@ -1,11 +1,9 @@
 package me.jincrates.global.common;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
+import me.jincrates.global.common.enumtype.Status;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
@@ -13,11 +11,20 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity extends BaseTimeEntity {
 
-    @CreatedBy
-    @Column(name = "created_by", updatable = false, nullable = false)
-    private String createdBy;
+//    @CreatedBy
+//    @Column(name = "created_by", updatable = false, nullable = false)
+//    private Long createdBy;
+//
+//    @LastModifiedBy
+//    @Column(name = "updated_by")
+//    private Long updatedBy;
 
-    @LastModifiedBy
-    @Column(name = "updated_by")
-    private String updatedBy;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Comment("상태")
+    private Status status = Status.ACTIVE;
+
+    public void setInactive() {
+        this.status = Status.INACTIVE;
+    }
 }

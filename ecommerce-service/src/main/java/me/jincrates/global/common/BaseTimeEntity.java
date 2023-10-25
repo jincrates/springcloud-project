@@ -1,9 +1,10 @@
 package me.jincrates.global.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
-import me.jincrates.global.common.enumtype.Status;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,11 +16,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    @Comment("상태")
-    private Status status = Status.ACTIVE;
-
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -31,8 +27,4 @@ public abstract class BaseTimeEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Comment("수정일시")
     private LocalDateTime updatedAt;
-
-    public void setInactive() {
-        this.status = Status.INACTIVE;
-    }
 }

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.ecommerce.product.domain.Product;
-import me.jincrates.global.common.BaseTimeEntity;
+import me.jincrates.global.common.BaseEntity;
 import org.hibernate.annotations.Comment;
 
 @Getter
@@ -14,7 +14,7 @@ import org.hibernate.annotations.Comment;
 @Comment("장바구니 항목")
 @Table(name = "cart_items")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CartItem extends BaseTimeEntity {
+public class CartItem extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
