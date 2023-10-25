@@ -1,21 +1,6 @@
 package me.jincrates.ecommerce.store.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,10 +9,14 @@ import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.global.common.BaseTimeEntity;
 import me.jincrates.global.common.StringListConverter;
+import me.jincrates.global.common.enumtype.Status;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Comment;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -62,7 +51,7 @@ public class Store extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Comment("상점 상태")
-    private StoreStatus status;
+    private StoreStatus storeStatus;
 
     @Column(name = "image_urls", columnDefinition = "longtext")
     @Convert(converter = StringListConverter.class)
@@ -74,42 +63,43 @@ public class Store extends BaseTimeEntity {
 
     @Builder(access = AccessLevel.PRIVATE)
     private Store(Member member, String name, String description, String address,
-        StoreStatus status, List<String> imageUrls) {
+                  StoreStatus storeStatus, List<String> imageUrls, Status status) {
         Assert.notNull(member, "매니저 정보는 필수입니다.");
         Assert.notNull(name, "상점 이름은 필수입니다.");
         Assert.notNull(address, "상점 주소는 필수입니다.");
-        Assert.notNull(status, "상점 상태는 필수입니다.");
+        Assert.notNull(storeStatus, "상점 상태는 필수입니다.");
 
         this.member = member;
         this.name = name;
         this.description = description;
         this.address = address;
-        this.status = status;
+        this.storeStatus = storeStatus;
         this.imageUrls = imageUrls;
     }
 
     public static Store create(Member member, String name, String description, String address,
-        List<String> imageUrls) {
+                               List<String> imageUrls) {
         return Store.builder()
-            .member(member)
-            .name(name)
-            .description(description)
-            .address(address)
-            .status(StoreStatus.READY)
-            .imageUrls(imageUrls)
-            .build();
+                .member(member)
+                .name(name)
+                .description(description)
+                .address(address)
+                .storeStatus(StoreStatus.READY)
+                .imageUrls(imageUrls)
+                .status(Status.ACTIVE)
+                .build();
     }
 
     public void open() {
-        this.status = StoreStatus.OPEN;
+        this.storeStatus = StoreStatus.OPEN;
     }
 
     public void close() {
-        this.status = StoreStatus.CLOSED;
+        this.storeStatus = StoreStatus.CLOSED;
     }
 
     public void update(String name, String description, String address,
-        List<String> imageUrls) {
+                       List<String> imageUrls) {
         if (!StringUtils.isBlank(name)) {
             setName(name);
         }

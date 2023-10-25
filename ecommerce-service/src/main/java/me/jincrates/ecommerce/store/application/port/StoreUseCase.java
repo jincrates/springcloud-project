@@ -1,10 +1,11 @@
 package me.jincrates.ecommerce.store.application.port;
 
-import java.util.List;
 import me.jincrates.ecommerce.store.application.service.request.StoreCreateRequest;
 import me.jincrates.ecommerce.store.application.service.request.StoreUpdateRequest;
 import me.jincrates.ecommerce.store.application.service.response.StoreResponse;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface StoreUseCase {
 
@@ -15,4 +16,6 @@ public interface StoreUseCase {
     StoreResponse getStoreById(Long storeId);
 
     StoreResponse updateStore(StoreUpdateRequest request, Long storeId, Long memberId);
+
+    StoreResponse makeStoreInactive(Long storeId, Long memberId);
 }

@@ -69,7 +69,7 @@ public class CommunityFileWebAdapter {
 //
 //    @Operation(summary = "동영상 업로드 상태 조회")
 //    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
-//    @GetMapping(path = "/files/video/status")
+//    @GetMapping(path = "/files/video/storeStatus")
 //    @ResponseStatus(HttpStatus.OK)
 //    public CommonResponse<Progress> getUploadStatus(HttpSession session) {
 //        Progress progress = (Progress) session.getAttribute("progress");

@@ -3,6 +3,7 @@ package me.jincrates.ecommerce.store.application.service.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import me.jincrates.ecommerce.store.domain.Store;
 import me.jincrates.ecommerce.store.domain.StoreStatus;
+import me.jincrates.global.common.enumtype.Status;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,13 +23,15 @@ public record StoreResponse(
         String address,
 
         @Schema(description = "상점 상태")
-        StoreStatus status,
+        StoreStatus storeStatus,
 
         @Schema(description = "이미지 url 목록")
         List<String> imageUrls,
 
 //    @Schema(description = "상품 목록")
 //    List<ProductResponse> products,
+        @Schema(description = "상태")
+        Status status,
 
         @Schema(description = "생성일시")
         LocalDateTime createdAt,
@@ -49,8 +52,9 @@ public record StoreResponse(
                 store.getName(),
                 store.getDescription(),
                 store.getAddress(),
-                store.getStatus(),
+                store.getStoreStatus(),
                 store.getImageUrls(),
+                store.getStatus(),
                 store.getCreatedAt(),
                 store.getUpdatedAt(),
                 store.getMember().getId(),

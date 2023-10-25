@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.jincrates.global.common.BaseTimeEntity;
-import me.jincrates.global.common.enumtype.Status;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Comment;
 import org.springframework.util.Assert;
@@ -50,18 +49,12 @@ public class Member extends BaseTimeEntity {
     @Comment("권한")
     private Role role;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    @Comment("상태")
-    private Status status;
-
     @Builder(access = AccessLevel.PRIVATE)
-    private Member(String name, String email, String password, String bio, String imageUrl, Role role, Status status) {
+    private Member(String name, String email, String password, String bio, String imageUrl, Role role) {
         Assert.notNull(name, "이름은 필수입니다.");
         Assert.notNull(email, "이메일은 필수입니다.");
         Assert.notNull(password, "비밀번호는 필수입니다.");
         Assert.notNull(role, "권한은 필수입니다.");
-        Assert.notNull(status, "상태는 필수입니다.");
 
         this.name = name;
         this.email = email;
@@ -69,7 +62,6 @@ public class Member extends BaseTimeEntity {
         this.bio = bio;
         this.imageUrl = imageUrl;
         this.role = role;
-        this.status = status;
     }
 
     public static Member create(String name, String email, String password) {
@@ -78,7 +70,6 @@ public class Member extends BaseTimeEntity {
                 .email(email)
                 .password(password)
                 .role(Role.USER)
-                .status(Status.ACTIVE)
                 .build();
     }
 
@@ -95,10 +86,6 @@ public class Member extends BaseTimeEntity {
         if (!StringUtils.isBlank(imageUrl)) {
             setImageUrl(imageUrl);
         }
-    }
-
-    public void setInactive() {
-        this.status = Status.INACTIVE;
     }
 
     private void setName(String name) {

@@ -22,7 +22,7 @@ class MemberTest extends IntegrationTestSupport {
 
         // then
         assertThat(member).isNotNull()
-                .extracting("name", "email", "role", "status")
+                .extracting("name", "email", "role", "storeStatus")
                 .contains("회원명", "user@email.com", Role.USER, Status.ACTIVE);
         assertThat(passwordEncoder.matches("password", member.getPassword())).isTrue();
     }

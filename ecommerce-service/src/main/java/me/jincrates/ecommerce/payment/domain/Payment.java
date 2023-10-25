@@ -38,25 +38,25 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @Comment("결제 상태")
-    private PaymentStatus status;
+    private PaymentStatus paymentStatus;
 
     @Column(nullable = false)
     @Comment("결제 금액")
     private Integer paymentPrice;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Payment(Long orderId, Long memberId, PaymentMethod paymentMethod, PaymentStatus status, Integer paymentPrice) {
+    private Payment(Long orderId, Long memberId, PaymentMethod paymentMethod, PaymentStatus paymentStatus, Integer paymentPrice) {
         Assert.notNull(orderId, "주문 ID는 필수입니다.");
         Assert.notNull(memberId, "주문자 ID는 필수입니다.");
         Assert.notNull(paymentMethod, "결제 수단은 필수입니다.");
-        Assert.notNull(status, "결제 상태는 필수입니다.");
+        Assert.notNull(paymentStatus, "결제 상태는 필수입니다.");
         Assert.notNull(paymentPrice, "결제 금액은 필수입니다.");
         Assert.isTrue(paymentPrice < 0, "결제 금액은 0원 이상이여야합니다.");
 
         this.orderId = orderId;
         this.memberId = memberId;
         this.paymentMethod = paymentMethod;
-        this.status = status;
+        this.paymentStatus = paymentStatus;
         this.paymentPrice = paymentPrice;
     }
 
@@ -66,7 +66,7 @@ public class Payment extends BaseTimeEntity {
                 .memberId(order.getMember().getId())
                 .paymentPrice(order.getAmount())
                 .paymentMethod(paymentMethod)
-                .status(PaymentStatus.COMPLETED)
+                .paymentStatus(PaymentStatus.COMPLETED)
                 .build();
     }
 }

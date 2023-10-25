@@ -11,17 +11,20 @@ import me.jincrates.ecommerce.store.application.service.response.StoreResponse;
 import me.jincrates.ecommerce.store.domain.Store;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StoreService implements StoreUseCase {
 
     private final MemberPort memberPort;
     private final StorePort storePort;
 
     @Override
+    @Transactional
     public StoreResponse createStore(StoreCreateRequest request, Long memberId) {
         Member member = memberPort.findMemberById(memberId);
 
@@ -48,10 +51,21 @@ public class StoreService implements StoreUseCase {
     }
 
     @Override
+    @Transactional
     public StoreResponse updateStore(StoreUpdateRequest request, Long storeId, Long memberId) {
         Store store = storePort.findStoreByIdAndMemberId(storeId, memberId);
         store.update(store.getName(), store.getDescription(), store.getAddress(),
                 store.getImageUrls());
+
+        Store updatedStore = storePort.saveStore(store);
+        return StoreResponse.of(updatedStore);
+    }
+
+    @Override
+    @Transactional
+    public StoreResponse makeStoreInactive(Long storeId, Long memberId) {
+        Store store = storePort.findStoreByIdAndMemberId(storeId, memberId);
+        store.setInactive();
 
         Store updatedStore = storePort.saveStore(store);
         return StoreResponse.of(updatedStore);

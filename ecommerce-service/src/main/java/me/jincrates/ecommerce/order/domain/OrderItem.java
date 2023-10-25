@@ -44,23 +44,23 @@ public class OrderItem extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @Comment("주문 항목 상태")
-    private OrderItemStatus status;
+    private OrderItemStatus orderItemStatus;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private OrderItem(Order order, Product product, Integer orderQuantity, Integer orderPrice, OrderItemStatus status) {
+    private OrderItem(Order order, Product product, Integer orderQuantity, Integer orderPrice, OrderItemStatus orderItemStatus) {
         Assert.notNull(order, "주문 정보는 필수입니다.");
         Assert.notNull(product, "상품 정보는 필수입니다.");
         Assert.notNull(orderQuantity, "주문 수량은 필수입니다.");
         Assert.isTrue(orderQuantity <= 0, "주문 수량은 0보다 커야합니다.");
         Assert.notNull(orderPrice, "주문 금액은 필수입니다.");
         Assert.isTrue(orderPrice <= 0, "주문 금액은 0 이상이여야합니다.");
-        Assert.notNull(status, "주문 항목 상태는 필수입니다.");
+        Assert.notNull(orderItemStatus, "주문 항목 상태는 필수입니다.");
 
         this.order = order;
         this.product = product;
         this.orderQuantity = orderQuantity;
         this.orderPrice = orderPrice;
-        this.status = status;
+        this.orderItemStatus = orderItemStatus;
     }
 
     public static OrderItem create(Product product, Integer orderQuantity) {
@@ -68,7 +68,7 @@ public class OrderItem extends BaseTimeEntity {
                 .product(product)
                 .orderQuantity(orderQuantity)
                 .orderPrice(product.getPrice() * orderQuantity)
-                .status(OrderItemStatus.ORDERED)
+                .orderItemStatus(OrderItemStatus.ORDERED)
                 .build();
     }
 
@@ -77,6 +77,6 @@ public class OrderItem extends BaseTimeEntity {
     }
 
     public void cancel() {
-        this.status = OrderItemStatus.CANCELLED;
+        this.orderItemStatus = OrderItemStatus.CANCELLED;
     }
 }

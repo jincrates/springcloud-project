@@ -66,7 +66,7 @@ public class Order extends BaseTimeEntity {
                 .orderStatus(OrderStatus.PENDING)
                 .orderItems(orderItems)
                 .amount(orderItems.stream()
-                        .filter(orderItem -> orderItem.getStatus() == OrderItemStatus.ORDERED)
+                        .filter(orderItem -> orderItem.getOrderItemStatus() == OrderItemStatus.ORDERED)
                         .mapToInt(OrderItem::getOrderPrice).sum())
                 .build();
 
@@ -79,7 +79,7 @@ public class Order extends BaseTimeEntity {
 
     public int calculateOrderAmount() {
         return orderItems.stream()
-                .filter(orderItem -> OrderItemStatus.ORDERED.equals(orderItem.getStatus()))
+                .filter(orderItem -> OrderItemStatus.ORDERED.equals(orderItem.getOrderItemStatus()))
                 .mapToInt(OrderItem::getOrderPrice).sum();
     }
 
