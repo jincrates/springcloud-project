@@ -6,7 +6,6 @@ import me.jincrates.ecommerce.product.application.port.ProductPort;
 import me.jincrates.ecommerce.product.application.port.StockPort;
 import me.jincrates.ecommerce.product.application.service.request.ProductSearchRequest;
 import me.jincrates.ecommerce.product.domain.Product;
-import me.jincrates.ecommerce.product.domain.ProductImage;
 import me.jincrates.ecommerce.product.domain.Stock;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ import java.util.List;
 class ProductAdapter implements ProductPort, StockPort {
 
     private final ProductRepository productRepository;
-    private final ProductImageRepository productImageRepository;
     private final StockRepository stockRepository;
 
     @Override
@@ -37,17 +35,7 @@ class ProductAdapter implements ProductPort, StockPort {
     public List<Product> findAllProduct(ProductSearchRequest request, Pageable pageable) {
         return productRepository.findAllProduct(request, pageable);
     }
-
-    @Override
-    public List<ProductImage> findProductImageByProductIdOrderByIdAsc(Long productId) {
-        return productImageRepository.findByProductIdOrderByIdAsc(productId);
-    }
-
-    @Override
-    public void deleteAllProductImageInBatch() {
-        productImageRepository.deleteAllInBatch();
-    }
-
+    
     @Override
     public void deleteAllProductInBatch() {
         productRepository.deleteAllInBatch();

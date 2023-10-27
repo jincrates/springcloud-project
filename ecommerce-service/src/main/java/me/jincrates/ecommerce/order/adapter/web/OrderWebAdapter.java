@@ -58,9 +58,20 @@ public class OrderWebAdapter {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = authPort.parseToken(authorization.substring(7));
-        //TODO: UseCase
         List<OrderResponse> contents = orderUseCase.getOrders(memberId, PageRequest.of(pageNo, pageSize));
         PageResponse<OrderResponse> response = PageResponse.of(pageNo, pageSize, contents);
+        return CommonResponse.ok(response);
+    }
+
+    @Operation(summary = "주문 조회")
+    @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/api/v1/orders/{orderId}")
+    public CommonResponse<OrderResponse> getOrder(
+            @PathVariable("orderId") Long orderId,
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
+    ) {
+        Long memberId = authPort.parseToken(authorization.substring(7));
+        OrderResponse response = orderUseCase.getOrder(orderId, memberId);
         return CommonResponse.ok(response);
     }
 }

@@ -23,7 +23,7 @@ class ProductRepositoryTest extends IntegrationTestSupport {
 //
 //        // then
 //        assertThat(result).isNotNull()
-//            .extracting("productName", "price", "productDetail", "storeStatus")
+//            .extracting("productName", "price", "productDescription", "storeStatus")
 //            .contains("상품명", 1000, "상품 상세설명", ProductSellingStatus.HOLD);
 //    }
 //
@@ -44,7 +44,7 @@ class ProductRepositoryTest extends IntegrationTestSupport {
 //        // then
 //        assertThat(result).isNotNull()
 //            .hasSize(1)
-//            .extracting("productName", "price", "productDetail", "storeStatus")
+//            .extracting("productName", "price", "productDescription", "storeStatus")
 //            .containsExactlyInAnyOrder(
 //                tuple("상품명3", 3000, "상품 상세설명3", ProductSellingStatus.HOLD)
 //            );

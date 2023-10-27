@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum StoreStatus {
     READY("준비중"),
     OPEN("오픈"),
-    CLOSED("마감");
+    CLOSE("마감");
 
     private final String description;
 

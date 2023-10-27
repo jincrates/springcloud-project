@@ -46,36 +46,38 @@ public class Product extends BaseEntity {
     @Comment("판매 상태")
     private ProductSellingStatus sellingStatus;
 
-    @Column(nullable = false)
-    @Comment("재고 수량")
-    private Integer stockQuantity;
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @Comment("상품 재고")
+    private Stock stock;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Product(Store store, String name, String description, Integer price, ProductSellingStatus sellingStatus, Integer stockQuantity) {
+    private Product(Store store, String name, String description, Integer price, ProductSellingStatus sellingStatus) {
+        Assert.notNull(store, "상점 정보는 필수입니다.");
         Assert.notNull(name, "상품명은 필수입니다.");
         Assert.notNull(description, "상품 설명은 필수입니다.");
         Assert.notNull(price, "상품 가격은 필수입니다.");
-        Assert.isTrue(price < 0, "상품 가격은 0원 이상이여야 합니다.");
+        Assert.isTrue(price >= 0, "상품 가격은 0원 이상이여야 합니다.");
         Assert.notNull(sellingStatus, "판매 상태는 필수입니다.");
-        Assert.notNull(stockQuantity, "재고 수량은 필수입니다.");
 
         this.store = store;
         this.name = name;
         this.description = description;
         this.price = price;
         this.sellingStatus = sellingStatus;
-        this.stockQuantity = stockQuantity;
     }
 
-    public static Product create(Store store, String name, String description, Integer price, ProductSellingStatus sellingStatus, Integer stockQuantity) {
+    public static Product create(Store store, String name, String description, Integer price, ProductSellingStatus sellingStatus) {
         return Product.builder()
                 .store(store)
                 .name(name)
                 .description(description)
                 .price(price)
                 .sellingStatus(sellingStatus)
-                .stockQuantity(stockQuantity)
                 .build();
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 
     public void holding() {

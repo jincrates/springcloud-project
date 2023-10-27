@@ -78,7 +78,13 @@ public class OrderService implements OrderUseCase {
                 .map(OrderResponse::of)
                 .toList();
     }
-    
+
+    @Override
+    public OrderResponse getOrder(Long orderId, Long memberId) {
+        Order order = orderPort.findOrderByIdAndMemberId(orderId, memberId);
+        return OrderResponse.of(order);
+    }
+
     private void deductStockQuantity(Product product, Integer quantity) {
         Stock stock = stockPort.findStockByProduct(product);
 

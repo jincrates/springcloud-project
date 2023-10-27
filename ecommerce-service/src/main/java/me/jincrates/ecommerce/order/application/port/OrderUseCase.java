@@ -12,4 +12,6 @@ public interface OrderUseCase {
     OrderResponse cancelOrder(Long orderId, Long memberId);
 
     List<OrderResponse> getOrders(Long memberId, Pageable pageable);
+
+    OrderResponse getOrder(Long orderId, Long memberId);
 }

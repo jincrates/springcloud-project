@@ -51,7 +51,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 
         // then
         assertThat(response).isNotNull()
-                .extracting("name", "email", "role", "storeStatus")
+                .extracting("name", "email", "role", "status")
                 .contains("임칸트", "user@email.com", Role.USER, Status.ACTIVE);
 
         Member savedMember = memberPort.findMemberById(response.id());
@@ -87,7 +87,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 
         // then
         assertThat(response).isNotNull()
-                .extracting("name", "email", "role", "storeStatus")
+                .extracting("name", "email", "role", "status")
                 .contains("임칸트", "user@email.com", Role.USER, Status.ACTIVE);
     }
 
@@ -138,7 +138,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 
         // then
         assertThat(response).hasSize(5)
-                .extracting("name", "email", "role", "storeStatus")
+                .extracting("name", "email", "role", "status")
                 .containsExactlyInAnyOrder(
                         tuple("사용자1", "user1@email.com", Role.USER, Status.ACTIVE),
                         tuple("사용자2", "user2@email.com", Role.USER, Status.ACTIVE),
@@ -159,7 +159,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 
         // then
         assertThat(response).isNotNull()
-                .extracting("name", "email", "role", "storeStatus")
+                .extracting("name", "email", "role", "status")
                 .contains("사용자5", "user5@email.com", Role.USER, Status.ACTIVE);
     }
 

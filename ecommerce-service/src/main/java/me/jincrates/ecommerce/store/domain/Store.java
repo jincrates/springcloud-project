@@ -9,7 +9,6 @@ import me.jincrates.ecommerce.member.domain.Member;
 import me.jincrates.ecommerce.product.domain.Product;
 import me.jincrates.global.common.BaseEntity;
 import me.jincrates.global.common.StringListConverter;
-import me.jincrates.global.common.enumtype.Status;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Comment;
 import org.springframework.util.Assert;
@@ -63,7 +62,7 @@ public class Store extends BaseEntity {
 
     @Builder(access = AccessLevel.PRIVATE)
     private Store(Member member, String name, String description, String address,
-                  StoreStatus storeStatus, List<String> imageUrls, Status status) {
+                  StoreStatus storeStatus, List<String> imageUrls) {
         Assert.notNull(member, "매니저 정보는 필수입니다.");
         Assert.notNull(name, "상점 이름은 필수입니다.");
         Assert.notNull(address, "상점 주소는 필수입니다.");
@@ -86,7 +85,6 @@ public class Store extends BaseEntity {
                 .address(address)
                 .storeStatus(StoreStatus.READY)
                 .imageUrls(imageUrls)
-                .status(Status.ACTIVE)
                 .build();
     }
 
@@ -95,7 +93,7 @@ public class Store extends BaseEntity {
     }
 
     public void close() {
-        this.storeStatus = StoreStatus.CLOSED;
+        this.storeStatus = StoreStatus.CLOSE;
     }
 
     public void update(String name, String description, String address,

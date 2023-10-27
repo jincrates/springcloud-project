@@ -21,7 +21,6 @@ class ProductServiceTest extends IntegrationTestSupport {
     @AfterEach
     void tearDown() {
         stockPort.deleteAllStockInBatch();
-        productPort.deleteAllProductImageInBatch();
         productPort.deleteAllProductInBatch();
     }
 
@@ -36,7 +35,7 @@ class ProductServiceTest extends IntegrationTestSupport {
 //
 //        // then
 //        assertThat(response).isNotNull()
-//                .extracting("productName", "price", "productDetail", "storeStatus")
+//                .extracting("productName", "price", "productDescription", "storeStatus")
 //                .contains("상품명", 10000, "상품 설명입니다.", ProductSellingStatus.SELLING);
 //    }
 }
