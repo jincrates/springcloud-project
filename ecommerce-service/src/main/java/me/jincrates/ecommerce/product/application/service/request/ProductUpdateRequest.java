@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import me.jincrates.ecommerce.product.domain.ProductSellingStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Schema(description = "상품 수정 request")
 public record ProductUpdateRequest(
         @Schema(description = "상품 ID", example = "1")
@@ -28,7 +31,12 @@ public record ProductUpdateRequest(
 
         @Schema(description = "판매 상태", example = "SELLING")
         @NotNull(message = "판매 상태는 필수입니다.")
-        ProductSellingStatus status
-) {
+        ProductSellingStatus status,
 
+        @Schema(description = "업로드 이미지 url 목록")
+        List<String> imageUrls
+) {
+    public ProductUpdateRequest {
+        imageUrls = imageUrls == null ? new ArrayList<>() : imageUrls;
+    }
 }

@@ -42,27 +42,27 @@ public class Attachment extends BaseTimeEntity {
     private String contentType;
 
     @Column(name = "domain_name", nullable = false)
-    @Comment("파일 도메인")
-    private String domainName;
+    @Comment("파일 저장소")
+    private String bucket;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Attachment(String filePath, String fileName, String originFileName, long fileSize, String contentType, String domainName) {
+    private Attachment(String filePath, String fileName, String originFileName, long fileSize, String contentType, String bucket) {
         this.filePath = filePath;
         this.fileName = fileName;
         this.originFileName = originFileName;
         this.fileSize = fileSize;
         this.contentType = contentType;
-        this.domainName = domainName;
+        this.bucket = bucket;
     }
 
-    public static Attachment create(String filePath, String fileName, String originFileName, long fileSize, String contentType, String domainName) {
+    public static Attachment create(String filePath, String fileName, String originFileName, long fileSize, String contentType, String bucket) {
         return Attachment.builder()
                 .filePath(filePath)
                 .fileName(fileName)
                 .originFileName(originFileName)
                 .fileSize(fileSize)
                 .contentType(contentType)
-                .domainName(domainName)
+                .bucket(bucket)
                 .build();
     }
 }

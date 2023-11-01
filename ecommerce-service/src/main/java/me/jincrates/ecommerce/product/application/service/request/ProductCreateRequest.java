@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import me.jincrates.ecommerce.product.domain.ProductSellingStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Schema(description = "상품 등록 request")
 public record ProductCreateRequest(
         @Schema(description = "상점 ID", example = "1")
@@ -31,7 +34,13 @@ public record ProductCreateRequest(
         @Schema(description = "재고 수량", example = "100")
         @Min(value = 0, message = "재고 수량 0개 이상이어야 합니다.")
         @NotNull(message = "재고 수량은 필수입니다.")
-        Integer quantity
+        Integer quantity,
+
+        @Schema(description = "업로드 이미지 url 목록")
+        List<String> imageUrls
 ) {
 
+    public ProductCreateRequest {
+        imageUrls = imageUrls == null ? new ArrayList<>() : imageUrls;
+    }
 }

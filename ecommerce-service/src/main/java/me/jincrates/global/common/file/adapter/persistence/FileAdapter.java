@@ -1,7 +1,8 @@
-package me.jincrates.global.common.file.adapter;
+package me.jincrates.global.common.file.adapter.persistence;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.jincrates.global.common.enumtype.FileBucket;
 import me.jincrates.global.common.file.application.port.FilePort;
 import me.jincrates.global.common.file.application.service.response.ImageResponse;
 import me.jincrates.global.common.file.domain.Attachment;
@@ -26,34 +27,34 @@ class FileAdapter implements FilePort {
     private final FileRepository fileRepository;
 
     @Override
-    public ImageResponse uploadTempImage(MultipartFile image, Long memberId, String domainName) {
+    public ImageResponse uploadTempImage(MultipartFile image, Long memberId, FileBucket bucket) {
         if (ObjectUtils.isEmpty(image)) {
             return null;
         }
 
-        String directory = fileHelper.getTempDirectory(memberId, domainName);
+        String directory = fileHelper.getTempDirectory(memberId, bucket.getValue());
         return fileHelper.upload(image, directory);
     }
 
     @Override
-    public List<String> uploadImages(List<String> imageUrls, Long memberId, String domainName) {
+    public List<String> uploadImages(List<String> imageUrls, Long memberId, FileBucket bucket) {
         if (imageUrls.isEmpty()) {
             return null;
         }
 
-        String directory = fileHelper.getDirectory(memberId, domainName);
-        saveAttachments(imageUrls, directory, domainName);
+        String directory = fileHelper.getDirectory(memberId, bucket.getValue());
+        saveAttachments(imageUrls, directory, bucket.getValue());
 
         return fileHelper.moveFile(imageUrls, directory);
     }
 
     @Override
-    public void uploadTempVideo(MultipartFile video, Long memberId, String domainName) {
+    public void uploadTempVideo(MultipartFile video, Long memberId, FileBucket bucket) {
         if (ObjectUtils.isEmpty(video)) {
             return;
         }
 
-        String directory = fileHelper.getTempDirectory(memberId, domainName);
+        String directory = fileHelper.getTempDirectory(memberId, bucket.getValue());
         fileHelper.uploadVideo(video, directory);
     }
 

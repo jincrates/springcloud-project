@@ -1,4 +1,4 @@
-package me.jincrates.global.common.file.adapter;
+package me.jincrates.global.common.file.adapter.persistence;
 
 import me.jincrates.global.common.file.domain.Attachment;
 import org.springframework.data.jpa.repository.JpaRepository;

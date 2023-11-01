@@ -1,4 +1,4 @@
-package me.jincrates.community.file.adapter;
+package me.jincrates.global.common.file.adapter.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -7,22 +7,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.jincrates.global.common.auth.application.AuthPort;
+import me.jincrates.global.common.enumtype.FileBucket;
 import me.jincrates.global.common.file.application.port.FilePort;
 import me.jincrates.global.common.file.application.service.request.FileRequest;
 import me.jincrates.global.common.file.application.service.response.ImageResponse;
 import me.jincrates.global.common.response.CommonResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "커뮤니티 파일 서비스", description = "파일 API")
+@Tag(name = "파일 서비스", description = "파일 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/community")
-public class CommunityFileWebAdapter {
+@RequestMapping("/api/v1/{bucket}")
+public class FileWebAdapter {
     private final AuthPort authPort;
     private final FilePort filePort;
 
@@ -30,12 +28,12 @@ public class CommunityFileWebAdapter {
     @Parameter(name = HttpHeaders.AUTHORIZATION, hidden = true, description = "JWT Token", in = ParameterIn.HEADER, required = true)
     @PostMapping(path = "/files/image/temp", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public CommonResponse<ImageResponse> uploadTempImage(
+            @PathVariable("bucket") FileBucket bucket,
             @Valid FileRequest request,
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization
     ) {
         Long memberId = authPort.parseToken(authorization.substring(7));
-        ImageResponse response = filePort.uploadTempImage(request.file(), memberId, "community");
-
+        ImageResponse response = filePort.uploadTempImage(request.file(), memberId, bucket);
         return CommonResponse.created(response);
     }
 

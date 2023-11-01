@@ -1,4 +1,4 @@
-package me.jincrates.global.common.file.adapter;
+package me.jincrates.global.common.file.adapter.persistence;
 
 import lombok.extern.slf4j.Slf4j;
 import me.jincrates.global.common.file.application.service.response.ImageResponse;

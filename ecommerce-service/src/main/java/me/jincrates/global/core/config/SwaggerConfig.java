@@ -23,6 +23,7 @@ public class SwaggerConfig {
                 .group("1. ecommerce-api")
                 .packagesToScan(
                         "me.jincrates.global.common.auth",
+                        "me.jincrates.global.common.file",
                         "me.jincrates.ecommerce"
                 )
                 .build();
@@ -34,6 +35,7 @@ public class SwaggerConfig {
                 .group("2. community-api")
                 .packagesToScan(
                         "me.jincrates.global.common.auth",
+                        "me.jincrates.global.common.file",
                         "me.jincrates.community"
                 )
                 .build();

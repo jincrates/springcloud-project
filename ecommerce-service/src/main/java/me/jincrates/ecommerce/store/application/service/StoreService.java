@@ -9,6 +9,8 @@ import me.jincrates.ecommerce.store.application.service.request.StoreCreateReque
 import me.jincrates.ecommerce.store.application.service.request.StoreUpdateRequest;
 import me.jincrates.ecommerce.store.application.service.response.StoreResponse;
 import me.jincrates.ecommerce.store.domain.Store;
+import me.jincrates.global.common.enumtype.FileBucket;
+import me.jincrates.global.common.file.application.port.FilePort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +24,16 @@ public class StoreService implements StoreUseCase {
 
     private final MemberPort memberPort;
     private final StorePort storePort;
+    private final FilePort filePort;
 
     @Override
     @Transactional
     public StoreResponse createStore(StoreCreateRequest request, Long memberId) {
         Member member = memberPort.findMemberById(memberId);
-
-        // 이미지 업로드
         Store store = Store.create(member, request.name(), request.description(), request.address(),
                 request.imageUrls());
         storePort.saveStore(store);
+        filePort.uploadImages(request.imageUrls(), memberId, FileBucket.STORE);
 
         return StoreResponse.of(store);
     }
